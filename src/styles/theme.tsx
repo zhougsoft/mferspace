@@ -3,8 +3,8 @@ import { DefaultTheme } from 'styled-components';
 // Update 'DefaultTheme' interface in 'styled.d.ts' when adding new props!
 const theme: DefaultTheme = {
 	fonts: {
-		main: 'sans-serif',
-		secondary: 'sans-serif',
+		main: 'Benton Sans',
+		secondary: 'Benton Sans',
 		monospace: 'monospace',
 	},
 	colors: {
