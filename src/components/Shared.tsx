@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
+// a link that goes off-page
 export const ExtLink: React.FC<any> = ({ children, ...props }) => (
 	<a {...props} target="_blank" rel="noreferrer noopener">
 		{children}
 	</a>
 );
 
+// the general responsive content container
 export const Container = styled.div`
 	width: 100%;
 	padding-right: 2rem;
@@ -30,12 +32,14 @@ export const Container = styled.div`
 	}
 `;
 
+// wraps decorative emojis with accessibility attributes
 export const DecorEmoji: React.FC<any> = ({ children, ...props }) => (
 	<span role="presentation" {...props}>
 		{children}
 	</span>
 );
 
+// ye old "link to the repo" icon
 export const GithubIcon: React.FC<{ width?: string; color?: string }> = ({
 	width = '1em',
 	color = 'currentColor',
