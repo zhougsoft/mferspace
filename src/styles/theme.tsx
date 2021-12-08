@@ -4,7 +4,7 @@ import { DefaultTheme } from 'styled-components';
 const theme: DefaultTheme = {
 	fonts: {
 		main: 'sans-serif',
-		secondary: 'serif',
+		secondary: 'sans-serif',
 		monospace: 'monospace',
 	},
 	colors: {
