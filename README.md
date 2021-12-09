@@ -2,10 +2,10 @@
 
 _Built w/ Next.js & TypeScript_
 
-for all the mfers 🤝
+*for all the mfers* 🤝
 
-`main` branch == vercel CI/CD -> mferspace.com
-pls target any pull requests to the `develop` branch! thx 😉
+- `main` branch == vercel CI/CD -> mferspace.com
+- pls target any pull requests to the `develop` branch! thx 😉
 
 ### setup .env
 
