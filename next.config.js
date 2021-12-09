@@ -4,4 +4,7 @@ module.exports = {
 	env: {
 		ETHEREUM_NODE_URL: process.env.ETHEREUM_NODE_URL || '',
 	},
+	images: {
+		domains: ['ipfs.io'],
+	},
 };

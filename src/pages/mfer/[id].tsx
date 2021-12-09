@@ -1,14 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { useMfers } from '../../hooks';
+import { getMfer } from '../../services/mfer.service';
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
-import ProfileShowcase from '../../components/ProfileShowcase';
+import ProfilePicDisplay from '../../components/ProfilePicDisplay';
+
+const AttributesDisplay: React.FC<any> = ({ attributes = [] }) => (
+	<div style={{marginTop: '4rem'}}>
+		{attributes.map((attr: any) => (
+			<div>
+				{attr.trait_type} : {attr.value}
+			</div>
+		))}
+	</div>
+);
 
 const MferPage: React.FC = ({ mfer, error }: any) => {
-	console.log(mfer);
-
 	if (error) return <h1>server error - check server console</h1>;
 
 	return (
@@ -17,7 +25,8 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 				<Link href="/">
 					<a>home, mfer...</a>
 				</Link>
-				<ProfileShowcase name={mfer.name} img={mfer.img} />
+				<ProfilePicDisplay name={mfer.name} img={mfer.img} />
+				<AttributesDisplay attributes={mfer.attributes} />
 			</Container>
 		</Layout>
 	);
@@ -26,7 +35,7 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 export const getServerSideProps = async ({ query: { id } }: any) => {
 	try {
 		// validate param input
-		// (mfer ids range between 0 to 10020)
+		// (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(id);
 		if (mferId === NaN) {
 			throw new Error('Invalid ID param - numbers only');
@@ -37,8 +46,6 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 			);
 		}
 
-		// fetch & pass mfer data to component
-		const { getMfer } = useMfers();
 		const mfer = await getMfer(id);
 		return { props: { mfer, error: false } };
 	} catch (error) {
