@@ -5,16 +5,8 @@ import { getMfer } from '../../services/mfer.service';
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
 import ProfilePicDisplay from '../../components/ProfilePicDisplay';
-
-const AttributesDisplay: React.FC<any> = ({ attributes = [] }) => (
-	<div style={{marginTop: '4rem'}}>
-		{attributes.map((attr: any) => (
-			<div>
-				{attr.trait_type} : {attr.value}
-			</div>
-		))}
-	</div>
-);
+import AttributesDisplay from '../../components/AttributesDisplay';
+import BlurbSection from '../../components/BlurbSection';
 
 const MferPage: React.FC = ({ mfer, error }: any) => {
 	if (error) return <h1>server error - check server console</h1>;
@@ -27,6 +19,7 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 				</Link>
 				<ProfilePicDisplay name={mfer.name} img={mfer.img} />
 				<AttributesDisplay attributes={mfer.attributes} />
+				<BlurbSection />
 			</Container>
 		</Layout>
 	);

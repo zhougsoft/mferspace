@@ -1,18 +1,8 @@
 import { ethers } from 'ethers';
+
 import { MFER_CONTRACT_ADDRESS } from '../constants';
 import abi from '../abi.json';
-
-interface MferAttribute {
-	trait_type: string;
-	value: string;
-}
-
-interface Mfer {
-	id: number;
-	name: string;
-	img: string;
-	attributes: MferAttribute[];
-}
+import { Mfer } from '../types';
 
 // get a single mfer
 export const getMfer = async (id: number): Promise<Mfer> => {
