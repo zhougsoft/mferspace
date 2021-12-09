@@ -8,11 +8,14 @@ const HomePage: React.FC = () => {
 	return (
 		<Layout title="mferspace | a space for mfers">
 			<Container>
-				<h1>mferspace</h1>
+				<h1 style={{ fontSize: '3rem', marginBottom: '0' }}>mferspace</h1>
 				<h3>a space for mfers</h3>
-				<Link href="/mfer/123">
-					<a>test mfer</a>
-				</Link>
+				<br />
+				<br />
+				<p>check out a mfer profile! </p>
+				<small>go to:</small>
+				<pre>mferspace.com/mfer/[mfer id]</pre>
+				<Link href="/mfer/3191">example profile</Link>
 			</Container>
 		</Layout>
 	);

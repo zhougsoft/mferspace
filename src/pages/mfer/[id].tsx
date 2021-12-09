@@ -14,9 +14,6 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
-				<Link href="/">
-					<a>home, mfer...</a>
-				</Link>
 				<ProfilePicDisplay name={mfer.name} img={mfer.img} />
 				<AttributesDisplay attributes={mfer.attributes} />
 				<BlurbSection name={mfer.name} />
