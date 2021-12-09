@@ -29,14 +29,16 @@ const AttributesDisplay: React.FC<AttributesDisplayProps> = ({
 	attributes = [],
 }) => (
 	<TraitTable>
-		{attributes.map(attr => (
-			<tr key={'attr-' + Math.random() * 100}>
-				<td>
-					<strong>{attr.trait_type}</strong>
-				</td>
-				<td>{attr.value}</td>
-			</tr>
-		))}
+		<tbody>
+			{attributes.map(attr => (
+				<tr key={'attr-' + Math.random() * 100}>
+					<td>
+						<strong>{attr.trait_type}</strong>
+					</td>
+					<td>{attr.value}</td>
+				</tr>
+			))}
+		</tbody>
 	</TraitTable>
 );
 

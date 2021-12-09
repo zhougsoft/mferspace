@@ -19,7 +19,7 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 				</Link>
 				<ProfilePicDisplay name={mfer.name} img={mfer.img} />
 				<AttributesDisplay attributes={mfer.attributes} />
-				<BlurbSection />
+				<BlurbSection name={mfer.name} />
 			</Container>
 		</Layout>
 	);

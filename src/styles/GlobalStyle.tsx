@@ -1,6 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
+export default createGlobalStyle`
+
+	@font-face {
+		font-family: 'Benton Sans';
+		src: url('/fonts/Benton-Sans-Regular.otf');
+	}
+
 	body {
 		font-size: 16px;
 		font-family: ${({ theme }) => theme.fonts.main};
@@ -31,5 +37,3 @@ const GlobalStyle = createGlobalStyle`
 
 	}
 `;
-
-export default GlobalStyle;
