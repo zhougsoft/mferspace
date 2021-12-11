@@ -24,12 +24,12 @@ export const ProfileInfo = styled.div`
 		padding: 0;
 
 		li {
-			color: #999;
+			color: ${({ theme }) => theme.colors.textSecondary};
 		}
 	}
 
 	div.social-links {
-		color: #999;
+		color: ${({ theme }) => theme.colors.textSecondary};
 	}
 
 	div.update-msg {

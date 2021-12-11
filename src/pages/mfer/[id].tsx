@@ -4,7 +4,7 @@ import { getMfer } from '../../services/mfer.service';
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
-import AttributesDisplay from '../../components/AttributesDisplay';
+import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
 const MferPage: React.FC = ({ mfer, error }: any) => {
@@ -14,7 +14,7 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
 				<ProfileCard name={mfer.name} img={mfer.img} />
-				<AttributesDisplay attributes={mfer.attributes} />
+				<AttributesCard attributes={mfer.attributes} />
 				<BlurbSection name={mfer.name} />
 			</Container>
 		</Layout>
