@@ -18,11 +18,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 			</div>
 		</S.ProfilePicDisplay>
 		<S.ProfileInfo>
-			<div>{`"${profile.tagline}"`}</div>
+			<div>{`"${profile?.tagline || ':-)'}"`}</div>
 			<ul>
-				<li>{profile.pronouns}</li>
-				<li>{profile.age}</li>
-				<li>{profile.location}</li>
+				<li>{profile?.pronouns}</li>
+				<li>{profile?.age}</li>
+				<li>{profile?.location}</li>
 			</ul>
 			<div className="social-links">[yr fav links here]</div>
 			<div className="update-msg">
