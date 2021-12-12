@@ -1,33 +1,30 @@
 import Image from 'next/image';
 
+import { Mfer } from '../../types';
 import * as S from './styled';
 import { IconEmoji } from '../Shared';
 
 interface ProfileCardProps {
-	name: string;
-	img: string;
+	mfer: Mfer;
+	profile: any; // TODO: type
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({
-	name = 'this mfer',
-	img = '',
-}) => (
+const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 	<S.Section>
 		<S.ProfilePicDisplay>
-			<h2>{name}</h2>
+			<h2>{mfer.name}</h2>
 			<div className="img-wrapper">
-				<Image src={img} alt={name} width="200px" height="200px" />
+				<Image src={mfer.img} alt={mfer.name} width="200px" height="200px" />
 			</div>
 		</S.ProfilePicDisplay>
 		<S.ProfileInfo>
-			<div>{'":-)"'}</div>
+			<div>{`"${profile.tagline}"`}</div>
 			<ul>
-				<li>p-nouns</li>
-				<li>X yrs old</li>
-				<li>Santa Monica, CALIFORNIA</li>
-				<li>United States</li>
+				<li>{profile.pronouns}</li>
+				<li>{profile.age}</li>
+				<li>{profile.location}</li>
 			</ul>
-			<div className="social-links">[other socials here]</div>
+			<div className="social-links">[yr fav links here]</div>
 			<div className="update-msg">
 				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> editable in future
 				updates!

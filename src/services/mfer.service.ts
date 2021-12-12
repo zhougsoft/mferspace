@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
-import { MFER_CONTRACT_ADDRESS } from '../constants';
-import abi from '../abi.json';
+import { MFER_CONTRACT_ADDRESS } from '../config/constants';
+import abi from '../config/abi.json';
 import { Mfer } from '../types';
 
 // get a single mfer

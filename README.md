@@ -10,9 +10,7 @@ _Built w/ Next.js & TypeScript_
 ### setup .env
 
 1. make a copy of `.env.local.example` named `.env.local`
-1. edit `.env.local` and add yr Ethereum node URL!
-
-Example: `ETHEREUM_NODE_URL=https://mainnet.infura.io/v3/YOUR_INFURA_ID`
+1. edit `.env.local` and add yr secrets!
 
 ### run on local:
 
