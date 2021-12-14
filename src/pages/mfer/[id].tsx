@@ -10,11 +10,8 @@ import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
 const MferPage: React.FC = ({ mfer, profile, error }: any) => {
-	// TODO: handle profile data
-	console.log('mfin data', { mfer, profile, error });
-
 	if (error) return <h1>server error - check server console</h1>;
-	if (!mfer) return <h1>no mfer... server error! pls report</h1>;
+	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
 
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>

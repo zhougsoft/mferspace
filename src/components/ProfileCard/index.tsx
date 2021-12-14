@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Mfer } from '../../types';
 import * as S from './styled';
@@ -24,10 +25,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 				<li>{profile?.age}</li>
 				<li>{profile?.location}</li>
 			</ul>
-			<div className="social-links">[yr fav links here]</div>
+			<div className="social-links">[yr coolest link here]</div>
 			<div className="update-msg">
-				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> editable in future
-				updates!
+				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> own this mfer?{' '}
+				<Link href={`/mfer/edit/${mfer.id}`}>
+					<a>edit this profile!</a>
+				</Link>
 			</div>
 		</S.ProfileInfo>
 	</S.Section>

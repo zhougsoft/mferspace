@@ -1,16 +1,14 @@
 import styled from 'styled-components';
 
 export const Section = styled.section`
-	div.update-msg {
-		font-size: 0.75rem;
-		margin-top: 1.5rem;
-		margin-bottom: 1rem;
-	}
+	margin-top: 1.5rem;
 `;
 
 export const Article = styled.article`
+	margin-bottom: 1.5rem;
+	
 	h5 {
-		color: #fb7515;
+		color: ${({ theme }) => theme.colors.orange};
 		margin: 0;
 	}
 
