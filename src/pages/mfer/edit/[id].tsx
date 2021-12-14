@@ -40,11 +40,11 @@ const MferPage: React.FC = ({ mfer, profile, error }: any) => {
 	const onLocationChange = (e: any) => setLocationInput(e.target.value);
 
 	const onSaveClick = () => {
-        
-		// TODO:
 
-		console.log('save clicked!', {
-			taglineInput,
+		// TODO: update profile in DB with input data
+        
+        console.log('save clicked!', {
+            taglineInput,
 			pronounsInput,
 			ageInput,
 			locationInput,

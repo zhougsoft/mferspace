@@ -1,4 +1,4 @@
-import { supabase } from '../config/db';
+import { supabase } from '../supabase';
 
 // here be the db plumbing for mfer profiles
 
