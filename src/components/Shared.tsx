@@ -9,7 +9,7 @@ export const ExtLink: React.FC<any> = ({ children, ...props }) => (
 
 // the general responsive content container
 export const Container = styled.div`
-	width: 100%;
+	max-width: 100%;
 	padding-right: 2rem;
 	padding-left: 2rem;
 	margin-right: auto;
