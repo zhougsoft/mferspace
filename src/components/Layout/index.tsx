@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
 				<title>{title}</title>
 			</Head>
 			<Header />
-			<main className="page-content">{children}</main>
+			<main>{children}</main>
 		</S.PageWrapper>
 	);
 };

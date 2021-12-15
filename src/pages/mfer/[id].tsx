@@ -1,11 +1,10 @@
 import React from 'react';
-import Link from 'next/link';
 
 import { getMfer } from '../../services/mfer.service';
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
-import ProfilePicDisplay from '../../components/ProfilePicDisplay';
-import AttributesDisplay from '../../components/AttributesDisplay';
+import ProfileCard from '../../components/ProfileCard';
+import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
 const MferPage: React.FC = ({ mfer, error }: any) => {
@@ -14,8 +13,8 @@ const MferPage: React.FC = ({ mfer, error }: any) => {
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
-				<ProfilePicDisplay name={mfer.name} img={mfer.img} />
-				<AttributesDisplay attributes={mfer.attributes} />
+				<ProfileCard name={mfer.name} img={mfer.img} />
+				<AttributesCard attributes={mfer.attributes} />
 				<BlurbSection name={mfer.name} />
 			</Container>
 		</Layout>

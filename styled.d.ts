@@ -9,9 +9,16 @@ declare module 'styled-components' {
 		};
 		colors: {
 			text: string;
-			lightText: string;
+			textSecondary: string;
+			textAlt: string;
 			link: string;
 			background: string;
+			orange: string;
+			blueLightest: string;
+			blueLight: string;
+			blue: string;
+			blueDark: string;
+			blueDarkest: string;
 		};
 		breakpoints: {
 			sm: number;

@@ -8,10 +8,17 @@ const theme: DefaultTheme = {
 		monospace: 'monospace',
 	},
 	colors: {
-		text: '#333',
-		lightText: '#555',
+		text: '#303030',
+		textSecondary: '#888',
+		textAlt: '#FFF',
 		link: 'dodgerblue',
 		background: '#FFF',
+		orange: '#fb7515',
+		blueLightest: '#d6ecf9',
+		blueLight: '#b1d1f3',
+		blue: '#6598ce',
+		blueDark: '#4d7eb3',
+		blueDarkest: '#235d9e',
 	},
 	// Pixel values for 'min-width'
 	breakpoints: {
