@@ -1,5 +1,4 @@
 -- Create & seeds the 'profiles' table with 10,020 empty mfer records
-
 DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
@@ -10,17 +9,13 @@ CREATE TABLE profiles (
   location varchar(100),
   link_1 varchar(50),
   link_2 varchar(50),
-  link_3 varchar(50),
-  created_at timestamp with time zone default timezone('utc' :: text, now()) not null
+  link_3 varchar(50)
 );
 
--- TODO: write loop to generate empty records from ids 0 to 10020
+-- Seed with empty records for each existing mfer (ids 0 to 10020)
 INSERT INTO
-  profiles
-VALUES
-  (0),
-  (1),
-  (2),
-  (4),
-  (5);
--- etc, etc...
+  profiles (id)
+SELECT
+  x.id
+FROM
+  generate_series(0, 10020) AS x(id);
