@@ -2,20 +2,21 @@
 DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
-  id int primary key,
+  mfer_id int primary key,
   tagline varchar(140),
   pronouns varchar(50),
   age varchar(50),
   location varchar(100),
   link_1 varchar(50),
   link_2 varchar(50),
-  link_3 varchar(50)
+  link_3 varchar(50),
+  last_updated timestamptz
 );
 
 -- Seed with empty records for each existing mfer (ids 0 to 10020)
 INSERT INTO
-  profiles (id)
+  profiles (mfer_id)
 SELECT
-  x.id
+  x.mfer_id
 FROM
-  generate_series(0, 10020) AS x(id);
+  generate_series(0, 10020) AS x(mfer_id);

@@ -8,7 +8,13 @@ import { getProfile } from '../../../services/profile.service';
 import { Container } from '../../../components/Shared';
 import Layout from '../../../components/Layout';
 
-const EditField: React.FC<any> = ({ name, value, label, onChange }) => (
+const EditField: React.FC<any> = ({
+	name,
+	value,
+	label,
+	placeholder,
+	onChange,
+}) => (
 	<div>
 		<label
 			style={{ display: 'block', marginBottom: '0.5rem', color: '#666' }}
@@ -22,33 +28,95 @@ const EditField: React.FC<any> = ({ name, value, label, onChange }) => (
 			style={{ marginBottom: '1rem' }}
 			name={name}
 			value={value}
-			placeholder={label}
+			placeholder={placeholder}
 			onChange={onChange}
 		/>
 	</div>
 );
 
-const MferPage: React.FC = ({ mfer, profile, error }: any) => {
-	const [taglineInput, setTaglineInput] = useState<string>(profile?.tagline);
-	const [pronounsInput, setPronounsInput] = useState<string>(profile?.pronouns);
-	const [ageInput, setAgeInput] = useState<string>(profile?.age);
-	const [locationInput, setLocationInput] = useState<string>(profile?.location);
+const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	// form input states
+	const [taglineInput, setTaglineInput] = useState<string>(
+		profile?.tagline || ''
+	);
+	const [pronounsInput, setPronounsInput] = useState<string>(
+		profile?.pronouns || ''
+	);
+	const [ageInput, setAgeInput] = useState<string>(profile?.age || '');
+	const [locationInput, setLocationInput] = useState<string>(
+		profile?.location || ''
+	);
+	const [link1Input, setLink1Input] = useState<string>(profile?.link_1 || '');
+	const [link2Input, setLink2Input] = useState<string>(profile?.link_2 || '');
+	const [link3Input, setLink3Input] = useState<string>(profile?.link_3 || '');
+
+	// form input handler
 	const onTaglineChange = (e: any) => setTaglineInput(e.target.value);
 	const onPronounsChange = (e: any) => setPronounsInput(e.target.value);
 	const onAgeChange = (e: any) => setAgeInput(e.target.value);
 	const onLocationChange = (e: any) => setLocationInput(e.target.value);
+	const onLink1Change = (e: any) => setLink1Input(e.target.value);
+	const onLink2Change = (e: any) => setLink2Input(e.target.value);
+	const onLink3Change = (e: any) => setLink3Input(e.target.value);
+
+	const resetInputs = () => {
+		setTaglineInput('');
+		setPronounsInput('');
+		setAgeInput('');
+		setLocationInput('');
+		setLink1Input('');
+		setLink2Input('');
+		setLink3Input('');
+	};
 
 	const onSaveClick = () => {
+		// TODO: VALIDATION
+		// tagline - 140 chars
+		// pronouns - 50 chars
+		// age - 50 chars
+		// location - 100 chars
+		// link_1 - 50 chars
+		// link_2 - 50 chars
+		// link_3 - 50 chars
+
+		// (validate this serverside as well)
+
+		setIsLoading(true);
 
 		// TODO: update profile in DB with input data
-        
-        console.log('save clicked!', {
-            taglineInput,
+		const inputData = {
+			mferId: mfer.id,
+			taglineInput,
 			pronounsInput,
 			ageInput,
 			locationInput,
-		});
+			link1Input,
+			link2Input,
+			link3Input,
+		};
+
+		fetch(`/api/profile/edit`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(inputData),
+		})
+			.then(res => res.json())
+			.then(data => {
+				// TODO: if successful, window.navigate back to user profile?
+				// or fill in the updated fields with the new data...
+
+				// ez mode... force a post-back!
+
+				console.log('server response data', data);
+			})
+			.catch(error => {
+				alert('error during request, check console!');
+				console.error(error);
+			});
 	};
 
 	if (error) return <h1>server error - check server console</h1>;
@@ -65,29 +133,57 @@ const MferPage: React.FC = ({ mfer, profile, error }: any) => {
 					<a>go back</a>
 				</Link>
 				<div style={{ marginTop: '2rem', fontSize: '0.9rem' }}>
+					<h2>profile</h2>
 					<EditField
 						name="tagline"
 						value={taglineInput}
 						label="tagline"
 						onChange={onTaglineChange}
+						placeholder="~*~ sO RanDom!!1 ~*~"
 					/>
 					<EditField
 						name="pronouns"
 						value={pronounsInput}
 						label="pronouns"
 						onChange={onPronounsChange}
+						placeholder="him/her/just 4 fun"
 					/>
 					<EditField
 						name="age"
 						value={ageInput}
 						label="age"
 						onChange={onAgeChange}
+						placeholder="lol nope"
 					/>
 					<EditField
 						name="location"
 						value={locationInput}
 						label="location"
 						onChange={onLocationChange}
+						placeholder="2006"
+					/>
+					<hr />
+					<h2>fav links</h2>
+					<EditField
+						name="link1"
+						value={link1Input}
+						label="link1"
+						onChange={onLink1Change}
+						placeholder="friendster.com"
+					/>
+					<EditField
+						name="link2"
+						value={link2Input}
+						label="link2"
+						onChange={onLink2Change}
+						placeholder="livejournal.com"
+					/>
+					<EditField
+						name="link3"
+						value={link3Input}
+						label="link3"
+						onChange={onLink3Change}
+						placeholder="xanga.com"
 					/>
 					<br />
 					<button
@@ -125,4 +221,4 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 	}
 };
 
-export default MferPage;
+export default EditProfilePage;
