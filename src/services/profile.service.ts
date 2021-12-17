@@ -1,10 +1,12 @@
 import { supabase } from '../supabase';
 
 // here be the db plumbing for mfer profiles
+// RUN SERVER SIDE ONLY due to .env considerations
 
 // TODO: finish this type
 interface Profile {}
 
+// TODO: add return type as 'Profile'
 export const getProfile = async (id: number) => {
 	const { data, error, status } = await supabase
 		.from('profiles')
@@ -19,27 +21,16 @@ export const getProfile = async (id: number) => {
 	return data;
 };
 
-export const updateProfile = async (id: number, data: any) => {
+// TODO: type arg as 'Profile'
+export const updateProfile = async (profileData: any) => {
+	let { error, status } = await supabase
+		.from('profiles')
+		.update(profileData, {
+			returning: 'minimal',
+		})
+		.match({ mfer_id: profileData.mfer_id });
 
-
-	// THIS IS RAN SERVER SIDE
-
-	// route: /api/profile/edit/[id]
-	
-	
-	// ### TODO ###
-	// get the next.js example upsert code in here
-	
-	// is upsert appropriate? since there will already be rows
-	// that is implying that a new row can be created
-	// this use-case, a new row will never be created for profiles
-	// 1 mfer == 1 profile
-	// just a regular 'update' will be fine?
-	
-	// UPDATE LAST UPDATED:
-	// last_updated: new Date()
-
-
-	// TURBO VALIDATION! protec
-
+	if (error && status !== 406) {
+		throw error;
+	}
 };

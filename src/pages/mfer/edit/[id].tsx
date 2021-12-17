@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -35,9 +36,9 @@ const EditField: React.FC<any> = ({
 );
 
 const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const router = useRouter();
 
-	// form input states
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [taglineInput, setTaglineInput] = useState<string>(
 		profile?.tagline || ''
 	);
@@ -61,16 +62,6 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	const onLink2Change = (e: any) => setLink2Input(e.target.value);
 	const onLink3Change = (e: any) => setLink3Input(e.target.value);
 
-	const resetInputs = () => {
-		setTaglineInput('');
-		setPronounsInput('');
-		setAgeInput('');
-		setLocationInput('');
-		setLink1Input('');
-		setLink2Input('');
-		setLink3Input('');
-	};
-
 	const onSaveClick = () => {
 		// TODO: VALIDATION
 		// tagline - 140 chars
@@ -85,37 +76,27 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 
 		setIsLoading(true);
 
-		// TODO: update profile in DB with input data
-		const inputData = {
-			mferId: mfer.id,
-			taglineInput,
-			pronounsInput,
-			ageInput,
-			locationInput,
-			link1Input,
-			link2Input,
-			link3Input,
-		};
-
 		fetch(`/api/profile/edit`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(inputData),
+			body: JSON.stringify({
+				mfer_id: mfer.id,
+				tagline: taglineInput,
+				pronouns: pronounsInput,
+				age: ageInput,
+				location: locationInput,
+				link_1: link1Input,
+				link_2: link2Input,
+				link_3: link3Input,
+			}),
 		})
-			.then(res => res.json())
-			.then(data => {
-				// TODO: if successful, window.navigate back to user profile?
-				// or fill in the updated fields with the new data...
-
-				// ez mode... force a post-back!
-
-				console.log('server response data', data);
-			})
+			.then(() => router.push(`/mfer/${mfer.id}`))
 			.catch(error => {
 				alert('error during request, check console!');
 				console.error(error);
+				setIsLoading(false);
 			});
 	};
 

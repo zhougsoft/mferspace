@@ -37,8 +37,12 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 		}
 
 		// TODO: wrap in 'await Promise.all()'
+		console.log(`fetching mfer #${id} from chain...`);
 		const mfer = await getMfer(mferId);
+		console.log(`got mfer #${id}! fetching profile data...`);
 		const profile = await getProfile(mferId);
+		console.log('data fetch complete!');
+
 		return { props: { mfer, profile, error: false } };
 	} catch (error) {
 		console.error(error);
