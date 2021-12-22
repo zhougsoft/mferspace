@@ -9,8 +9,7 @@ CREATE TABLE profiles (
   location varchar(100),
   link_1 varchar(50),
   link_2 varchar(50),
-  link_3 varchar(50),
-  last_updated timestamptz
+  link_3 varchar(50)
 );
 
 -- Seed with empty records for each existing mfer (ids 0 to 10020)
@@ -20,3 +19,14 @@ SELECT
   x.mfer_id
 FROM
   generate_series(0, 10020) AS x(mfer_id);
+
+-- Create wallets table & index addresses
+DROP TABLE IF EXISTS wallets;
+
+CREATE TABLE wallets (
+  wallet_id serial primary key,
+  address varchar(42) unique not null,
+  nonce int4 not null
+);
+
+CREATE INDEX ON wallets (address);

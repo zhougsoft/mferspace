@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { Profiler, useEffect } from 'react';
 import Link from 'next/link';
+import { ethers } from 'ethers';
 
 import { Container } from '../components/Shared';
 import Layout from '../components/Layout';
 
+// so TypeScript allows `window.ethereum`
+declare const window: any;
+
 const HomePage: React.FC = () => {
+	
+	// DO STUFF ON LOAD
+	useEffect(() => {
+		if (window.ethereum) {
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const signer = provider.getSigner();
+
+			(async () => {
+				const blockNum = await provider.getBlockNumber();
+				const bal = await provider.getBalance('zhoug.eth');
+				const etherBal = ethers.utils.formatEther(bal);
+				console.log({ blockNum, etherBal });
+			})();
+		}
+	}, []);
+
 	return (
 		<Layout title="mferspace | a space for mfers">
 			<Container>
