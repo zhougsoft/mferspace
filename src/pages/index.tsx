@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { ethers } from 'ethers';
 
@@ -8,8 +8,9 @@ import Layout from '../components/Layout';
 // so TypeScript allows `window.ethereum`
 declare const window: any;
 
+const MSG_TO_SIGN = 'hello world';
+
 const HomePage: React.FC = () => {
-	
 	// DO STUFF ON LOAD
 	useEffect(() => {
 		if (window.ethereum) {
@@ -17,10 +18,19 @@ const HomePage: React.FC = () => {
 			const signer = provider.getSigner();
 
 			(async () => {
-				const blockNum = await provider.getBlockNumber();
-				const bal = await provider.getBalance('zhoug.eth');
-				const etherBal = ethers.utils.formatEther(bal);
-				console.log({ blockNum, etherBal });
+				// sign a string
+				const rawSignature = await signer.signMessage(MSG_TO_SIGN);
+				const address = await signer.getAddress();
+
+				// do something with the signed string?
+				await fetch('/api/auth', {
+					method: 'POST',
+					body: JSON.stringify({
+						address,
+						signature: rawSignature,
+						secretMsg: MSG_TO_SIGN,
+					}),
+				});
 			})();
 		}
 	}, []);
