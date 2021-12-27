@@ -11,7 +11,7 @@ export interface UserWallet {
 
 const _generateNonce = () => Math.floor(Math.random() * 1000000);
 
-export const createUserWallet = async (address: string): Promise<any> => {
+export const addUserWallet = async (address: string): Promise<any> => {
 	const { data, error, status } = await supabase
 		.from('wallets')
 		.insert({ address, nonce: _generateNonce() });
@@ -23,10 +23,10 @@ export const createUserWallet = async (address: string): Promise<any> => {
 	return data;
 };
 
-export const getNonce = async (address: string): Promise<any> => {
+export const getNonce = async (address: string): Promise<number> => {
 	const { data, error, status } = await supabase
 		.from('wallets')
-		.select()
+		.select('nonce')
 		.eq('address', address)
 		.single();
 
@@ -34,7 +34,7 @@ export const getNonce = async (address: string): Promise<any> => {
 		throw error;
 	}
 
-	return data.nonce;
+	return data ? data.nonce : 0;
 };
 
 export const updateNonce = async (address: string): Promise<any> => {

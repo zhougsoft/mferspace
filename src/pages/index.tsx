@@ -8,31 +8,41 @@ import Layout from '../components/Layout';
 // so TypeScript allows `window.ethereum`
 declare const window: any;
 
-const MSG_TO_SIGN = 'hello world';
-
 const HomePage: React.FC = () => {
-	// DO STUFF ON LOAD
+	
+	// Authenicate w/ DB on load
 	useEffect(() => {
-		if (window.ethereum) {
-			const provider = new ethers.providers.Web3Provider(window.ethereum);
-			const signer = provider.getSigner();
+		(async () => {
+			if (window.ethereum) {
+				const provider = new ethers.providers.Web3Provider(window.ethereum);
+				const signer = provider.getSigner();
 
-			(async () => {
-				// sign a string
-				const rawSignature = await signer.signMessage(MSG_TO_SIGN);
+				// Fetch user nonce from DB
 				const address = await signer.getAddress();
-
-				// do something with the signed string?
-				await fetch('/api/auth', {
+				const nonceResult = await fetch('/api/auth/nonce', {
 					method: 'POST',
-					body: JSON.stringify({
-						address,
-						signature: rawSignature,
-						secretMsg: MSG_TO_SIGN,
-					}),
-				});
-			})();
-		}
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ address }),
+				}).then(res => res.json());
+
+				// sign fetched nonce with wallet
+				const signature = await signer.signMessage(nonceResult.nonce.toString());
+
+				// send signature to server for verification
+				const authResult = await fetch('/api/auth/verify', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ address, signature }),
+				}).then(res => res.json());
+
+				// TODO: do something with JWT
+				console.log(authResult);
+			}
+		})();
 	}, []);
 
 	return (
