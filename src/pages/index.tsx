@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
 					body: JSON.stringify({ address, signature }),
 				}).then(res => res.json());
 
-				// TODO: do something with JWT
+				// TODO: do something with the JWT token
 				console.log(authResult);
 			}
 		})();

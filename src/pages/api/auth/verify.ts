@@ -1,31 +1,29 @@
-import { useRouter } from 'next/router';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ethers } from 'ethers';
-
-import {
-	addUserWallet,
-	getNonce,
-	updateNonce,
-} from '../../../services/auth.service';
-
-// EXAMPLE:
-// https://github.com/amaurym/login-with-metamask-demo/blob/41f1ff4297c6ab179d1b8a6b980dde479bf2945c/packages/backend/src/services/auth/controller.ts
-
-// verifying signatures:
-// https://docs.ethers.io/v5/api/utils/signing-key/#utils-verifyMessage
+import jwt from 'jsonwebtoken';
+import { getNonce, updateNonce } from '../../../services/auth.service';
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<any>
 ) {
 	try {
-		// TODO: VALIDATE THIS DATA!
+		// ensure JSON web token secret is set before running verification
+		const { JWT_SECRET } = process.env;
+		if (!JWT_SECRET) {
+			throw new Error("'No value set for 'process.env.JWT_SECRET'");
+		}
+
+		// verify/validate request data
 		const { address, signature } = req.body;
+		if (!address || !signature) {
+			return res.status(400).end('Invalid address or signature input');
+		}
 
 		// get user's nonce from DB
 		const nonce = await getNonce(address);
 		if (nonce === 0) {
-			throw new Error(`No nonce found for address ${address}`);
+			return res.status(400).end('No nonce record for address');
 		}
 
 		// verify incoming signature
@@ -34,13 +32,22 @@ export default async function handler(
 			signature
 		);
 
-		// good verification, update nonce & send back JWT for auth
+		// if valid auth verification, update nonce & send back JWT for auth
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
-
-			// TODO: do JWT stuff
+			// sign token with 1 hour expiry
+			const token = jwt.sign(
+				{
+					exp: Math.floor(Date.now() / 1000) + 60 * 60,
+					data: {
+						address,
+						nonce,
+					},
+				},
+				JWT_SECRET
+			);
 
 			await updateNonce(address);
-			return res.status(200).json({ msg: 'user authenicated!' });
+			return res.status(200).json({ token });
 		} else {
 			return res.status(403).end('Invalid signature');
 		}
