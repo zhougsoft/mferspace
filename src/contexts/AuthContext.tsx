@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import { ethers } from 'ethers';
+import Cookies from 'js-cookie';
 
 const NONCE_ENDPOINT = '/api/auth/nonce';
 const VERIFICATION_ENDPOINT = '/api/auth/verify';
@@ -8,7 +9,6 @@ const VERIFICATION_ENDPOINT = '/api/auth/verify';
 declare const window: any;
 
 interface AuthContextProps {
-	address?: string;
 	login: Function;
 	logout: Function;
 }
@@ -17,32 +17,8 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC = ({ children }) => {
-	const [address, setAddress] = useState<string | undefined>();
 
-	// Check for existing stored address on page load
-	useEffect(() => {
-		const storedAddress = localStorage.getItem('address');
-		if (storedAddress) {
-			setAddress(storedAddress);
-		}
-	}, []);
-
-	// Persist address in browser's local storage
-	useEffect(() => {
-		if (address) {
-			// If new login address detected, update local storage value
-			const storedAddress = localStorage.getItem('address');
-			if (address !== storedAddress) {
-				localStorage.setItem('address', address);
-			}
-		}
-
-		return () => {
-			localStorage.removeItem('address');
-		};
-	}, [address]);
-
-	// Authenticates w/ DB & gets JWT token cookie
+	// Fetch server & client auth cookies
 	const login = async () => {
 		if (window.ethereum) {
 			try {
@@ -74,7 +50,30 @@ export const AuthProvider: React.FC = ({ children }) => {
 				}).then(res => res.json());
 
 				if (authResult.ok) {
-					setAddress(signerAddress);
+
+
+
+
+
+
+					// TODO:
+					// drop a secondary cookie here
+					// with same expiry time as http-only cookie
+					// with logged in user address
+
+					console.log('http-only token cookie received!');
+
+					console.log('dropping auth cookie here...');
+
+                    // TODO: add AUTH_TIMEOUT to .env (in seconds)
+
+					// Cookies.set('key', 'value', { expires: AUTH_TIMEOUT });
+
+
+
+
+
+
 				}
 			} catch (error) {
 				console.log(error);
@@ -85,14 +84,18 @@ export const AuthProvider: React.FC = ({ children }) => {
 		}
 	};
 
-	// TODO: any way to remove validity of JWT as well?
-	// Removes address from state & browser storage
 	const logout = () => {
-		localStorage.removeItem('address');
-		setAddress('');
+
+
+
+		// TODO:
+		// Remove clientside auth cookie
+
+
+
 	};
 
-	const value = { address, login, logout };
+	const value = { login, logout };
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

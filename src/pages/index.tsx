@@ -5,23 +5,13 @@ import { useAuthContext } from '../contexts/AuthContext';
 import { truncateAddress } from '../utils';
 import { Container } from '../components/Shared';
 import Layout from '../components/Layout';
+import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
 
 const HomePage: React.FC = () => {
-	const { address, login, logout } = useAuthContext();
+	const { login } = useAuthContext();
 
-	// TODO: del me, being used as dev helper
-	useEffect(() => {
-		console.log('address', address);
-	}, [address]);
-
-	const handleConnectWallet = () => {
-		login().then(() => {
-			console.log('logged in!');
-		});
-	};
-
-	const handleLogout = () => {
-		logout();
+	const handleConnectWallet = async () => {
+		await login();
 	};
 
 	return (
@@ -31,22 +21,8 @@ const HomePage: React.FC = () => {
 				<h3>a space for mfers</h3>
 				<br />
 
-				{address ? (
-					<button onClick={handleLogout}>logout</button>
-				) : (
-					<button onClick={handleConnectWallet}>login with wallet</button>
-				)}
+				<button onClick={handleConnectWallet}>login with wallet</button>
 
-				{address && (
-					<small>
-						<br />
-						<br />
-						connected!
-						<br />
-						{truncateAddress(address)}
-						<br />
-					</small>
-				)}
 				<br />
 
 				<small>check our yr profile:</small>

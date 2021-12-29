@@ -9,10 +9,9 @@ import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
-import { truncateAddress } from '../../utils';
 
 const ProfilePage: React.FC = ({ mfer, profile, error }: any) => {
-	const { address, login, logout } = useAuthContext();
+	const { login, logout } = useAuthContext();
 
 	if (error) return <h1>server error - check server console</h1>;
 	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
@@ -25,33 +24,6 @@ const ProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
 						<BlurbSection name={mfer.name} />
-					</div>
-					<div>
-						{address ? (
-							<>
-								<div>logged in!</div>
-								<small>{truncateAddress(address)}</small>\
-								<br />
-								<button
-									onClick={() => {
-										logout();
-									}}
-								>
-									logout
-								</button>
-							</>
-						) : (
-							<>
-								<small>not logged in...</small><br/>
-								<button
-									onClick={() => {
-										login();
-									}}
-								>
-									login
-								</button>
-							</>
-						)}
 					</div>
 				</div>
 			</Container>
