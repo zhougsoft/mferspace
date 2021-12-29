@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.28.5",
+		"cookies": "^0.8.0",
 		"ethers": "^5.5.2",
 		"jsonwebtoken": "^8.5.1",
 		"next": "11.1.2",
@@ -19,6 +20,7 @@
 		"styled-normalize": "^8.0.7"
 	},
 	"devDependencies": {
+		"@types/cookies": "^0.7.7",
 		"@types/jsonwebtoken": "^8.5.6",
 		"@types/react": "17.0.26",
 		"@types/styled-components": "^5.1.14",

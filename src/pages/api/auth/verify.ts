@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ethers } from 'ethers';
 import jwt from 'jsonwebtoken';
+import { ethers } from 'ethers';
+import Cookies from 'cookies';
 import { getNonce, updateNonce } from '../../../services/auth.service';
 
 export default async function handler(
@@ -32,7 +33,7 @@ export default async function handler(
 			signature
 		);
 
-		// if valid auth verification, update nonce & send back JWT for auth
+		// if valid auth verification, update nonce & respond with JWT cookie
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
 			// sign token with 1 hour expiry
 			const token = jwt.sign(
@@ -47,7 +48,11 @@ export default async function handler(
 			);
 
 			await updateNonce(address);
-			return res.status(200).json({ token });
+
+			const cookies = new Cookies(req, res);
+			cookies.set('token', token, { httpOnly: true });
+
+			return res.status(200).json({ ok: true });
 		} else {
 			return res.status(403).end('Invalid signature');
 		}
