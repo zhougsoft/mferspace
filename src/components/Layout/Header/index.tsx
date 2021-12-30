@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 						alignItems: 'center',
 					}}
 				>
-					<Link href="/">
+					<Link href="/" passHref>
 						<S.HomeLink>mferspace</S.HomeLink>
 					</Link>
 					<div style={{ fontSize: '0.9rem' }}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import Cookies from 'cookies'
+import Cookies from 'cookies';
 
 import { getMfer } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
@@ -182,29 +182,40 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 };
 
 export const getServerSideProps = async ({ req, res, query }: any) => {
-
-
 	// Get authentication cookies
 	const cookies = new Cookies(req, res);
-	const addressCookie = cookies.get('address')
-	const tokenCookie = cookies.get('token')
+	const addressCookie = cookies.get('address');
+	const tokenCookie = cookies.get('token');
 
+	// If no existing auth, redirect to login page
 	if (!addressCookie || !tokenCookie) {
-
-		// TODO:
-		// No auth! redirect to login
-
+		return {
+			redirect: {
+				permanent: false,
+				destination: '/login',
+			},
+		};
 	}
 
-	console.log('address cookie\n',addressCookie,'\n');
-	console.log('token cookie (http-only)\n',tokenCookie,'\n');
+	console.log('address cookie\n', addressCookie, '\n');
+	console.log('token cookie (http-only)\n', tokenCookie, '\n');
 
+
+
+	// *~*~*~* TODO *~*~*~*
 	
-	// TODO:
-	// is token valid?
+	// VALIDATE JWT
+	
+	// then...
+	
+	// VALIDATE TOKEN OWNER
+	
+	// does address own the mfer ID being edited?
+	
 	// if false, redirect to login
 	// if true, continue
-
+	
+	// *~*~*~*~*~*~*~*~*~*
 
 
 	try {
