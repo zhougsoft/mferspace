@@ -43,12 +43,10 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 			throw Error('No mfers at requested ID - values between 0 - 10020 only');
 		}
 
-		// TODO: wrap in 'await Promise.all()'
-		console.log(`fetching mfer #${id} from chain...`);
-		const mfer = await getMfer(mferId);
-		console.log(`got mfer #${id}! fetching profile data...`);
-		const profile = await getProfile(mferId);
-		console.log('data fetch complete!');
+		const [mfer, profile] = await Promise.all([
+			getMfer(mferId),
+			getProfile(mferId),
+		]);
 
 		return { props: { mfer, profile, error: false } };
 	} catch (error) {

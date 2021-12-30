@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
+import Cookies from 'cookies'
 
 import { getMfer } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
@@ -180,11 +181,36 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	);
 };
 
-export const getServerSideProps = async ({ query: { id } }: any) => {
+export const getServerSideProps = async ({ req, res, query }: any) => {
+
+
+	// Get authentication cookies
+	const cookies = new Cookies(req, res);
+	const addressCookie = cookies.get('address')
+	const tokenCookie = cookies.get('token')
+
+	if (!addressCookie || !tokenCookie) {
+
+		// TODO:
+		// No auth! redirect to login
+
+	}
+
+	console.log('address cookie\n',addressCookie,'\n');
+	console.log('token cookie (http-only)\n',tokenCookie,'\n');
+
+	
+	// TODO:
+	// is token valid?
+	// if false, redirect to login
+	// if true, continue
+
+
+
 	try {
 		// param input validation
 		// (mfer ids can range from 0 to 10020)
-		const mferId = parseInt(id);
+		const mferId = parseInt(query.id);
 		if (mferId === NaN) {
 			throw Error('Invalid ID param - numbers only');
 		}

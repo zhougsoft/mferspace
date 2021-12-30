@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
 import { ethers } from 'ethers';
+import jwt from 'jsonwebtoken';
 import Cookies from 'cookies';
+
 import { getNonce, updateNonce } from '../../../services/auth.service';
+import { AUTH_TIMEOUT } from '../../../config/constants';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -35,10 +37,9 @@ export default async function handler(
 
 		// if valid auth verification, update nonce & respond with JWT cookie
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
-			// sign token with 1 hour expiry
 			const token = jwt.sign(
 				{
-					exp: Math.floor(Date.now() / 1000) + 60 * 60,
+					exp: Math.floor(Date.now() / 1000) + AUTH_TIMEOUT,
 					data: {
 						address,
 						nonce,
