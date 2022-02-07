@@ -12,9 +12,15 @@ export default async function handler(
 			return res.status(400).json({ msg: 'invalid id' });
 		}
 
+
+
+
 		// TODO: AUTHENICATION HERE
 		// address/signature/nonce stuff... new table needed
 
+
+
+		
 		const { tagline, pronouns, age, location, link_1, link_2, link_3 } =
 			req.body;
 

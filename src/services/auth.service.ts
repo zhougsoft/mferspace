@@ -1,4 +1,4 @@
-import { supabase } from '../supabase';
+import { supabase } from '../db';
 
 // here be the db plumbing for wallet authentication
 // RUN SERVER SIDE ONLY due to .env considerations

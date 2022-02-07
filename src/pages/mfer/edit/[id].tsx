@@ -64,7 +64,16 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	const onLink3Change = (e: any) => setLink3Input(e.target.value);
 
 	const onSaveClick = () => {
-		// TODO: VALIDATION
+		setIsLoading(true);
+
+
+
+
+
+
+		// *~*~*~* TODO *~*~*~*
+
+		// TODO: INPUT VALIDATION
 		// tagline - 140 chars
 		// pronouns - 50 chars
 		// age - 50 chars
@@ -73,9 +82,15 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 		// link_2 - 50 chars
 		// link_3 - 50 chars
 
-		// (validate this serverside as well)
+		// CHECK IF JWT STILL VALID
+		// if false, prompt wallet sign/login
 
-		setIsLoading(true);
+		// *~*~*~*~*~*~*~*~*~*
+
+
+
+
+
 
 		fetch(`/api/profile/edit`, {
 			method: 'POST',
@@ -197,26 +212,30 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 		};
 	}
 
-	console.log('address cookie\n', addressCookie, '\n');
-	console.log('token cookie (http-only)\n', tokenCookie, '\n');
+
+
 
 
 
 	// *~*~*~* TODO *~*~*~*
-	
-	// VALIDATE JWT
-	
-	// then...
-	
+
 	// VALIDATE TOKEN OWNER
-	
+
 	// does address own the mfer ID being edited?
-	
-	// if false, redirect to login
+
 	// if true, continue
-	
+
+	// else, display error
+
 	// *~*~*~*~*~*~*~*~*~*
 
+
+
+
+
+	
+	console.log('address cookie\n', addressCookie, '\n');
+	console.log('token cookie (http-only)\n', tokenCookie, '\n');
 
 	try {
 		// param input validation
