@@ -36,3 +36,10 @@ export const getMfer = async (id: number): Promise<Mfer> => {
 		attributes: mferResult.attributes,
 	};
 };
+
+// Get the address holding a specific mfer id
+export const getMferOwner = async (id: number): Promise<string> => {
+	const contract = _getMfersContract();
+	const mferOwner = contract.ownerOf(id);
+	return mferOwner;
+};

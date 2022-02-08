@@ -5,8 +5,7 @@ import Link from 'next/link';
 import Cookies from 'cookies';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
-import { parseAuthCookie } from '../../../services/auth.service';
-import { getMfer } from '../../../services/mfer.service';
+import { getMfer, getMferOwner } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
 
 import { Container } from '../../../components/Shared';
@@ -235,25 +234,18 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			data: { address },
 		} = decodedToken;
 
+		// Check if user is the owner of requested mfer
+		const mferOwner = await getMferOwner(mferId);
+		const isOwner = address.toLowerCase() === mferOwner.toLowerCase();
 
-		
-
-		// TODO: check if address is mfer owner
-
-		// use mfers service
-
-		// create new method
-
-		// getOwnerOf
-
-		console.log(
-			'###\n\ndoes this address own this mfer?',
-			{ address, mferId },
-			'\n\n###'
-		);
-
-
-
+		if (!isOwner) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/mfer/${mferId.toString()}`,
+				},
+			};
+		}
 
 		// Fetch mfer data from chain, and profile data from DB
 		const [mfer, profile] = await Promise.all([
