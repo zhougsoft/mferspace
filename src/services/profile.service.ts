@@ -1,6 +1,6 @@
 import { supabase } from '../db';
 
-// here be the db plumbing for mfer profiles
+// This service hosts the plumbing for profiles data in the DB
 // RUN SERVER SIDE ONLY due to .env considerations
 
 // TODO: finish this type

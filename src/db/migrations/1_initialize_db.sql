@@ -2,19 +2,20 @@
 DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
-  mfer_id int primary key,
-  tagline varchar(140),
-  pronouns varchar(50),
-  age varchar(50),
-  location varchar(100),
-  link_1 varchar(50),
-  link_2 varchar(50),
-  link_3 varchar(50)
+  mfer_id INT PRIMARY KEY,
+  tagline VARCHAR(140),
+  pronouns VARCHAR(50),
+  age VARCHAR(50),
+  location VARCHAR(100),
+  link_1 VARCHAR(50),
+  link_2 VARCHAR(50),
+  link_3 VARCHAR(50),
+  last_updated TIMESTAMP
 );
 
 -- Seed with empty records for each existing mfer (ids 0 to 10020)
 INSERT INTO
-  profiles (mfer_id)
+  profiles(mfer_id)
 SELECT
   x.mfer_id
 FROM
@@ -24,9 +25,9 @@ FROM
 DROP TABLE IF EXISTS wallets;
 
 CREATE TABLE wallets (
-  wallet_id serial primary key,
-  address varchar(42) unique not null,
-  nonce int4 not null
+  wallet_id SERIAL PRIMARY KEY,
+  ADDRESS VARCHAR(42) UNIQUE NOT NULL,
+  nonce int4 NOT NULL
 );
 
 CREATE INDEX ON wallets (address);

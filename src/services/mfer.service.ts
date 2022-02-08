@@ -4,6 +4,8 @@ import { MFER_CONTRACT_ADDRESS } from '../config/constants';
 import abi from '../config/abi.json';
 import { Mfer } from '../types';
 
+// This service is for fetching on-chain mfers data
+
 // Connect to mfers contract via RPC
 const _getMfersContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(

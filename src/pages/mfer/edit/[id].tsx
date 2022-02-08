@@ -83,9 +83,6 @@ const EditProfilePage: React.FC = ({
 		// link_2 - 50 chars
 		// link_3 - 50 chars
 
-		// CHECK IF JWT STILL VALID
-		// if false, prompt wallet sign/login
-
 		// *~*~*~*~*~*~*~*~*~*
 
 		fetch(`/api/profile/edit`, {
@@ -220,7 +217,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			throw Error('No mfers at requested ID - values between 0 - 10020 only');
 		}
 
-		// // Validate auth token
+		// Validate auth token
 		const { JWT_SECRET } = process.env;
 		if (!JWT_SECRET) {
 			throw new Error("No value set for 'process.env.JWT_SECRET'");
@@ -238,6 +235,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 		const mferOwner = await getMferOwner(mferId);
 		const isOwner = address.toLowerCase() === mferOwner.toLowerCase();
 
+		// If user doesn't own mfer, redirect to mfer profile page
 		if (!isOwner) {
 			return {
 				redirect: {
