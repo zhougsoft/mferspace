@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { parseAuthCookie } from '../../../services/auth.service';
+import { getMferOwner } from '../../../services/mfer.service';
 import { updateProfile } from '../../../services/profile.service';
 
 export default async function handler(
@@ -6,21 +8,27 @@ export default async function handler(
 	res: NextApiResponse<any>
 ) {
 	try {
-		// validate mfer id
-		const id = parseInt(req.body.mfer_id);
-		if (id === NaN || id < 0 || id > 10020) {
-			return res.status(400).json({ msg: 'invalid id' });
+		// Validate mfer id
+		const mferId = parseInt(req.body.mfer_id);
+		if (mferId === NaN || mferId < 0 || mferId > 10020) {
+			return res.status(400).json({ msg: 'invalid mfer id' });
 		}
 
+		// Check auth if valid token
+		const loggedInAddress = parseAuthCookie(req, res);
+		if (!loggedInAddress) {
+			return res.status(403).json({ msg: 'invalid auth token' });
+		}
 
+		// Check if user is the owner of requested mfer
+		const mferOwner = await getMferOwner(mferId);
+		const isOwner = loggedInAddress.toLowerCase() === mferOwner.toLowerCase();
+		if (!isOwner) {
+			return res.status(403).json({
+				msg: `${loggedInAddress} is not the holder of mfer #${mferId}`,
+			});
+		}
 
-
-		// TODO: AUTHENICATION HERE
-		// address/signature/nonce stuff... new table needed
-
-
-
-		
 		const { tagline, pronouns, age, location, link_1, link_2, link_3 } =
 			req.body;
 
@@ -34,7 +42,7 @@ export default async function handler(
 		// link_3 - 50 chars
 
 		const profileData = {
-			mfer_id: id,
+			mfer_id: mferId,
 			tagline,
 			pronouns,
 			age,
