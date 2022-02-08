@@ -235,6 +235,9 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			data: { address },
 		} = decodedToken;
 
+
+		
+
 		// TODO: check if address is mfer owner
 
 		// use mfers service
@@ -249,13 +252,16 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			'\n\n###'
 		);
 
-		// TODO: wrap in 'await Promise.all()'
-		const mfer = await getMfer(mferId);
-		const profile = await getProfile(mferId);
 
-		const loggedInAddress = parseAuthCookie(req, res);
 
-		return { props: { loggedInAddress, mfer, profile, error: false } };
+
+		// Fetch mfer data from chain, and profile data from DB
+		const [mfer, profile] = await Promise.all([
+			getMfer(mferId),
+			getProfile(mferId),
+		]);
+
+		return { props: { loggedInAddress: address, mfer, profile, error: false } };
 	} catch (error) {
 		if (error instanceof TokenExpiredError) {
 			return {
