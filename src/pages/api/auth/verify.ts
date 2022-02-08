@@ -35,15 +35,12 @@ export default async function handler(
 			signature
 		);
 
-		// If valid auth verification, update nonce & respond with JWT cookie
+		// If valid auth verification, generate new nonce in DB & respond with JWT cookie
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
 			const token = jwt.sign(
 				{
 					exp: Math.floor(Date.now() / 1000) + AUTH_TIMEOUT,
-					data: {
-						address,
-						nonce,
-					},
+					data: { address },
 				},
 				JWT_SECRET
 			);

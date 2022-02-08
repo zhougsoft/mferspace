@@ -10,11 +10,23 @@ const HomePage: React.FC = () => {
 			<Container>
 				<h1 style={{ fontSize: '3rem', marginBottom: '0' }}>mferspace</h1>
 				<h3>a space for mfers</h3>
+				<small>
+					<Link href="/login">
+						<a>
+							<b>login</b> with wallet
+						</a>
+					</Link>
+				</small>
 				<br />
+				<hr />
 				<br />
 				<small>check our yr profile:</small>
 				<pre>mferspace.com/mfer/[mfer id]</pre>
-				<Link href="/mfer/3191">example profile</Link>
+				<small>
+					<Link href="/mfer/3191">
+						<a>example profile</a>
+					</Link>
+				</small>
 			</Container>
 		</Layout>
 	);

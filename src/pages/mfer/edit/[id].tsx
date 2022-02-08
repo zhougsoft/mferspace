@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import Cookies from 'cookies';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 import { getMfer } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
@@ -189,11 +190,10 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 export const getServerSideProps = async ({ req, res, query }: any) => {
 	// Get authentication cookies
 	const cookies = new Cookies(req, res);
-	const addressCookie = cookies.get('address');
-	const tokenCookie = cookies.get('token');
+	const authToken = cookies.get('token');
 
 	// If no existing auth, redirect to login page
-	if (!addressCookie || !tokenCookie) {
+	if (!authToken) {
 		return {
 			redirect: {
 				permanent: false,
@@ -203,8 +203,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 	}
 
 	try {
-		// param input validation
-		// (mfer ids can range from 0 to 10020)
+		// Validate input ID (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(query.id);
 		if (mferId === NaN) {
 			throw Error('Invalid ID param - numbers only');
@@ -213,31 +212,28 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			throw Error('No mfers at requested ID - values between 0 - 10020 only');
 		}
 
+		// // Validate auth token
+		const { JWT_SECRET } = process.env;
+		if (!JWT_SECRET) {
+			throw new Error("No value set for 'process.env.JWT_SECRET'");
+		}
+		const decodedToken = jwt.verify(authToken, JWT_SECRET);
+		if (typeof decodedToken === 'string') {
+			throw new Error('Invalid JSON web token');
+		}
+
+		const {
+			data: { address },
+		} = decodedToken;
 
 
-		// console.log('address cookie\n', addressCookie, '\n');
-		// console.log('token cookie (http-only)\n', tokenCookie, '\n');
+		// TODO: check if address is mfer owner
 
-		console.log('###\n\nHELLO!!!!\n\n###');
-		
-
-		// *~*~*~* TODO *~*~*~*
-
-		// VALIDATE JWT ISNT EXPIRED
-
-		// then...
-
-		// VALIDATE TOKEN OWNER
-
-		// does address own the mfer ID being edited?
-
-		// if true, continue
-
-		// else, display error
-
-		// *~*~*~*~*~*~*~*~*~*
-
-
+		console.log(
+			'###\n\ndoes this address own this mfer?',
+			{ address, mferId },
+			'\n\n###'
+		);
 
 
 		// TODO: wrap in 'await Promise.all()'
@@ -245,8 +241,17 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 		const profile = await getProfile(mferId);
 		return { props: { mfer, profile, error: false } };
 	} catch (error) {
-		console.error(error);
-		return { props: { error: true } };
+		if (error instanceof TokenExpiredError) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/login',
+				},
+			};
+		} else {
+			console.error(error);
+			return { props: { error: true } };
+		}
 	}
 };
 

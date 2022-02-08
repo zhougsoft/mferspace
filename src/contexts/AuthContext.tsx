@@ -1,13 +1,7 @@
 import { createContext, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { ethers } from 'ethers';
-import Cookies from 'js-cookie';
-
-import {
-	NONCE_ENDPOINT,
-	VERIFICATION_ENDPOINT,
-	AUTH_TIMEOUT,
-} from '../config/constants';
+import { NONCE_ENDPOINT, VERIFICATION_ENDPOINT } from '../config/constants';
 
 // so TypeScript allows `window.ethereum`
 declare const window: any;
@@ -55,18 +49,16 @@ export const AuthProvider: React.FC = ({ children }) => {
 					body: JSON.stringify({ address: signerAddress, signature }),
 				}).then(res => res.json());
 
-				// If verification good, drop cookie with authenticated address for later use
+				// If auth successful, force a refresh to check token on server
 				if (authResult.ok) {
-					Cookies.set('address', signerAddress, {
-						expires: Math.floor(Date.now() / 1000) + AUTH_TIMEOUT,
-					});
+					router.reload();
 				} else {
-					console.warn('Invalid signature - unable to login');
+					alert('Login attempt unsuccessful...');
 				}
 			} catch (error) {
 				console.log(error);
 				alert(
-					'Error! make sure MetaMask is logged in & connected to mainnet...'
+					'Error! MetaMask must be logged in & connected to Ethereum mainnet...'
 				);
 			}
 		}
@@ -74,8 +66,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
 	// To logout, remove auth cookies & redirect to home
 	const logout = () => {
-		Cookies.remove('address');
-		router.push('/');
+		alert(
+			'Logout has yet to be implemented!\nCurrently, logins have an expiry one of hour.\nThat means unfortunately the current logout system is *time*'
+		);
 	};
 
 	const value = { login, logout };
