@@ -11,31 +11,31 @@ export default async function handler(
 	res: NextApiResponse<any>
 ) {
 	try {
-		// ensure JSON web token secret is set before running verification
+		// Ensure JSON web token secret is set before running verification
 		const { JWT_SECRET } = process.env;
 		if (!JWT_SECRET) {
 			throw new Error("'No value set for 'process.env.JWT_SECRET'");
 		}
 
-		// verify/validate request data
+		// Verify required fields were sent in the request data
 		const { address, signature } = req.body;
 		if (!address || !signature) {
 			return res.status(400).end('Invalid address or signature input');
 		}
 
-		// get user's nonce from DB
+		// Fetch the current nonce for user from the DB
 		const nonce = await getNonce(address);
 		if (nonce === 0) {
 			return res.status(400).end('No nonce record for address');
 		}
 
-		// verify incoming signature
+		// Verify incoming signature was signed with the nonce
 		const signatureAddress = ethers.utils.verifyMessage(
 			nonce.toString(),
 			signature
 		);
 
-		// if valid auth verification, update nonce & respond with JWT cookie
+		// If valid auth verification, update nonce & respond with JWT cookie
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
 			const token = jwt.sign(
 				{

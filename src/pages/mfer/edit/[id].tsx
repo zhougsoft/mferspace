@@ -66,11 +66,6 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	const onSaveClick = () => {
 		setIsLoading(true);
 
-
-
-
-
-
 		// *~*~*~* TODO *~*~*~*
 
 		// TODO: INPUT VALIDATION
@@ -86,11 +81,6 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 		// if false, prompt wallet sign/login
 
 		// *~*~*~*~*~*~*~*~*~*
-
-
-
-
-
 
 		fetch(`/api/profile/edit`, {
 			method: 'POST',
@@ -212,31 +202,6 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 		};
 	}
 
-
-
-
-
-
-	// *~*~*~* TODO *~*~*~*
-
-	// VALIDATE TOKEN OWNER
-
-	// does address own the mfer ID being edited?
-
-	// if true, continue
-
-	// else, display error
-
-	// *~*~*~*~*~*~*~*~*~*
-
-
-
-
-
-	
-	console.log('address cookie\n', addressCookie, '\n');
-	console.log('token cookie (http-only)\n', tokenCookie, '\n');
-
 	try {
 		// param input validation
 		// (mfer ids can range from 0 to 10020)
@@ -247,6 +212,33 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 		if (mferId < 0 || mferId > 10020) {
 			throw Error('No mfers at requested ID - values between 0 - 10020 only');
 		}
+
+
+
+		// console.log('address cookie\n', addressCookie, '\n');
+		// console.log('token cookie (http-only)\n', tokenCookie, '\n');
+
+		console.log('###\n\nHELLO!!!!\n\n###');
+		
+
+		// *~*~*~* TODO *~*~*~*
+
+		// VALIDATE JWT ISNT EXPIRED
+
+		// then...
+
+		// VALIDATE TOKEN OWNER
+
+		// does address own the mfer ID being edited?
+
+		// if true, continue
+
+		// else, display error
+
+		// *~*~*~*~*~*~*~*~*~*
+
+
+
 
 		// TODO: wrap in 'await Promise.all()'
 		const mfer = await getMfer(mferId);

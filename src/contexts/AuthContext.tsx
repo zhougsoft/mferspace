@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
+import { useRouter } from 'next/router';
 import { ethers } from 'ethers';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
 
 import {
 	NONCE_ENDPOINT,
@@ -27,6 +27,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 	const login = async () => {
 		if (window.ethereum) {
 			try {
+				// Connect to user wallet
 				const provider = new ethers.providers.Web3Provider(window.ethereum);
 				const signer = provider.getSigner();
 				const signerAddress = await signer.getAddress();
@@ -40,12 +41,12 @@ export const AuthProvider: React.FC = ({ children }) => {
 					body: JSON.stringify({ address: signerAddress }),
 				}).then(res => res.json());
 
-				// sign fetched nonce with wallet
+				// Sign fetched nonce with wallet
 				const signature = await signer.signMessage(
 					nonceResult.nonce.toString()
 				);
 
-				// send signature to server for verification
+				// Send signature to server for verification
 				const authResult = await fetch(VERIFICATION_ENDPOINT, {
 					method: 'POST',
 					headers: {
@@ -54,12 +55,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 					body: JSON.stringify({ address: signerAddress, signature }),
 				}).then(res => res.json());
 
+				// If verification good, drop cookie with authenticated address for later use
 				if (authResult.ok) {
 					Cookies.set('address', signerAddress, {
 						expires: Math.floor(Date.now() / 1000) + AUTH_TIMEOUT,
 					});
 				} else {
-					console.log('Unable to login...');
+					console.warn('Invalid signature - unable to login');
 				}
 			} catch (error) {
 				console.log(error);
