@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import ServerCookies from 'cookies';
+import Cookies from 'cookies';
 
 import { useAuthContext } from '../contexts/AuthContext';
 import { truncateAddress } from '../utils';
@@ -10,7 +10,7 @@ import { Container } from '../components/Shared';
 import Layout from '../components/Layout';
 
 interface LoginPageProps {
-	loggedInAddress: string;
+	loggedInAddress?: string;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ loggedInAddress }) => {
@@ -25,7 +25,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ loggedInAddress }) => {
 	};
 
 	return !isLoading ? (
-		<Layout title="login | mferspace">
+		<Layout title="login | mferspace" loggedInAddress={loggedInAddress}>
 			<Container>
 				{loggedInAddress ? (
 					<>
@@ -73,7 +73,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ loggedInAddress }) => {
 export const getServerSideProps = async ({ req, res, query }: any) => {
 	try {
 		// Get authentication cookies
-		const cookies = new ServerCookies(req, res);
+		const cookies = new Cookies(req, res);
 		const authToken = cookies.get('token');
 
 		// If no existing auth, redirect to login page

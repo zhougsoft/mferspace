@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Cookies from 'cookies';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
+import { parseAuthCookie } from '../../../services/auth.service';
 import { getMfer } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
 
@@ -37,7 +38,12 @@ const EditField: React.FC<any> = ({
 	</div>
 );
 
-const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
+const EditProfilePage: React.FC = ({
+	loggedInAddress,
+	mfer,
+	profile,
+	error,
+}: any) => {
 	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -111,7 +117,10 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	if (!mfer) return <h1>no mfer... server error! pls report</h1>;
 
 	return (
-		<Layout title={`edit ${mfer.name} | mferspace`}>
+		<Layout
+			title={`edit ${mfer.name} | mferspace`}
+			loggedInAddress={loggedInAddress}
+		>
 			<Container>
 				<div>
 					<h2>editing {mfer.name}&apos;s profile</h2>
@@ -188,21 +197,21 @@ const EditProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 };
 
 export const getServerSideProps = async ({ req, res, query }: any) => {
-	// Get authentication cookies
-	const cookies = new Cookies(req, res);
-	const authToken = cookies.get('token');
-
-	// If no existing auth, redirect to login page
-	if (!authToken) {
-		return {
-			redirect: {
-				permanent: false,
-				destination: '/login',
-			},
-		};
-	}
-
 	try {
+		// Get authentication cookies
+		const cookies = new Cookies(req, res);
+		const authToken = cookies.get('token');
+
+		// If no existing auth, redirect to login page
+		if (!authToken) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/login',
+				},
+			};
+		}
+
 		// Validate input ID (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(query.id);
 		if (mferId === NaN) {
@@ -226,8 +235,13 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			data: { address },
 		} = decodedToken;
 
-
 		// TODO: check if address is mfer owner
+
+		// use mfers service
+
+		// create new method
+
+		// getOwnerOf
 
 		console.log(
 			'###\n\ndoes this address own this mfer?',
@@ -235,11 +249,13 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			'\n\n###'
 		);
 
-
 		// TODO: wrap in 'await Promise.all()'
 		const mfer = await getMfer(mferId);
 		const profile = await getProfile(mferId);
-		return { props: { mfer, profile, error: false } };
+
+		const loggedInAddress = parseAuthCookie(req, res);
+
+		return { props: { loggedInAddress, mfer, profile, error: false } };
 	} catch (error) {
 		if (error instanceof TokenExpiredError) {
 			return {

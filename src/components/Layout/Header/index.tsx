@@ -1,10 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 
+import { truncateAddress } from '../../../utils';
 import * as S from './styled';
 import { Container } from '../../Shared';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+	loggedInAddress?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ loggedInAddress }) => {
 	return (
 		<S.HeaderWrapper>
 			<Container>
@@ -19,9 +24,16 @@ const Header: React.FC = () => {
 						<S.HomeLink>mferspace</S.HomeLink>
 					</Link>
 					<div style={{ fontSize: '0.9rem' }}>
-						<button disabled>
-							connect wallet <small>(in dev)</small>
-						</button>
+						{loggedInAddress ? (
+							<div style={{ color: 'white' }}>
+								<small>logged in: </small>
+								<b>{truncateAddress(loggedInAddress)}</b>
+							</div>
+						) : (
+							<Link href="/login">
+								<a style={{ color: 'white' }}>login with wallet</a>
+							</Link>
+						)}
 					</div>
 				</div>
 			</Container>
