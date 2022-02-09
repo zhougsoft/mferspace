@@ -3,9 +3,10 @@ DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
   mfer_id INT PRIMARY KEY,
+  name VARCHAR(50),
   tagline VARCHAR(140),
   pronouns VARCHAR(50),
-  age VARCHAR(50),
+  age VARCHAR(25),
   location VARCHAR(100),
   link_1 VARCHAR(50),
   link_2 VARCHAR(50),

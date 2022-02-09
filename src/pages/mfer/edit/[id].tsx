@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import Cookies from 'cookies';
@@ -11,32 +12,6 @@ import { getProfile } from '../../../services/profile.service';
 import { Container } from '../../../components/Shared';
 import Layout from '../../../components/Layout';
 
-const EditField: React.FC<any> = ({
-	name,
-	value,
-	label,
-	placeholder,
-	onChange,
-}) => (
-	<div>
-		<label
-			style={{ display: 'block', marginBottom: '0.5rem', color: '#666' }}
-			htmlFor={name}
-		>
-			{label}:
-		</label>
-
-		<input
-			type="text"
-			style={{ marginBottom: '1rem' }}
-			name={name}
-			value={value}
-			placeholder={placeholder}
-			onChange={onChange}
-		/>
-	</div>
-);
-
 const EditProfilePage: React.FC = ({
 	loggedInAddress,
 	mfer,
@@ -44,46 +19,42 @@ const EditProfilePage: React.FC = ({
 	error,
 }: any) => {
 	const router = useRouter();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
 
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [taglineInput, setTaglineInput] = useState<string>(
-		profile?.tagline || ''
-	);
-	const [pronounsInput, setPronounsInput] = useState<string>(
-		profile?.pronouns || ''
-	);
-	const [ageInput, setAgeInput] = useState<string>(profile?.age || '');
-	const [locationInput, setLocationInput] = useState<string>(
-		profile?.location || ''
-	);
-	const [link1Input, setLink1Input] = useState<string>(profile?.link_1 || '');
-	const [link2Input, setLink2Input] = useState<string>(profile?.link_2 || '');
-	const [link3Input, setLink3Input] = useState<string>(profile?.link_3 || '');
 
-	// form input handler
-	const onTaglineChange = (e: any) => setTaglineInput(e.target.value);
-	const onPronounsChange = (e: any) => setPronounsInput(e.target.value);
-	const onAgeChange = (e: any) => setAgeInput(e.target.value);
-	const onLocationChange = (e: any) => setLocationInput(e.target.value);
-	const onLink1Change = (e: any) => setLink1Input(e.target.value);
-	const onLink2Change = (e: any) => setLink2Input(e.target.value);
-	const onLink3Change = (e: any) => setLink3Input(e.target.value);
 
-	const onSaveClick = () => {
+
+
+
+
+
+
+	// TODO: library not detected validation errors???????
+	useEffect(() => {
+		if (Object.keys(errors).length > 0) {
+			console.warn('form validation errors detected!', errors);
+		}
+	}, [errors]);
+
+
+
+
+
+
+
+
+
+
+	// TODO: type the form submit data
+	const onSubmit = (data: any) => {
+		console.log({ data });
+		return;
+
 		setIsLoading(true);
-
-		// *~*~*~* TODO *~*~*~*
-
-		// TODO: INPUT VALIDATION
-		// tagline - 140 chars
-		// pronouns - 50 chars
-		// age - 50 chars
-		// location - 100 chars
-		// link_1 - 50 chars
-		// link_2 - 50 chars
-		// link_3 - 50 chars
-
-		// *~*~*~*~*~*~*~*~*~*
 
 		fetch(`/api/profile/edit`, {
 			method: 'POST',
@@ -92,13 +63,14 @@ const EditProfilePage: React.FC = ({
 			},
 			body: JSON.stringify({
 				mfer_id: mfer.id,
-				tagline: taglineInput,
-				pronouns: pronounsInput,
-				age: ageInput,
-				location: locationInput,
-				link_1: link1Input,
-				link_2: link2Input,
-				link_3: link3Input,
+				name: '',
+				tagline: 'taglineInput',
+				pronouns: '',
+				age: '',
+				location: '',
+				link_1: '',
+				link_2: '',
+				link_3: '',
 			}),
 		})
 			.then(() => router.push(`/mfer/${mfer.id}`))
@@ -125,68 +97,109 @@ const EditProfilePage: React.FC = ({
 				<Link href={`/mfer/${mfer.id}`}>
 					<a>go back</a>
 				</Link>
-				<div style={{ marginTop: '2rem', fontSize: '0.9rem' }}>
+				{/* --- EDIT PROFILE FORM --- */}
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					style={{ marginTop: '2rem', fontSize: '0.9rem' }}
+				>
 					<h2>profile</h2>
-					<EditField
-						name="tagline"
-						value={taglineInput}
-						label="tagline"
-						onChange={onTaglineChange}
-						placeholder="~*~ sO RanDom!!1 ~*~"
-					/>
-					<EditField
-						name="pronouns"
-						value={pronounsInput}
-						label="pronouns"
-						onChange={onPronounsChange}
-						placeholder="him/her/just 4 fun"
-					/>
-					<EditField
-						name="age"
-						value={ageInput}
-						label="age"
-						onChange={onAgeChange}
-						placeholder="lol nope"
-					/>
-					<EditField
-						name="location"
-						value={locationInput}
-						label="location"
-						onChange={onLocationChange}
-						placeholder="2006"
-					/>
+
+					{/* NAME */}
+					<div>
+						<label htmlFor="name">name</label>
+						<input
+							defaultValue={profile?.name || ''}
+							{...register('name', { max: 50 })}
+							autoComplete="off"
+						/>
+						{errors.name && <span>invalid input</span>}
+					</div>
+
+					{/* TAGLINE */}
+					<div>
+						<label htmlFor="tagline">tagline</label>
+						<input
+							defaultValue={profile?.tagline || ''}
+							{...register('tagline', { max: 140 })}
+							autoComplete="off"
+						/>
+						{errors.tagline && <span>invalid input</span>}
+					</div>
+
+					{/* PRONOUNS */}
+					<div>
+						<label htmlFor="pronouns">pronouns</label>
+						<input
+							defaultValue={profile?.pronouns || ''}
+							{...register('pronouns', { max: 50 })}
+							autoComplete="off"
+						/>
+						{errors.pronouns && <span>invalid input</span>}
+					</div>
+
+					{/* AGE */}
+					<div>
+						<label htmlFor="age">age</label>
+						<input
+							defaultValue={profile?.age || ''}
+							{...register('age', { max: 25 })}
+							autoComplete="off"
+						/>
+						{errors.age && <span>invalid input</span>}
+					</div>
+
+					{/* LOCATION */}
+					<div>
+						<label htmlFor="location">location</label>
+						<input
+							defaultValue={profile?.location || ''}
+							{...register('location', { max: 100 })}
+							autoComplete="off"
+						/>
+						{errors.location && <span>invalid input</span>}
+					</div>
+
 					<hr />
 					<h2>fav links</h2>
-					<EditField
-						name="link1"
-						value={link1Input}
-						label="link1"
-						onChange={onLink1Change}
-						placeholder="friendster.com"
-					/>
-					<EditField
-						name="link2"
-						value={link2Input}
-						label="link2"
-						onChange={onLink2Change}
-						placeholder="livejournal.com"
-					/>
-					<EditField
-						name="link3"
-						value={link3Input}
-						label="link3"
-						onChange={onLink3Change}
-						placeholder="xanga.com"
-					/>
+
+					{/* LINK 1 */}
+					<div>
+						<label htmlFor="link1">link 1</label>
+						<input
+							defaultValue={profile?.link_1 || ''}
+							{...register('link1', { max: 50 })}
+							autoComplete="off"
+						/>
+						{errors.link1 && <span>invalid input</span>}
+					</div>
+
+					{/* LINK 2 */}
+					<div>
+						<label htmlFor="link2">link 2</label>
+						<input
+							defaultValue={profile?.link_2 || ''}
+							{...register('link2', { max: 50 })}
+							autoComplete="off"
+						/>
+						{errors.link2 && <span>invalid input</span>}
+					</div>
+
+					{/* LINK 3 */}
+					<div>
+						<label htmlFor="link3">link 3</label>
+						<input
+							defaultValue={profile?.link_3 || ''}
+							{...register('link3', { max: 50 })}
+							autoComplete="off"
+						/>
+						{errors.link3 && <span>invalid input</span>}
+					</div>
+
+					{/* SUBMIT BUTTON */}
+					<input type="submit" />
 					<br />
-					<button
-						style={{ cursor: 'pointer', padding: '0.5rem 1.25rem' }}
-						onClick={onSaveClick}
-					>
-						save
-					</button>
-					<br />
-				</div>
+				</form>
+				{/* --- END OF FORM --- */}
 			</Container>
 		</Layout>
 	);

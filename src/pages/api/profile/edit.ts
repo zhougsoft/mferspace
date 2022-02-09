@@ -33,9 +33,10 @@ export default async function handler(
 			req.body;
 
 		// TODO: INPUT DATA VALIDATION HERE
+		// name - 50 chars
 		// tagline - 140 chars
 		// pronouns - 50 chars
-		// age - 50 chars
+		// age - 25 chars
 		// location - 100 chars
 		// link_1 - 50 chars
 		// link_2 - 50 chars
