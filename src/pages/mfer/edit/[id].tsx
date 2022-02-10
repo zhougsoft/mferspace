@@ -102,7 +102,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('name', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.name && <span>invalid input</span>}
+						{errors.name && <span>max length 50 chars</span>}
 					</div>
 
 					{/* TAGLINE */}
@@ -114,7 +114,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('tagline', { maxLength: 140 })}
 							autoComplete="off"
 						/>
-						{errors.tagline && <span>invalid input</span>}
+						{errors.tagline && <span>max length 140 chars</span>}
 					</div>
 
 					{/* AGE */}
@@ -126,7 +126,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('age', { maxLength: 25 })}
 							autoComplete="off"
 						/>
-						{errors.age && <span>invalid input</span>}
+						{errors.age && <span>max length 25 chars</span>}
 					</div>
 
 					{/* PRONOUNS */}
@@ -138,7 +138,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('pronouns', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.pronouns && <span>invalid input</span>}
+						{errors.pronouns && <span>max length 50 chars</span>}
 					</div>
 
 					{/* LOCATION */}
@@ -150,7 +150,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('location', { maxLength: 100 })}
 							autoComplete="off"
 						/>
-						{errors.location && <span>invalid input</span>}
+						{errors.location && <span>max length 100 chars</span>}
 					</div>
 
 					<hr />
@@ -165,7 +165,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('link_1', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link_1 && <span>invalid input</span>}
+						{errors.link_1 && <span>max length 50 chars</span>}
 					</div>
 
 					{/* LINK 2 */}
@@ -177,7 +177,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('link_2', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link_2 && <span>invalid input</span>}
+						{errors.link_2 && <span>max length 50 chars</span>}
 					</div>
 
 					{/* LINK 3 */}
@@ -189,14 +189,23 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							{...register('link_3', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link_3 && <span>invalid input</span>}
+						{errors.link_3 && <span>max length 50 chars</span>}
 					</div>
 
+					<br />
 					{/* SUBMIT BUTTON */}
 					<input type="submit" />
-					<br />
+					<Link href={`/mfer/${mfer.id}`}>
+						<a style={{ outline: '1px solid black', padding: '0.25rem 1rem' }}>
+							cancel
+						</a>
+					</Link>
 				</form>
 				{/* --- END OF FORM --- */}
+				<br />
+				<br />
+				<br />
+				<br />
 			</Container>
 		</Layout>
 	);
