@@ -19,13 +19,22 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 			</div>
 		</S.ProfilePicDisplay>
 		<S.ProfileInfo>
+			<div>
+				<strong>{profile?.name || 'some mfer'}</strong>
+			</div>
 			<div>{`"${profile?.tagline || ':-)'}"`}</div>
 			<ul>
-				<li>{profile?.pronouns}</li>
 				<li>{profile?.age}</li>
+				<li>{profile?.pronouns}</li>
 				<li>{profile?.location}</li>
 			</ul>
-			<div className="social-links">[yr coolest link here]</div>
+
+			<ul className="social-links">
+				<li>{profile?.link_1}</li>
+				<li>{profile?.link_2}</li>
+				<li>{profile?.link_3}</li>
+			</ul>
+
 			<div className="update-msg">
 				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> own this mfer?{' '}
 				<Link href={`/mfer/edit/${mfer.id}`}>

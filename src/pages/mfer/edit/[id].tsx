@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
@@ -8,70 +8,58 @@ import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 import { getMfer, getMferOwner } from '../../../services/mfer.service';
 import { getProfile } from '../../../services/profile.service';
+import { Mfer } from '../../../types';
 
 import { Container } from '../../../components/Shared';
 import Layout from '../../../components/Layout';
 
-const EditProfilePage: React.FC = ({
+// TODO: put in types folder when ready
+interface Profile {
+	mfer_id: string;
+	name: string;
+	tagline: string;
+	age: string;
+	pronouns: string;
+	location: string;
+	link_1: string;
+	link_2: string;
+	link_3: string;
+	last_updated: Date;
+}
+
+interface EditProfilePageProps {
+	loggedInAddress?: string;
+	mfer: Mfer;
+	profile: Profile;
+	error: boolean;
+}
+
+const EditProfilePage: React.FC<EditProfilePageProps> = ({
 	loggedInAddress,
 	mfer,
 	profile,
 	error,
-}: any) => {
+}) => {
 	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm();
+	} = useForm<Profile>();
 
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
-
-
-
-
-
-
-	// TODO: library not detected validation errors???????
-	useEffect(() => {
-		if (Object.keys(errors).length > 0) {
-			console.warn('form validation errors detected!', errors);
-		}
-	}, [errors]);
-
-
-
-
-
-
-
-
-
-
-	// TODO: type the form submit data
-	const onSubmit = (data: any) => {
-		console.log({ data });
-		return;
-
+	const onSubmit = (data: Profile) => {
 		setIsLoading(true);
+
+		data.mfer_id = mfer.id.toString();
 
 		fetch(`/api/profile/edit`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				mfer_id: mfer.id,
-				name: '',
-				tagline: 'taglineInput',
-				pronouns: '',
-				age: '',
-				location: '',
-				link_1: '',
-				link_2: '',
-				link_3: '',
-			}),
+			body: JSON.stringify({ ...data }),
 		})
 			.then(() => router.push(`/mfer/${mfer.id}`))
 			.catch(error => {
@@ -83,6 +71,7 @@ const EditProfilePage: React.FC = ({
 
 	if (error) return <h1>server error - check server console</h1>;
 	if (!mfer) return <h1>no mfer... server error! pls report</h1>;
+	if (isLoading) return <h1>loading...</h1>;
 
 	return (
 		<Layout
@@ -109,7 +98,8 @@ const EditProfilePage: React.FC = ({
 						<label htmlFor="name">name</label>
 						<input
 							defaultValue={profile?.name || ''}
-							{...register('name', { max: 50 })}
+							placeholder="name"
+							{...register('name', { maxLength: 50 })}
 							autoComplete="off"
 						/>
 						{errors.name && <span>invalid input</span>}
@@ -120,21 +110,11 @@ const EditProfilePage: React.FC = ({
 						<label htmlFor="tagline">tagline</label>
 						<input
 							defaultValue={profile?.tagline || ''}
-							{...register('tagline', { max: 140 })}
+							placeholder="tagline"
+							{...register('tagline', { maxLength: 140 })}
 							autoComplete="off"
 						/>
 						{errors.tagline && <span>invalid input</span>}
-					</div>
-
-					{/* PRONOUNS */}
-					<div>
-						<label htmlFor="pronouns">pronouns</label>
-						<input
-							defaultValue={profile?.pronouns || ''}
-							{...register('pronouns', { max: 50 })}
-							autoComplete="off"
-						/>
-						{errors.pronouns && <span>invalid input</span>}
 					</div>
 
 					{/* AGE */}
@@ -142,10 +122,23 @@ const EditProfilePage: React.FC = ({
 						<label htmlFor="age">age</label>
 						<input
 							defaultValue={profile?.age || ''}
-							{...register('age', { max: 25 })}
+							placeholder="age"
+							{...register('age', { maxLength: 25 })}
 							autoComplete="off"
 						/>
 						{errors.age && <span>invalid input</span>}
+					</div>
+
+					{/* PRONOUNS */}
+					<div>
+						<label htmlFor="pronouns">pronouns</label>
+						<input
+							defaultValue={profile?.pronouns || ''}
+							placeholder="pronouns"
+							{...register('pronouns', { maxLength: 50 })}
+							autoComplete="off"
+						/>
+						{errors.pronouns && <span>invalid input</span>}
 					</div>
 
 					{/* LOCATION */}
@@ -153,7 +146,8 @@ const EditProfilePage: React.FC = ({
 						<label htmlFor="location">location</label>
 						<input
 							defaultValue={profile?.location || ''}
-							{...register('location', { max: 100 })}
+							placeholder="location"
+							{...register('location', { maxLength: 100 })}
 							autoComplete="off"
 						/>
 						{errors.location && <span>invalid input</span>}
@@ -164,35 +158,38 @@ const EditProfilePage: React.FC = ({
 
 					{/* LINK 1 */}
 					<div>
-						<label htmlFor="link1">link 1</label>
+						<label htmlFor="link_1">link 1</label>
 						<input
 							defaultValue={profile?.link_1 || ''}
-							{...register('link1', { max: 50 })}
+							placeholder="link one"
+							{...register('link_1', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link1 && <span>invalid input</span>}
+						{errors.link_1 && <span>invalid input</span>}
 					</div>
 
 					{/* LINK 2 */}
 					<div>
-						<label htmlFor="link2">link 2</label>
+						<label htmlFor="link_2">link 2</label>
 						<input
 							defaultValue={profile?.link_2 || ''}
-							{...register('link2', { max: 50 })}
+							placeholder="link two"
+							{...register('link_2', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link2 && <span>invalid input</span>}
+						{errors.link_2 && <span>invalid input</span>}
 					</div>
 
 					{/* LINK 3 */}
 					<div>
-						<label htmlFor="link3">link 3</label>
+						<label htmlFor="link_3">link 3</label>
 						<input
 							defaultValue={profile?.link_3 || ''}
-							{...register('link3', { max: 50 })}
+							placeholder="link three"
+							{...register('link_3', { maxLength: 50 })}
 							autoComplete="off"
 						/>
-						{errors.link3 && <span>invalid input</span>}
+						{errors.link_3 && <span>invalid input</span>}
 					</div>
 
 					{/* SUBMIT BUTTON */}

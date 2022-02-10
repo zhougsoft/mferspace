@@ -29,14 +29,14 @@ export default async function handler(
 			});
 		}
 
-		const { tagline, pronouns, age, location, link_1, link_2, link_3 } =
+		const { name, tagline, age, pronouns, location, link_1, link_2, link_3 } =
 			req.body;
 
 		// TODO: INPUT DATA VALIDATION HERE
 		// name - 50 chars
 		// tagline - 140 chars
-		// pronouns - 50 chars
 		// age - 25 chars
+		// pronouns - 50 chars
 		// location - 100 chars
 		// link_1 - 50 chars
 		// link_2 - 50 chars
@@ -44,9 +44,10 @@ export default async function handler(
 
 		const profileData = {
 			mfer_id: mferId,
+			name,
 			tagline,
-			pronouns,
 			age,
+			pronouns,
 			location,
 			link_1,
 			link_2,

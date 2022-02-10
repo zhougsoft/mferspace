@@ -5,13 +5,13 @@ CREATE TABLE profiles (
   mfer_id INT PRIMARY KEY,
   name VARCHAR(50),
   tagline VARCHAR(140),
-  pronouns VARCHAR(50),
   age VARCHAR(25),
+  pronouns VARCHAR(50),
   location VARCHAR(100),
   link_1 VARCHAR(50),
   link_2 VARCHAR(50),
   link_3 VARCHAR(50),
-  last_updated TIMESTAMP
+  last_updated TIMESTAMPTZ
 );
 
 -- Seed with empty records for each existing mfer (ids 0 to 10020)
