@@ -19,8 +19,8 @@ export default async function handler(
 
 		// Verify required fields were sent in the request data
 		const { address, signature } = req.body;
-		if (!address || !signature) {
-			return res.status(400).end('Invalid address or signature input');
+		if (!signature) {
+			return res.status(400).end('No signature sent');
 		}
 
 		// Validate incoming address
