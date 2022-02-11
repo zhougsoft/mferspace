@@ -211,7 +211,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 	);
 };
 
-export const getServerSideProps = async ({ req, res, query }: any) => {
+export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 	try {
 		// Get authentication cookies
 		const cookies = new Cookies(req, res);
@@ -227,13 +227,16 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 			};
 		}
 
-		// Validate input ID (mfer ids can range from 0 to 10020)
-		const mferId = parseInt(query.id);
-		if (mferId === NaN) {
-			throw Error('Invalid ID param - numbers only');
-		}
-		if (mferId < 0 || mferId > 10020) {
-			throw Error('No mfers at requested ID - values between 0 - 10020 only');
+		// TODO: this is duped in '../mfer/[id].tsx'
+		// Validate mfer id (mfer ids can range from 0 to 10020)
+		const mferId = parseInt(id);
+		if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/mfer/error',
+				},
+			};
 		}
 
 		// Validate auth token

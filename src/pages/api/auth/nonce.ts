@@ -6,11 +6,16 @@ export default async function handler(
 	res: NextApiResponse<any>
 ) {
 	try {
-		// TODO: VALIDATE THIS DATA!
 		const { address } = req.body;
-		const nonce = await getNonce(address);
 
-		// if nonce 0, no user exists. create new user & generate nonce
+		// Validate incoming address
+		// TODO: this functionality is duped in 'verify.ts' as of this comment
+		if (!address || typeof address !== 'string' || address.length !== 42) {
+			return res.status(400).end('Invalid address sent');
+		}
+
+		// Fetch nonce, if no nonce exists, create new wallet record in DB
+		const nonce = await getNonce(address);
 		if (nonce === 0) {
 			const [newUser] = await addUserWallet(address);
 			return res.status(200).json({ nonce: newUser.nonce });

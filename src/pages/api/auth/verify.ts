@@ -23,6 +23,12 @@ export default async function handler(
 			return res.status(400).end('Invalid address or signature input');
 		}
 
+		// Validate incoming address
+		// TODO: the below functionality is duped in 'nonce.ts' as of this comment
+		if (!address || typeof address !== 'string' || address.length !== 42) {
+			return res.status(400).end('Invalid address sent');
+		}
+
 		// Fetch the current nonce for user from the DB
 		const nonce = await getNonce(address);
 		if (nonce === 0) {

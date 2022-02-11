@@ -33,8 +33,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ loggedInAddress }) => {
 						<h3>{truncateAddress(loggedInAddress)}</h3>
 						<br />
 						<br />
-						<Link href="/logout">
-							<a>logout</a>
+						<Link href="/">
+							<a>home</a>
 						</Link>
 					</>
 				) : (

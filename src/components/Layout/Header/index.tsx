@@ -25,9 +25,15 @@ const Header: React.FC<HeaderProps> = ({ loggedInAddress }) => {
 					</Link>
 					<div style={{ fontSize: '0.9rem' }}>
 						{loggedInAddress ? (
-							<div style={{ color: 'white' }}>
-								<small>logged in: </small>
-								<b>{truncateAddress(loggedInAddress)}</b>
+							<div style={{ display: 'flex', color: '#FFF' }}>
+								<div style={{ marginRight: '0.5rem' }}>
+									<small>logged in: </small>
+									<b>{truncateAddress(loggedInAddress)}</b>
+								</div>
+								<div>&nbsp;|&nbsp;&nbsp;</div>
+								<Link href="/logout">
+									<a style={{ color: 'white' }}>logout</a>
+								</Link>
 							</div>
 						) : (
 							<Link href="/login">

@@ -39,13 +39,16 @@ const ProfilePage: React.FC = ({
 
 export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 	try {
+		// TODO: this is duped in './edit/[id].tsx'
 		// Validate mfer id (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(id);
-		if (mferId === NaN) {
-			throw Error('Invalid ID param - numbers only');
-		}
-		if (mferId < 0 || mferId > 10020) {
-			throw Error('No mfers at requested ID - values between 0 - 10020 only');
+		if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/mfer/error',
+				},
+			};
 		}
 
 		// Fetch mfer data from chain, and profile data from DB
