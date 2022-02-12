@@ -17,7 +17,7 @@ const MferErrorPage: React.FC<MferErrorPageProps> = ({ loggedInAddress }) => {
 				<h3>a mfer id is a number between 0 and 10,020!</h3>
 				<br />
 				<small>
-					here's an example URL for going to mfer #6969's mferspace:
+					here&apos;s an example URL for going to mfer #6969&apos;s mferspace:
 				</small>
 				<br />
 				<code>https://mferspace.com/mfer/6969</code>
@@ -25,7 +25,8 @@ const MferErrorPage: React.FC<MferErrorPageProps> = ({ loggedInAddress }) => {
 				<br />
 				<br />
 				<small>
-					here's an example URL for <em>editing</em> mfer #6969's mferspace:
+					here&apos;s an example URL for <em>editing</em> mfer #6969&apos;s
+					mferspace:
 				</small>
 				<br />
 				<code>https://mferspace.com/mfer/edit/6969</code>
