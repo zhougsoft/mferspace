@@ -56,7 +56,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 					alert('Login attempt unsuccessful...');
 				}
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 				alert(
 					'Error! MetaMask must be logged in & connected to Ethereum mainnet...'
 				);

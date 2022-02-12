@@ -80,6 +80,7 @@ export const parseAuthCookie = (req: any, res: any): string | null => {
 		}
 		return decodedToken?.data?.address || null;
 	} catch (error) {
+		console.error(error);
 		return null;
 	}
 };
