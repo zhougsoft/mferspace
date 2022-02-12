@@ -28,11 +28,13 @@ const LandingPage: React.FC = () => {
 					<br />
 					<br />
 					<strong>mferspace</strong> is a work-in-progress by{' '}
-					<ExtLink href="https://twitter.com/zhoug0x">zhoug</ExtLink> &amp;
-					<br /> the mfers in the{' '}
-					<ExtLink href="https://discord.gg/sdRAcRTW">
-						officially unofficial mfers discord
-					</ExtLink>
+					<ExtLink href="https://twitter.com/zhoug0x">zhoug</ExtLink>
+					<br />
+					in partnership with the{' '}
+					<ExtLink href="https://unofficialmfers.com">
+						unofficial mfers
+					</ExtLink>{' '}
+					frenz
 				</p>
 
 				<small>

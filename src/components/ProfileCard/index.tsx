@@ -1,36 +1,45 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
+import { Mfer } from '../../types';
 import * as S from './styled';
 import { IconEmoji } from '../Shared';
 
 interface ProfileCardProps {
-	name: string;
-	img: string;
+	mfer: Mfer;
+	profile: any; // TODO: type
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({
-	name = 'this mfer',
-	img = '',
-}) => (
+const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 	<S.Section>
 		<S.ProfilePicDisplay>
-			<h2>{name}</h2>
+			<h2>{mfer.name}</h2>
 			<div className="img-wrapper">
-				<Image src={img} alt={name} width="200px" height="200px" />
+				<Image src={mfer.img} alt={mfer.name} width="200px" height="200px" />
 			</div>
 		</S.ProfilePicDisplay>
 		<S.ProfileInfo>
-			<div>{'":-)"'}</div>
+			<div>
+				<strong>{profile?.name || 'some mfer'}</strong>
+			</div>
+			<div>{`"${profile?.tagline || ':-)'}"`}</div>
 			<ul>
-				<li>p-nouns</li>
-				<li>X yrs old</li>
-				<li>Santa Monica, CALIFORNIA</li>
-				<li>United States</li>
+				<li>{profile?.age}</li>
+				<li>{profile?.pronouns}</li>
+				<li>{profile?.location}</li>
 			</ul>
-			<div className="social-links">[other socials here]</div>
+
+			<ul className="social-links">
+				<li>{profile?.link_1}</li>
+				<li>{profile?.link_2}</li>
+				<li>{profile?.link_3}</li>
+			</ul>
+
 			<div className="update-msg">
-				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> editable in future
-				updates!
+				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> own this mfer?{' '}
+				<Link href={`/mfer/edit/${mfer.id}`}>
+					<a>edit this profile!</a>
+				</Link>
 			</div>
 		</S.ProfileInfo>
 	</S.Section>

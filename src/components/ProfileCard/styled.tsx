@@ -12,7 +12,7 @@ export const ProfilePicDisplay = styled.div`
 	}
 
 	div.img-wrapper {
-		margin: 2.5rem 0;
+		margin: 1.5rem 0;
 	}
 `;
 
@@ -28,8 +28,9 @@ export const ProfileInfo = styled.div`
 		}
 	}
 
-	div.social-links {
+	ul.social-links {
 		color: ${({ theme }) => theme.colors.textSecondary};
+		font-size: 0.9rem;
 	}
 
 	div.update-msg {

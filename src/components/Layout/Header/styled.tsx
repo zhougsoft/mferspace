@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.header`
 
 export const HomeLink = styled.a`
 	cursor: pointer;
-	color: ${({ theme }) => theme.colors.textAlt};
+	color: ${({ theme }) => theme.colors.textAlt} !important;
 	font-size: 1.25rem;
 	font-weight: bold;
 `;
