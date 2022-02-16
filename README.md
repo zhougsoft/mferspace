@@ -2,11 +2,9 @@
 
 _built with Next.js & Postgres via Supabase_
 
-*for the mfers* 🤝
+_for the mfers_ 🤝
 
-- not taking community pull requests at this time! thx 😉
-- `main` branch == vercel CI/CD -> mferspace.com
-
+- not reviewing community pull requests at this time! thx 😉
 
 ### setup .env
 
@@ -15,7 +13,7 @@ _built with Next.js & Postgres via Supabase_
 
 ### run on local:
 
-1. `npm i`
+1. `npm install`
 1. `npm run build`
 1. `npm run dev`
 1. go to `http://localhost:3000`!

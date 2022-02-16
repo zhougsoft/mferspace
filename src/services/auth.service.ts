@@ -1,5 +1,5 @@
 import { supabase } from '../db';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import Cookies from 'cookies';
 
 // This service hosts the plumbing for any wallet/token authentication
@@ -80,6 +80,10 @@ export const parseAuthCookie = (req: any, res: any): string | null => {
 		}
 		return decodedToken?.data?.address || null;
 	} catch (error) {
+		// Don't need to log the error if it's only an expired token
+		if (error instanceof TokenExpiredError) {
+			return null;
+		}
 		console.error(error);
 		return null;
 	}
