@@ -23,6 +23,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 			try {
 				// Connect to user wallet
 				const provider = new ethers.providers.Web3Provider(window.ethereum);
+				await provider.send('eth_requestAccounts', []);
 				const signer = provider.getSigner();
 				const signerAddress = await signer.getAddress();
 
@@ -55,11 +56,12 @@ export const AuthProvider: React.FC = ({ children }) => {
 				} else {
 					alert('Login attempt unsuccessful...');
 				}
-			} catch (error) {
+			} catch (error: any) {
+				if (error.code === 4001) {
+					alert('Connection request rejected...');
+				}
 				console.error(error);
-				alert(
-					'Error! MetaMask must be logged in & connected to Ethereum mainnet...'
-				);
+				alert('Error authenicating - check console for error details...');
 			}
 		}
 	};
