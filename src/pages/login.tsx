@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import Cookies from 'cookies';
@@ -14,14 +13,13 @@ interface LoginPageProps {
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ loggedInAddress }) => {
-	const router = useRouter();
 	const { login } = useAuthContext();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const handleLogin = async () => {
 		setIsLoading(true);
 		await login();
-		router.reload();
+		setIsLoading(false);
 	};
 
 	return !isLoading ? (

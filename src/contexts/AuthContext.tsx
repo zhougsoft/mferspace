@@ -52,7 +52,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
 				// If auth successful, force a refresh to check token on server
 				if (authResult.ok) {
-					router.reload();
+					router.push('/');
 				} else {
 					alert('Login attempt unsuccessful...');
 				}
