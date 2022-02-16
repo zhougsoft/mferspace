@@ -1,11 +1,12 @@
 # 🙂 mferspace
 
-_Built w/ Next.js & TypeScript_
+_built with Next.js & Postgres via Supabase_
 
-*for all the mfers* 🤝
+*for the mfers* 🤝
 
+- not taking community pull requests at this time! thx 😉
 - `main` branch == vercel CI/CD -> mferspace.com
-- pls target any pull requests to the `develop` branch! thx 😉
+
 
 ### setup .env
 
