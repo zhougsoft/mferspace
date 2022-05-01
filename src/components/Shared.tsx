@@ -33,20 +33,13 @@ export const Container = styled.div`
 `;
 
 // wraps icon/utility emojis with accessibility tags
-export const IconEmoji: React.FC<{ alt: string }> = ({
+export const IconEmoji: React.FC<{ alt: string; emoji: string }> = ({
 	alt,
-	children,
+	emoji,
 	...props
 }) => (
 	<span role="img" aria-label={alt} {...props}>
-		{children}
-	</span>
-);
-
-// wraps decorative emojis with accessibility tags
-export const DecorEmoji: React.FC<any> = ({ children, ...props }) => (
-	<span role="presentation" {...props}>
-		{children}
+		{emoji}
 	</span>
 );
 

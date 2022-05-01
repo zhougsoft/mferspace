@@ -52,7 +52,7 @@ const LandingPage: React.FC = () => {
 			<S.ExampleSection>
 				<h4>check out yr mfin profile!</h4>
 				<pre>
-					<IconEmoji alt="Hand pointing right">👉</IconEmoji>{' '}
+					<IconEmoji emoji={'👉'} alt="Hand pointing right" />{' '}
 					mferspace.com/mfer/[yr mfer id]
 				</pre>
 				<Link href="/mfer/3191">an example mfer</Link>

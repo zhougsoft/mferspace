@@ -36,7 +36,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 			</ul>
 
 			<div className="update-msg">
-				<IconEmoji alt="Hand pointing up">☝️</IconEmoji> own this mfer?{' '}
+				<IconEmoji emoji={'☝️'} alt="Hand pointing up" /> own this mfer?{' '}
 				<Link href={`/mfer/edit/${mfer.id}`}>
 					<a>edit this profile!</a>
 				</Link>

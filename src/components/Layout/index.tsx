@@ -7,6 +7,7 @@ import Header from './Header';
 interface LayoutProps {
 	title: string;
 	loggedInAddress?: string;
+	children: any;
 }
 
 const Layout: React.FC<LayoutProps> = ({
