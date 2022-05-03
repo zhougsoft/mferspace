@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 import { MFER_CONTRACT_ADDRESS } from '../config/constants';
-import abi from '../config/abi.json';
+import abi from '../config/abi/mfers.json';
 import { Mfer } from '../types';
 
 // This service is for fetching on-chain mfers data
