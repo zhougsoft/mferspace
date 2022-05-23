@@ -63,17 +63,17 @@ export default async function handler(
 		}
 
 		// Check auth if valid token
-		const loggedInAddress = parseAuthCookie(req, res);
-		if (!loggedInAddress) {
+		const activeAddress = parseAuthCookie(req, res);
+		if (!activeAddress) {
 			return res.status(403).json({ msg: 'invalid auth token' });
 		}
 
 		// Check if user is the owner of requested mfer
 		const mferOwner = await getMferOwner(mferId);
-		const isOwner = loggedInAddress.toLowerCase() === mferOwner.toLowerCase();
+		const isOwner = activeAddress.toLowerCase() === mferOwner.toLowerCase();
 		if (!isOwner) {
 			return res.status(403).json({
-				msg: `${loggedInAddress} is not the holder of mfer #${mferId}`,
+				msg: `${activeAddress} is not the holder of mfer #${mferId}`,
 			});
 		}
 

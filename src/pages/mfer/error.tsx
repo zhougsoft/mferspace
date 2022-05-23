@@ -5,13 +5,13 @@ import Layout from '../../components/Layout';
 import { Container } from '../../components/Shared';
 
 interface MferErrorPageProps {
-	loggedInAddress?: string;
+	activeAddress?: string;
 }
 
 // TODO: clean up the <br/> layout when time permits lmao
-const MferErrorPage: React.FC<MferErrorPageProps> = ({ loggedInAddress }) => {
+const MferErrorPage: React.FC<MferErrorPageProps> = ({ activeAddress }) => {
 	return (
-		<Layout title={'uh oh! | mferspace'} loggedInAddress={loggedInAddress}>
+		<Layout title={'uh oh! | mferspace'} activeAddress={activeAddress}>
 			<Container>
 				<h1>invalid mfer id</h1>
 				<h3>a mfer id is a number between 0 and 10,020!</h3>
@@ -44,8 +44,8 @@ const MferErrorPage: React.FC<MferErrorPageProps> = ({ loggedInAddress }) => {
 
 // Check auth cookie server side and return authenticated address if logged in
 export const getServerSideProps = async ({ req, res }: any) => {
-	const loggedInAddress = parseAuthCookie(req, res);
-	return { props: loggedInAddress ? { loggedInAddress } : {} };
+	const activeAddress = parseAuthCookie(req, res);
+	return { props: activeAddress ? { activeAddress } : {} };
 };
 
 export default MferErrorPage;

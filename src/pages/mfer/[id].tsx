@@ -11,7 +11,7 @@ import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
 const ProfilePage: React.FC = ({
-	loggedInAddress,
+	activeAddress,
 	mfer,
 	profile,
 	error,
@@ -22,7 +22,7 @@ const ProfilePage: React.FC = ({
 	return (
 		<Layout
 			title={`${mfer.name} | mferspace`}
-			loggedInAddress={loggedInAddress}
+			activeAddress={activeAddress}
 		>
 			<Container>
 				<div style={{ display: 'flex' }}>
@@ -57,10 +57,10 @@ export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 			getProfile(mferId),
 		]);
 
-		const loggedInAddress = parseAuthCookie(req, res);
-		return { props: { loggedInAddress, mfer, profile, error: false } };
+		const activeAddress = parseAuthCookie(req, res);
+		return { props: { activeAddress, mfer, profile, error: false } };
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return { props: { error: true } };
 	}
 };

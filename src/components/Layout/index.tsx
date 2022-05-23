@@ -6,13 +6,13 @@ import Header from './Header';
 
 interface LayoutProps {
 	title: string;
-	loggedInAddress?: string;
+	activeAddress?: string;
 	children: any;
 }
 
 const Layout: React.FC<LayoutProps> = ({
 	title,
-	loggedInAddress,
+	activeAddress,
 	children,
 }) => {
 	return (
@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({
 				<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 				<title>{title}</title>
 			</Head>
-			<Header loggedInAddress={loggedInAddress} />
+			<Header activeAddress={activeAddress} />
 			<main>{children}</main>
 		</S.PageWrapper>
 	);

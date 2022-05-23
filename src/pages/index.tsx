@@ -1,27 +1,24 @@
 import React from 'react';
 import { parseAuthCookie } from '../services/auth.service';
 import Layout from '../components/Layout';
-import LandingPage from '../components/LandingPage';
+import TitleSection from '../components/TitleSection';
 
 interface HomePageProps {
-	loggedInAddress?: string;
+	activeAddress?: string;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ loggedInAddress }) => {
+const HomePage: React.FC<HomePageProps> = ({ activeAddress }) => {
 	return (
-		<Layout
-			title="mferspace | a space for mfers"
-			loggedInAddress={loggedInAddress}
-		>
-			<LandingPage />
+		<Layout title="mferspace | a space for mfers" activeAddress={activeAddress}>
+			<TitleSection />
 		</Layout>
 	);
 };
 
 // Check auth cookie server side and return authenticated address if logged in
 export const getServerSideProps = async ({ req, res }: any) => {
-	const loggedInAddress = parseAuthCookie(req, res);
-	return { props: loggedInAddress ? { loggedInAddress } : {} };
+	const activeAddress = parseAuthCookie(req, res);
+	return { props: activeAddress ? { activeAddress } : {} };
 };
 
 export default HomePage;
