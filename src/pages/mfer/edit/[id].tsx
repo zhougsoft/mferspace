@@ -35,7 +35,6 @@ interface EditProfilePageProps {
 }
 
 const EditProfilePage: React.FC<EditProfilePageProps> = ({
-	activeAddress,
 	mfer,
 	profile,
 	error,
@@ -74,10 +73,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 	if (isLoading) return <h1>loading...</h1>;
 
 	return (
-		<Layout
-			title={`edit ${mfer.name} | mferspace`}
-			activeAddress={activeAddress}
-		>
+		<Layout title={`edit ${mfer.name} | mferspace`}>
 			<Container>
 				<div>
 					<h2>editing {mfer.name}&apos;s profile</h2>
@@ -273,7 +269,7 @@ export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 			getProfile(mferId),
 		]);
 
-		return { props: { activeAddress: address, mfer, profile, error: false } };
+		return { props: { mfer, profile, error: false } };
 	} catch (error) {
 		if (error instanceof TokenExpiredError) {
 			return {

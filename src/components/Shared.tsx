@@ -1,7 +1,11 @@
+import React from 'react';
 import styled from 'styled-components';
 
 // a link that goes off-page
-export const ExtLink: React.FC<any> = ({ children, ...props }) => (
+export const ExtLink: React.FC<{
+	children: React.ReactNode;
+	props: Object;
+}> = ({ children, ...props }) => (
 	<a {...props} target="_blank" rel="noreferrer noopener">
 		{children}
 	</a>

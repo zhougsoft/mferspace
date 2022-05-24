@@ -12,11 +12,15 @@ interface Web3ContextProps {
 	connectWallet: Function;
 }
 
+interface Web3ProviderProps {
+	children?: React.ReactNode;
+}
+
 const Web3Context = createContext<Web3ContextProps>({} as Web3ContextProps);
 
 export const useWeb3Context = () => useContext(Web3Context);
 
-export const Web3Provider: React.FC<{ children: any }> = ({ children }) => {
+export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
 	const [web3IsAvailable, setWeb3IsAvailable] = useState<boolean>(false);
 	const [activeAddress, setActiveAddress] = useState<string>();
 	const [provider, setProvider] = useState<any>();

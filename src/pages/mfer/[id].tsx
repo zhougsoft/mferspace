@@ -10,20 +10,12 @@ import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
-const ProfilePage: React.FC = ({
-	activeAddress,
-	mfer,
-	profile,
-	error,
-}: any) => {
+const ProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	if (error) return <h1>server error - check server console</h1>;
 	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
 
 	return (
-		<Layout
-			title={`${mfer.name} | mferspace`}
-			activeAddress={activeAddress}
-		>
+		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
 				<div style={{ display: 'flex' }}>
 					<div>
