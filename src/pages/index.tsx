@@ -6,11 +6,7 @@ import Layout from '../components/Layout';
 import { Container } from '../components/Shared';
 import TitleSection from '../components/TitleSection';
 
-interface HomePageProps {
-	hasAuthToken: boolean;
-}
-
-const HomePage: React.FC<HomePageProps> = () => {
+const HomePage: React.FC = () => {
 	const { isAuthenticated, login } = useAuthContext();
 	const { provider, activeAddress, connectWallet } = useWeb3Context();
 	const [isLoading, setIsLoading] = useState<boolean>(false);

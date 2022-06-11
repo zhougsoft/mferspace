@@ -1,25 +1,52 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import Cookies from 'cookies';
-import { NONCE_ENDPOINT, VERIFICATION_ENDPOINT } from '../config/constants';
+import Cookies from 'js-cookie';
+import {
+	NONCE_ENDPOINT,
+	VERIFICATION_ENDPOINT,
+	AUTH_TIMEOUT,
+} from '../config/constants';
+
+// auth flow:
+// 1. verify and get http-only cookie
+// 2. on good verification response, drop client side cookie with same expiration + verified address
+// 3. use client-side cookie to track auth status within the site
 
 interface AuthContextProps {
 	isAuthenticated: boolean;
 	login: Function;
-	logout: Function;
 }
 
 interface AuthProviderProps {
 	children?: React.ReactNode;
-	hasAuthToken?: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 export const useAuthContext = () => useContext(AuthContext);
 
-const AuthProvider: React.FC<AuthProviderProps> = ({
-	children,
-}) => {
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+	const updateAuthState = () => {
+		const authCookie = Cookies.get('signer');
+
+		if (authCookie && isAuthenticated) return;
+
+		// remove auth if cookie is invalid
+		if (!authCookie && isAuthenticated) {
+			setIsAuthenticated(false);
+			return;
+		}
+
+		// give auth if cookie present
+		if (authCookie && !isAuthenticated) {
+			setIsAuthenticated(true);
+		}
+	};
+
+	// Check auth state via client-side cookie every render
+	useEffect(() => {
+		updateAuthState();
+	}, []);
 
 	// TODO: type arg as ethers.js signer
 	const login = async (signer: any) => {
@@ -47,33 +74,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 				body: JSON.stringify({ address: signerAddress, signature }),
 			}).then(res => res.json());
 
-
-
-
-
-      // TODO:
-
-			// If auth successful, drop a cookie on client with authenticated address
+			// If auth successful, drop an address tracking cookie on client with an expiry one minute before the http-only token cookie
 			if (authResult.ok) {
-
-
-
-        // TODO: drop a cookie with the authenticated signer address - `signerAddress`
-        // then check for client-side authentication cookie on each page load
-
-        // client side cookie lib?
-
-
-        setIsAuthenticated(true)
-
-
-      } else {
+				const expires = new Date(new Date().getTime() + (AUTH_TIMEOUT - 60) * 1000);
+				Cookies.set('signer', signerAddress, { expires });
+				updateAuthState();
+			} else {
 				alert('Login attempt unsuccessful...');
-      }
-
-
-
-
+			}
 		} catch (error: any) {
 			// If user rejects connect request, just return silently
 			if (error.code === 4001) return;
@@ -83,14 +91,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 		}
 	};
 
-	const logout = () => {
-		// TODO: implement logout - scrub cookies, force a refresh?
-
-    setIsAuthenticated(false)
-	};
-
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+		<AuthContext.Provider value={{ isAuthenticated, login }}>
 			{children}
 		</AuthContext.Provider>
 	);

@@ -17,6 +17,12 @@ export default async function handler(
 	res: NextApiResponse<any>
 ) {
 	try {
+		// Check auth if valid token
+		const activeAddress = parseAuthCookie(req, res);
+		if (!activeAddress) {
+			return res.status(403).json({ msg: 'invalid auth token' });
+		}
+
 		// Validate mfer id
 		if (!req.body.mfer_id) {
 			return res.status(400).json({ msg: 'no mfer id sent' });
@@ -60,12 +66,6 @@ export default async function handler(
 
 		if (!inputIsValid) {
 			return res.status(400).json({ msg: 'invalid data sent' });
-		}
-
-		// Check auth if valid token
-		const activeAddress = parseAuthCookie(req, res);
-		if (!activeAddress) {
-			return res.status(403).json({ msg: 'invalid auth token' });
 		}
 
 		// Check if user is the owner of requested mfer
