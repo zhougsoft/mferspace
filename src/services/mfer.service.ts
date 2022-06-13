@@ -6,6 +6,9 @@ import { Mfer } from '../types';
 
 // This service is for fetching on-chain mfers data
 
+// TODO: replace this RPC call with an optimized API call
+// zora NFT api?
+
 // Connect to mfers contract via RPC
 const _getMfersContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(

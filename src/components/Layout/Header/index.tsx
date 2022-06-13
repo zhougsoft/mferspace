@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { useWeb3Context } from '../../../contexts/Web3Context';
+import { useWeb3 } from '../../../hooks';
 import { truncateAddress } from '../../../utils';
 import * as S from './styled';
 import { Container } from '../../Shared';
 
 const Header: React.FC = () => {
-	const { connectWallet, activeAddress } = useWeb3Context();
+	const { isActive, account, connectWallet } = useWeb3();
 
 	return (
 		<S.HeaderWrapper>
@@ -23,10 +23,9 @@ const Header: React.FC = () => {
 						<S.HomeLink>mferspace</S.HomeLink>
 					</Link>
 					<div style={{ fontSize: '0.9rem' }}>
-						{activeAddress ? (
+						{isActive && account ? (
 							<div style={{ color: 'white' }}>
-								<small>connected: </small>
-								<b>{truncateAddress(activeAddress)}</b>
+								<small>connected: {truncateAddress(account)}</small>
 							</div>
 						) : (
 							<button
