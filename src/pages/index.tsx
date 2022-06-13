@@ -8,7 +8,8 @@ import { Container } from '../components/Shared';
 import TitleSection from '../components/TitleSection';
 
 const HomePage: React.FC = () => {
-	const { isActive, account, connectWallet, useSigner } = useWeb3();
+	const { isActive, account, useSigner, connectWallet, disconnectWallet } =
+		useWeb3();
 	const { login } = useAuth();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,10 +34,13 @@ const HomePage: React.FC = () => {
 				{isActive && account ? (
 					<>
 						<div>connected: {truncateAddress(account)}</div>
+						<button onClick={() => disconnectWallet()}>
+							disconnect wallet
+						</button>
+						<br />
 						<br />
 						<br />
 						<button onClick={onLoginClick}>verify wallet</button>
-						<br />
 						<br />
 						<div>
 							each time u sign with this <em>verify wallet</em> button, u will

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { CHAIN_ID } from '../config/constants';
@@ -15,17 +15,24 @@ const useWeb3 = () => {
 		error,
 	} = useWeb3React();
 
-	useEffect(() => {
-		if (error) {
-			console.error(error);
-		}
-	}, [error]);
+	const _hasStoredConnection = () => {
+		return localStorage?.getItem('walletIsConnected') === 'true';
+	};
+
+	const _storeConnection = () => {
+		localStorage.setItem('walletIsConnected', 'true');
+	};
+
+	const _removeStoredConnection = () => {
+		localStorage.removeItem('walletIsConnected');
+	};
 
 	const useSigner = () => provider.getSigner();
 
 	const connectWallet = async () => {
 		try {
 			await activate(connector);
+			_storeConnection();
 		} catch (error) {
 			console.error(error);
 		}
@@ -34,10 +41,27 @@ const useWeb3 = () => {
 	const disconnectWallet = async () => {
 		try {
 			deactivate();
+			_removeStoredConnection();
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
+	useEffect(() => {
+		if (error) {
+			console.error(error);
+		}
+	}, [error]);
+
+	useEffect(() => {
+		if (_hasStoredConnection()) {
+			try {
+				connectWallet();
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}, []);
 
 	return {
 		provider,
