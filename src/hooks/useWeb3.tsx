@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { CHAIN_ID } from '../config/constants';
@@ -15,37 +15,38 @@ const useWeb3 = () => {
 		error,
 	} = useWeb3React();
 
-	const _hasStoredConnection = () => {
-		return localStorage?.getItem('walletIsConnected') === 'true';
-	};
+	const _hasStoredConnection = useCallback(
+		() => localStorage?.getItem('walletIsConnected') === 'true',
+		[]
+	);
 
-	const _storeConnection = () => {
+	const _storeConnection = useCallback(() => {
 		localStorage.setItem('walletIsConnected', 'true');
-	};
+	}, []);
 
-	const _removeStoredConnection = () => {
+	const _removeStoredConnection = useCallback(() => {
 		localStorage.removeItem('walletIsConnected');
-	};
+	}, []);
 
-	const useSigner = () => provider.getSigner();
+	const useSigner = useCallback(() => provider.getSigner(), [provider]);
 
-	const connectWallet = async () => {
+	const connectWallet = useCallback(async () => {
 		try {
 			await activate(connector);
 			_storeConnection();
 		} catch (error) {
 			console.error(error);
 		}
-	};
+	}, []);
 
-	const disconnectWallet = async () => {
+	const disconnectWallet = useCallback(async () => {
 		try {
 			deactivate();
 			_removeStoredConnection();
 		} catch (error) {
 			console.error(error);
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		if (error) {
