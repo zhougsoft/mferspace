@@ -28,9 +28,8 @@ const HomePage: React.FC = () => {
 
 
 
-
-	
-	// TODO: stash mfer fetching functions in a hook
+	// TODO: stash the mfer fetching/parsing functionality in a hook
+	// Fetching owned mfers when wallet connects
 	useEffect(() => {
 		if (isActive && account) {
 			console.log('account active: ', account);
@@ -41,14 +40,21 @@ const HomePage: React.FC = () => {
 			);
 
 			mfersContract.balanceOf(account).then((bal: BigNumber) => {
-				console.log('mfers owned:', bal.toNumber());
+				const mferBal = bal.toNumber();
+
+				for (let i = 0; i < mferBal; i++) {
+					mfersContract
+						.tokenOfOwnerByIndex(account, i)
+						.then((token: BigNumber) => {
+							const tokenId = token.toNumber();
+							console.log(tokenId);
+						});
+				}
 			});
 		}
 	}, [account]);
 
-
-
-
+	
 
 
 
