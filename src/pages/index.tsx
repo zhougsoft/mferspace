@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-import { useWeb3, useAuth } from '../hooks';
+import { useAuth, useMfers, useWeb3 } from '../hooks';
 import { truncateAddress } from '../utils';
 
 import Layout from '../components/Layout';
 import { Container } from '../components/Shared';
-
-// TODO: put in hook with mfer fetching stuff
-import { ethers, Contract, BigNumber } from 'ethers';
-import { MFER_CONTRACT_ADDRESS } from '../config/constants';
-import abi from '../config/abi/mfers.json';
 
 const HomePage: React.FC = () => {
 	const {
@@ -20,44 +16,20 @@ const HomePage: React.FC = () => {
 		connectWallet,
 		disconnectWallet,
 	} = useWeb3();
+	const { getMfersByAddress } = useMfers(provider);
 	const { login } = useAuth();
+
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [mferIds, setMferIds] = useState<number[]>([]);
 
-
-
-
-
-
-	// TODO: stash the mfer fetching/parsing functionality in a hook
-	// Fetching owned mfers when wallet connects
+	// Fetch owned mfers when wallet connects
 	useEffect(() => {
 		if (isActive && account) {
-			console.log('account active: ', account);
-			const mfersContract: Contract = new ethers.Contract(
-				MFER_CONTRACT_ADDRESS,
-				abi,
-				provider
-			);
-
-			mfersContract.balanceOf(account).then((bal: BigNumber) => {
-				const mferBal = bal.toNumber();
-
-				for (let i = 0; i < mferBal; i++) {
-					mfersContract
-						.tokenOfOwnerByIndex(account, i)
-						.then((token: BigNumber) => {
-							const tokenId = token.toNumber();
-							console.log(tokenId);
-						});
-				}
+			getMfersByAddress(account).then(tokenIds => {
+				setMferIds(tokenIds);
 			});
 		}
 	}, [account]);
-
-	
-
-
-
 
 	// Fetch auth cookie from backend on login click
 	const onLoginClick = async () => {
@@ -84,7 +56,23 @@ const HomePage: React.FC = () => {
 						<div>connected: {truncateAddress(account)}</div>
 						<button onClick={() => disconnectWallet()}>disconnect</button>
 
-						<div>user's mfers go here</div>
+						{mferIds.length > 0 ? (
+							<>
+								<div>mfer hodler!</div>
+								<ol>
+									{mferIds.map(id => (
+										<li>
+											{' '}
+											<Link href={`/mfer/${id}`}>
+												<a>{id}</a>
+											</Link>
+										</li>
+									))}
+								</ol>
+							</>
+						) : (
+							<div>no mfers...</div>
+						)}
 
 						<hr />
 						<div>
