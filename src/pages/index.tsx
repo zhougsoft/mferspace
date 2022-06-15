@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
 		provider,
 		isActive,
 		account,
-		useSigner,
+		getSigner,
 		connectWallet,
 		disconnectWallet,
 	} = useWeb3();
@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
 				setMferIds(tokenIds);
 			});
 		}
-	}, [account]);
+	}, [isActive, account]);
 
 	// Fetch auth cookie from backend on login click
 	const onLoginClick = async () => {
@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
 		}
 
 		setIsLoading(true);
-		await login(useSigner());
+		await login(getSigner());
 		setIsLoading(false);
 	};
 
@@ -61,8 +61,7 @@ const HomePage: React.FC = () => {
 								<div>mfer hodler!</div>
 								<ol>
 									{mferIds.map(id => (
-										<li>
-											{' '}
+										<li key={'mfer-' + id}>
 											<Link href={`/mfer/${id}`}>
 												<a>{id}</a>
 											</Link>

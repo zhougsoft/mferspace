@@ -28,7 +28,7 @@ const useWeb3 = () => {
 		localStorage.removeItem('walletIsConnected');
 	}, []);
 
-	const useSigner = useCallback(() => provider.getSigner(), [provider]);
+	const getSigner = useCallback(() => provider.getSigner(), [provider]);
 
 	const connectWallet = useCallback(async () => {
 		try {
@@ -68,7 +68,7 @@ const useWeb3 = () => {
 		provider,
 		isActive,
 		account,
-		useSigner,
+		getSigner,
 		connectWallet,
 		disconnectWallet,
 	};

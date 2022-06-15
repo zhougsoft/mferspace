@@ -10,6 +10,20 @@ import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
 
+
+
+// TODO: overhaul the mfer fetching!
+// don't fetch the mfer data on server, fetch from client on page load
+
+// ON SERVER:
+// fetching for auth state (cookie)
+// fetch the profile data
+
+// also...
+// TODO: remove EDIT page & route entirely, just make this page flip to "EDIT" mode with editable fields
+
+
+
 const ProfilePage: React.FC = ({ mfer, profile, error }: any) => {
 	if (error) return <h1>server error - check server console</h1>;
 	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
