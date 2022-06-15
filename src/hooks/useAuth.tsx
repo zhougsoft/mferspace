@@ -1,9 +1,8 @@
+import { Signer } from 'ethers';
 import { NONCE_ENDPOINT, VERIFICATION_ENDPOINT } from '../config/constants';
 
 const useAuth = () => {
-
-	// TODO: type arg as Ethers.js signer
-	const login = async (signer: any) => {
+	const login = async (signer: Signer) => {
 		try {
 			const signerAddress = await signer.getAddress();
 
