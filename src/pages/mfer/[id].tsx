@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { parseAuthCookie } from '../../services/auth.service';
-import { getMfer } from '../../services/mfer.service';
 import { getProfile } from '../../services/profile.service';
+import { useWeb3, useMfers } from '../../hooks';
 
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BlurbSection from '../../components/BlurbSection';
-
-
 
 // TODO: overhaul the mfer fetching!
 // don't fetch the mfer data on server, fetch from client on page load
@@ -22,11 +20,22 @@ import BlurbSection from '../../components/BlurbSection';
 // also...
 // TODO: remove EDIT page & route entirely, just make this page flip to "EDIT" mode with editable fields
 
+const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
+	const { provider } = useWeb3();
+	const { getMfer } = useMfers(provider);
 
+	const [mfer, setMfer] = useState<any>();
 
-const ProfilePage: React.FC = ({ mfer, profile, error }: any) => {
-	if (error) return <h1>server error - check server console</h1>;
-	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
+	useEffect(() => {
+		if (mferId) {
+			getMfer(mferId).then(result => {
+				setMfer(result);
+			});
+		}
+	}, [mferId]);
+
+	if (error || !mferId) return <h1>server error - check backend console</h1>;
+	if (!mfer) return <>loading...</>;
 
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
@@ -57,14 +66,13 @@ export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 			};
 		}
 
-		// Fetch mfer data from chain, and profile data from DB
-		const [mfer, profile] = await Promise.all([
-			getMfer(mferId),
-			getProfile(mferId),
-		]);
+		// Fetch profile data from DB
+		const profile = await getProfile(mferId);
 
+		// TODO: check if auth cookie available, set boolean flag
 		const activeAddress = parseAuthCookie(req, res);
-		return { props: { activeAddress, mfer, profile, error: false } };
+
+		return { props: { mferId, profile, error: false } };
 	} catch (error) {
 		console.log(error);
 		return { props: { error: true } };

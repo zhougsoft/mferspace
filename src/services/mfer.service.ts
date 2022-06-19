@@ -1,13 +1,10 @@
 import { ethers } from 'ethers';
 
-import { MFER_CONTRACT_ADDRESS } from '../config/constants';
+import { MFER_CONTRACT_ADDRESS, IPFS_GATEWAY } from '../config/constants';
 import abi from '../config/abi/mfers.json';
 import { Mfer } from '../types';
 
-// This service is for fetching on-chain mfers data
-
-// TODO: replace this RPC call with an optimized API call
-// zora NFT api?
+// This service is for fetching mfers data
 
 // Connect to mfers contract via RPC
 const _getMfersContract = () => {
@@ -27,17 +24,17 @@ export const getMfer = async (id: number): Promise<Mfer> => {
 	const uriSplit = tokenURI.split('/');
 	const ipfsContentId = uriSplit[2];
 	const tokenId = uriSplit[3];
-	const tokenIpfsGateway = `https://ipfs.io/ipfs/${ipfsContentId}/${tokenId}`;
+	const tokenIpfsGateway = `${IPFS_GATEWAY}/${ipfsContentId}/${tokenId}`;
 
 	// Fetch mfer image data from IPFS & build a gateway link for the image
 	const mferResult = await fetch(tokenIpfsGateway).then(res => res.json());
 	const imgIpfsHash = mferResult.image.split('/')[2];
-	const imgIpfsGateway = `https://ipfs.io/ipfs/${imgIpfsHash}`;
+	const img = `${IPFS_GATEWAY}/${imgIpfsHash}`;
 
 	return {
 		id,
 		name: mferResult.name,
-		img: imgIpfsGateway,
+		img,
 		attributes: mferResult.attributes,
 	};
 };
