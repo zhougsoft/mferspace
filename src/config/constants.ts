@@ -5,7 +5,6 @@ export const IPFS_GATEWAY = 'https://ipfs.io/ipfs';
 export const MFER_CONTRACT_ADDRESS =
 	'0x79FCDEF22feeD20eDDacbB2587640e45491b757f';
 export const MFER_DATA_CID = 'QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo';
-export const MFER_IMG_CID = 'QmbAvUyPA1E3Xe2bNhsHpnaqZYNpdwdfRjw3YGKaA9dMzk';
 
 // Authentication endpoints
 export const NONCE_ENDPOINT = '/api/auth/nonce';

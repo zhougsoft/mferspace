@@ -1,18 +1,12 @@
 import { useMemo } from 'react';
 import { ethers, Contract, BigNumber } from 'ethers';
+
+import abi from '../config/abi/mfers.json';
 import {
 	MFER_CONTRACT_ADDRESS,
 	MFER_DATA_CID,
-	MFER_IMG_CID,
 	IPFS_GATEWAY,
 } from '../config/constants';
-import abi from '../config/abi/mfers.json';
-
-
-
-// TODO: SORT OUT CHAIN AND IPFS CALL FOR THIS
-
-
 
 // TODO: type provider arg as Ethers.js type provider
 const useMfers = (provider: any) => {
@@ -36,49 +30,22 @@ const useMfers = (provider: any) => {
 
 	// Get single mfer metadata by id
 	const getMfer = async (id: number) => {
-		const tokenURI: string = await contract.tokenURI(id);
+		const ipfsURI = `${IPFS_GATEWAY}/${MFER_DATA_CID}/${id}`;
 
+		// Fetch mfer data
+		const mfer = await fetch(ipfsURI).then(res => res.json());
 
-		// Build IPFS gateway URL from IPFS content identifier hash
-		const uriSplit = tokenURI.split('/');
-		const ipfsContentId = uriSplit[2];
-		const tokenId = uriSplit[3];
-		const tokenIpfsGateway = `${IPFS_GATEWAY}/${ipfsContentId}/${tokenId}`;
-	
-		// Fetch mfer image data from IPFS & build a gateway link for the image
-		const mferResult = await fetch(tokenIpfsGateway).then(res => res.json());
-		const imgIpfsHash = mferResult.image.split('/')[2];
-		const img = `${IPFS_GATEWAY}/${imgIpfsHash}`;
-	
+		// Build image link
+		const imgCID = mfer.image.slice(7);
+		const img = `${IPFS_GATEWAY}/${imgCID}`;
+
 		return {
 			id,
-			name: mferResult.name,
+			name: mfer.name,
 			img,
-			attributes: mferResult.attributes,
+			attributes: mfer.attributes,
 		};
 	};
-
-
-	// // Get single mfer metadata by id
-	// const getMfer = async (id: number) => {
-	// 	// Fetch mfers metadata from IPFS
-	// 	const dataUrl = `${IPFS_GATEWAY}/${MFER_DATA_CID}/${id}`;
-	// 	const imgUrl = `${IPFS_GATEWAY}/${MFER_IMG_CID}`;
-
-	// 	// Fetch mfer image data from IPFS & build a gateway link for the image
-	// 	const mferResult = await fetch(dataUrl).then(res => res.json());
-
-
-	// 	console.log(imgUrl)
-	// 	return {
-	// 		id,
-	// 		name: mferResult.name,
-	// 		img: imgUrl,
-	// 		attributes: mferResult.attributes,
-	// 	};
-	// };
-
-
 
 	return { getMfersByAddress, getMfer };
 };

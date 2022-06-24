@@ -2,7 +2,7 @@ import { supabase } from '../db';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import Cookies from 'cookies';
 
-// This service hosts the plumbing for any wallet/token authentication
+// DB interface for JWT authentication
 // running server side only due to private .env variables
 
 export interface UserWallet {

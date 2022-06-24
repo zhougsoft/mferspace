@@ -1,10 +1,9 @@
 import { ethers } from 'ethers';
-
-import { MFER_CONTRACT_ADDRESS, IPFS_GATEWAY } from '../config/constants';
 import abi from '../config/abi/mfers.json';
 import { Mfer } from '../types';
+import { MFER_CONTRACT_ADDRESS, IPFS_GATEWAY } from '../config/constants';
 
-// This service is for fetching mfers data
+// For handling all mfers data fetching logic
 
 // Connect to mfers contract via RPC
 const _getMfersContract = () => {
