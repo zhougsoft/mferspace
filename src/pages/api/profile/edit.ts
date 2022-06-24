@@ -87,7 +87,6 @@ export default async function handler(
 			link_1,
 			link_2,
 			link_3,
-			last_updated: new Date(),
 		};
 
 		await updateProfile(profileData);

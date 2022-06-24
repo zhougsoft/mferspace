@@ -1,26 +1,27 @@
--- Create & seeds the 'profiles' table with 10,020 empty mfer records
+-- Create & seed `profiles` table with 10k empty profiles
 DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
   mfer_id INT PRIMARY KEY,
-  name VARCHAR(50),
-  tagline VARCHAR(140),
-  age VARCHAR(25),
-  pronouns VARCHAR(50),
-  location VARCHAR(100),
-  link_1 VARCHAR(50),
-  link_2 VARCHAR(50),
-  link_3 VARCHAR(50),
-  last_updated TIMESTAMPTZ
+  name TEXT,
+  tagline TEXT,
+  age TEXT,
+  pronouns TEXT,
+  location TEXT,
+  link_1 TEXT,
+  link_2 TEXT,
+  link_3 TEXT,
+  bio_1 TEXT,
+  bio_2 TEXT,
+  updated_at TIMESTAMPTZ
 );
 
--- Seed with empty records for each existing mfer (ids 0 to 10020)
 INSERT INTO
   profiles(mfer_id)
 SELECT
   x.mfer_id
 FROM
-  generate_series(0, 10020) AS x(mfer_id);
+  generate_series(0, 10000) AS x(mfer_id);
 
 -- Create wallets table & index addresses
 DROP TABLE IF EXISTS wallets;
@@ -28,7 +29,30 @@ DROP TABLE IF EXISTS wallets;
 CREATE TABLE wallets (
   wallet_id SERIAL PRIMARY KEY,
   ADDRESS VARCHAR(42) UNIQUE NOT NULL,
-  nonce int4 NOT NULL
+  nonce int4 NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ
 );
 
 CREATE INDEX ON wallets (address);
+
+-- Setup trigger for updating timestamps automatically when records are changed
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Set trigger for profiles
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON profiles
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- Set trigger for wallets
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON wallets
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();

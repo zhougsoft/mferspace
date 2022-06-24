@@ -24,7 +24,7 @@ interface Profile {
 	link_1: string;
 	link_2: string;
 	link_3: string;
-	last_updated: Date;
+	updated_at?: Date;
 }
 
 interface EditProfilePageProps {
