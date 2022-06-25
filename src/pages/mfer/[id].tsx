@@ -8,17 +8,7 @@ import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BioSection from '../../components/BioSection';
-
-
-
-// TODO:
-// *** remove EDIT page & route entirely, make this page flip to "EDIT" mode with editable fields
-
-
-
-const ToggleEditBtn = ({ active, ...props }: any) => {
-	return <button {...props}>{active ? 'SAVE' : 'EDIT PROFILE'}</button>;
-};
+import EditProfilePortal from '../../components/EditProfilePortal';
 
 const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	const { provider, account } = useWeb3();
@@ -27,7 +17,6 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	// TODO: type this as a mfer
 	const [mfer, setMfer] = useState<any>();
 	const [isMferOwner, setIsMferOwner] = useState<boolean>();
-	const [editModeIsActive, setEditModeIsActive] = useState<boolean>(false);
 
 	// Fetch mfer data on page load
 	useEffect(() => {
@@ -55,23 +44,14 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
-				<div
-					style={{
-						display: 'flex',
-						outline: editModeIsActive ? '3px solid goldenrod' : '',
-					}}
-				>
+				<div style={{ display: 'flex' }}>
 					<div>
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
 						<BioSection name={mfer.name} />
 					</div>
-					{isMferOwner && (
-						<ToggleEditBtn
-							active={editModeIsActive}
-							onClick={() => setEditModeIsActive(!editModeIsActive)}
-						/>
-					)}
+
+					{isMferOwner && <EditProfilePortal mferId={mferId} profile={profile} />}
 				</div>
 			</Container>
 		</Layout>

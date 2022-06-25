@@ -23,16 +23,6 @@ const MferErrorPage: React.FC<MferErrorPageProps> = () => {
 				<br />
 				<br />
 				<br />
-				<small>
-					here&apos;s an example URL for <em>editing</em> mfer #6969&apos;s
-					mferspace:
-				</small>
-				<br />
-				<code>https://mferspace.com/mfer/edit/6969</code>
-				<br />
-				<br />
-				<br />
-				<br />
 				<Link href="/">
 					<a>back home</a>
 				</Link>
