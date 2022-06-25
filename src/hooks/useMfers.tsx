@@ -7,6 +7,7 @@ import {
 	MFER_DATA_CID,
 	IPFS_GATEWAY,
 } from '../config/constants';
+import { Mfer } from '../types';
 
 // TODO: type provider arg as Ethers.js type provider
 const useMfers = (provider: any) => {
@@ -16,7 +17,7 @@ const useMfers = (provider: any) => {
 	);
 
 	// Get all mfer ids owned by a specific address
-	const getMfersByAddress = async (address: string) => {
+	const getMfersByAddress = async (address: string): Promise<number[]> => {
 		const balResult: BigNumber = await contract.balanceOf(address);
 		const mferBal = balResult.toNumber();
 
@@ -29,7 +30,8 @@ const useMfers = (provider: any) => {
 	};
 
 	// Get single mfer metadata by id
-	const getMfer = async (id: number) => {
+	// TODO: type return promise
+	const getMfer = async (id: number): Promise<Mfer> => {
 		const ipfsURI = `${IPFS_GATEWAY}/${MFER_DATA_CID}/${id}`;
 
 		// Fetch mfer data
@@ -47,7 +49,16 @@ const useMfers = (provider: any) => {
 		};
 	};
 
-	return { getMfersByAddress, getMfer };
+	// Check if an address is the holder of an mfer by id
+	const checkMferOwnership = async (
+		id: number,
+		address: string
+	): Promise<boolean> => {
+		const owner = await contract.ownerOf(id);
+		return ethers.utils.getAddress(owner) === ethers.utils.getAddress(address);
+	};
+
+	return { getMfersByAddress, getMfer, checkMferOwnership };
 };
 
 export default useMfers;

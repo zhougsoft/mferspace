@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { Mfer } from '../../types';
 import * as S from './styled';
-import { IconEmoji } from '../Shared';
 
 interface ProfileCardProps {
 	mfer: Mfer;
@@ -28,19 +26,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ mfer, profile }) => (
 				<li>{profile?.pronouns}</li>
 				<li>{profile?.location}</li>
 			</ul>
-
-			<ul className="social-links">
-				<li>{profile?.link_1}</li>
-				<li>{profile?.link_2}</li>
-				<li>{profile?.link_3}</li>
-			</ul>
-
-			<div className="update-msg">
-				<IconEmoji emoji={'☝️'} alt="Hand pointing up" /> own this mfer?{' '}
-				<Link href={`/mfer/edit/${mfer.id}`}>
-					<a>edit this profile!</a>
-				</Link>
-			</div>
 		</S.ProfileInfo>
 	</S.Section>
 );

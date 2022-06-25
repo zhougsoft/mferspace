@@ -27,14 +27,4 @@ export const ProfileInfo = styled.div`
 			color: ${({ theme }) => theme.colors.textSecondary};
 		}
 	}
-
-	ul.social-links {
-		color: ${({ theme }) => theme.colors.textSecondary};
-		font-size: 0.9rem;
-	}
-
-	div.update-msg {
-		font-size: 0.75rem;
-		margin-top: 1rem;
-	}
 `;

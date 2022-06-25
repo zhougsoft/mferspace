@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as S from './styled';
 
-const BlurbSection: React.FC<{ name: string }> = ({ name = 'this mfer' }) => {
+const BioSection: React.FC<{ name: string }> = ({ name = 'this mfer' }) => {
 	return (
 		<S.Section>
 			<S.Article>
@@ -17,4 +17,4 @@ const BlurbSection: React.FC<{ name: string }> = ({ name = 'this mfer' }) => {
 	);
 };
 
-export default BlurbSection;
+export default BioSection;

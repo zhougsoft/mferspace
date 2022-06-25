@@ -21,9 +21,6 @@ interface Profile {
 	age: string;
 	pronouns: string;
 	location: string;
-	link_1: string;
-	link_2: string;
-	link_3: string;
 	updated_at?: Date;
 }
 
@@ -147,45 +144,6 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({
 							autoComplete="off"
 						/>
 						{errors.location && <span>max length 100 chars</span>}
-					</div>
-
-					<hr />
-					<h2>fav links</h2>
-
-					{/* LINK 1 */}
-					<div>
-						<label htmlFor="link_1">link 1</label>
-						<input
-							defaultValue={profile?.link_1 || ''}
-							placeholder="link one"
-							{...register('link_1', { maxLength: 50 })}
-							autoComplete="off"
-						/>
-						{errors.link_1 && <span>max length 50 chars</span>}
-					</div>
-
-					{/* LINK 2 */}
-					<div>
-						<label htmlFor="link_2">link 2</label>
-						<input
-							defaultValue={profile?.link_2 || ''}
-							placeholder="link two"
-							{...register('link_2', { maxLength: 50 })}
-							autoComplete="off"
-						/>
-						{errors.link_2 && <span>max length 50 chars</span>}
-					</div>
-
-					{/* LINK 3 */}
-					<div>
-						<label htmlFor="link_3">link 3</label>
-						<input
-							defaultValue={profile?.link_3 || ''}
-							placeholder="link three"
-							{...register('link_3', { maxLength: 50 })}
-							autoComplete="off"
-						/>
-						{errors.link_3 && <span>max length 50 chars</span>}
 					</div>
 
 					<br />

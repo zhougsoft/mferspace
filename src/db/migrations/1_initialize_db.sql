@@ -1,4 +1,4 @@
--- Create & seed `profiles` table with 10k empty profiles
+-- Create & seed `profiles` table with 10,020 empty profiles
 DROP TABLE IF EXISTS profiles;
 
 CREATE TABLE profiles (
@@ -8,9 +8,6 @@ CREATE TABLE profiles (
   age TEXT,
   pronouns TEXT,
   location TEXT,
-  link_1 TEXT,
-  link_2 TEXT,
-  link_3 TEXT,
   bio_1 TEXT,
   bio_2 TEXT,
   updated_at TIMESTAMPTZ
@@ -21,7 +18,7 @@ INSERT INTO
 SELECT
   x.mfer_id
 FROM
-  generate_series(0, 10000) AS x(mfer_id);
+  generate_series(0, 10020) AS x(mfer_id);
 
 -- Create wallets table & index addresses
 DROP TABLE IF EXISTS wallets;

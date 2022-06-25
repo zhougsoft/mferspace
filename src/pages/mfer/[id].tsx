@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { parseAuthCookie } from '../../services/auth.service';
 import { getProfile } from '../../services/profile.service';
 import { useWeb3, useMfers } from '../../hooks';
 
@@ -8,42 +7,71 @@ import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
-import BlurbSection from '../../components/BlurbSection';
+import BioSection from '../../components/BioSection';
 
 
 
-// TODO: add flag prop to check if connected wallet is the holder of the current mfer
-// *** remove EDIT page & route entirely, just make this page flip to "EDIT" mode with editable fields
+// TODO:
+// *** remove EDIT page & route entirely, make this page flip to "EDIT" mode with editable fields
 
 
+
+const ToggleEditBtn = ({ active, ...props }: any) => {
+	return <button {...props}>{active ? 'SAVE' : 'EDIT PROFILE'}</button>;
+};
 
 const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
-	const { provider } = useWeb3();
-	const { getMfer } = useMfers(provider);
+	const { provider, account } = useWeb3();
+	const { getMfer, checkMferOwnership } = useMfers(provider);
 
+	// TODO: type this as a mfer
 	const [mfer, setMfer] = useState<any>();
+	const [isMferOwner, setIsMferOwner] = useState<boolean>();
+	const [editModeIsActive, setEditModeIsActive] = useState<boolean>(false);
 
+	// Fetch mfer data on page load
 	useEffect(() => {
 		if (mferId !== undefined) {
-			getMfer(mferId).then(result => {
+			// TODO: type as a mfer
+			getMfer(mferId).then(async (result: any) => {
 				setMfer(result);
 			});
 		}
 	}, [mferId]);
 
-	if (error || mferId === undefined)
+	// Check if connected wallet owns mfer
+	useEffect(() => {
+		if (mfer !== undefined && !!account) {
+			checkMferOwnership(mferId, account).then(result => {
+				setIsMferOwner(result);
+			});
+		}
+	}, [account]);
+
+	if (error || isNaN(mferId))
 		return <h1>server error - check backend console</h1>;
-	if (!mfer) return <>loading...</>;
+	if (!mfer) return <div>fetching mfer...</div>;
 
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
-				<div style={{ display: 'flex' }}>
+				<div
+					style={{
+						display: 'flex',
+						outline: editModeIsActive ? '3px solid goldenrod' : '',
+					}}
+				>
 					<div>
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
-						<BlurbSection name={mfer.name} />
+						<BioSection name={mfer.name} />
 					</div>
+					{isMferOwner && (
+						<ToggleEditBtn
+							active={editModeIsActive}
+							onClick={() => setEditModeIsActive(!editModeIsActive)}
+						/>
+					)}
 				</div>
 			</Container>
 		</Layout>
