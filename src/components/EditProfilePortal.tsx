@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-// TODO: Form submission flow
-// SEE README FOR WHATS NEXT
+import { useWeb3, useAuth } from '../hooks';
+import { AlchemyWebSocketProvider } from '@ethersproject/providers';
 
 interface ProfileFields {
 	name: string;
@@ -139,6 +138,9 @@ const EditProfilePortal = ({
 	profile: any;
 }) => {
 	const router = useRouter();
+	const { getSigner } = useWeb3();
+	const { login } = useAuth();
+
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const [editModeIsActive, setEditModeIsActive] = useState<boolean>(false);
 
@@ -153,22 +155,28 @@ const EditProfilePortal = ({
 
 		const body = JSON.stringify({ mfer_id: mferId, ...fields });
 
-		fetch(`/api/profile/edit`, {
+		const editReqEndpoint = '/api/profile/edit';
+		const editReqOpts = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body,
-		})
-			.then(result => {
+		};
+
+		fetch(editReqEndpoint, editReqOpts)
+			.then(async result => {
 				// on success, reload the page to display updated data
 				if (result.ok) {
 					router.reload();
 				} else {
-					// check if unauthorized
+					// if unauthorized, prompt for login and re-submit
 					if (result.status === 403) {
-						alert('unauthorized! must verify mfer');
-						resetUI();
+						await login(getSigner());
+						const reFetchResult = await fetch(editReqEndpoint, editReqOpts);
+						if (reFetchResult.ok) {
+							router.reload();
+						}
 					}
 				}
 			})

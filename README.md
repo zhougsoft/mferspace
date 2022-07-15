@@ -1,24 +1,17 @@
 # mferspace
 
-CONTEXT: edit auth/token flow
+**pre-prod TODO**:
 
-in or around `EditProfilePortal.tsx`
-
-1. edit & save profile w/ no auth token
-1. on 403, re-sign & re-fetch auth token
-1. automatically attempt re-sending previous form data
-
-_also_, a **big pre-prod security TODO**:
 - get rid of supabase client entirely
 - stick with good old fashioned postgres driver
 - connect via conventional env vars
 - use db plumbing config from reddit clone example
-
+- should be universal and connect to any PGSQL DB
 
 ### setup .env
 
 1. make a copy of `.env.local.example` named `.env.local`
-1. add values to `.env.local` 
+1. add values to `.env.local`
 
 ### run on local:
 

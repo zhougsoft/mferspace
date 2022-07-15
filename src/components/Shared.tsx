@@ -3,10 +3,16 @@ import styled from 'styled-components';
 
 // a link that goes off-page
 export const ExtLink: React.FC<{
+	href: string;
+	className?: string;
 	children: React.ReactNode;
-	props: Object;
-}> = ({ children, ...props }) => (
-	<a {...props} target="_blank" rel="noreferrer noopener">
+}> = ({ href, className, children }) => (
+	<a
+		href={href}
+		className={className}
+		target="_blank"
+		rel="noreferrer noopener"
+	>
 		{children}
 	</a>
 );
