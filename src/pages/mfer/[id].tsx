@@ -30,7 +30,7 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 
 	// Check if connected wallet owns mfer
 	useEffect(() => {
-		if (mfer !== undefined && !!account) {
+		if (account && mferId !== undefined) {
 			checkMferOwnership(mferId, account).then(result => {
 				setIsMferOwner(result);
 			});
@@ -48,10 +48,16 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 					<div>
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
-						<BioSection name={mfer.name} />
+						<BioSection
+							name={mfer.name}
+							bioOne={profile.bio_1}
+							bioTwo={profile.bio_2}
+						/>
 					</div>
 
-					{isMferOwner && <EditProfilePortal mferId={mferId} profile={profile} />}
+					{isMferOwner && (
+						<EditProfilePortal mferId={mferId} profile={profile} />
+					)}
 				</div>
 			</Container>
 		</Layout>

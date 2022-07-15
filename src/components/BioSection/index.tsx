@@ -2,16 +2,26 @@ import React from 'react';
 
 import * as S from './styled';
 
-const BioSection: React.FC<{ name: string }> = ({ name = 'this mfer' }) => {
+interface BioSectionProps {
+	name: string;
+	bioOne: string;
+	bioTwo: string;
+}
+
+const BioSection: React.FC<BioSectionProps> = ({
+	name = 'this mfer',
+	bioOne = '...',
+	bioTwo = '...',
+}) => {
 	return (
 		<S.Section>
 			<S.Article>
 				<h5>About {name}</h5>
-				<p>coming soon...</p>
+				<p>{bioOne.length === 0 ? '...' : bioOne}</p>
 			</S.Article>
 			<S.Article>
 				<h5>Who {name} would like to meet</h5>
-				<p>coming soon...</p>
+				<p>{bioTwo.length === 0 ? '...' : bioTwo}</p>
 			</S.Article>
 		</S.Section>
 	);

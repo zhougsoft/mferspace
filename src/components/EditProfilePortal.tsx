@@ -2,19 +2,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-
-
-
-
-
-
 // TODO: Form submission flow
 // SEE README FOR WHATS NEXT
-
-
-
-
-
 
 interface ProfileFields {
 	name: string;
@@ -113,7 +102,7 @@ const EditProfileForm = ({
 				<textarea
 					defaultValue={profile?.bio_1 || ''}
 					placeholder="about you"
-					{...register('bio_1', { maxLength: 1000 })}
+					{...register('bio_1', { maxLength: 5000 })}
 					autoComplete="off"
 				/>
 				{errors.bio_1 && <span>max length 1000 chars</span>}
@@ -122,11 +111,11 @@ const EditProfileForm = ({
 
 			{/* BIO_2 */}
 			<div>
-				<label htmlFor="bio_2">who you'd like to meet</label>
+				<label htmlFor="bio_2">who you&apos;d like to meet</label>
 				<textarea
 					defaultValue={profile?.bio_2 || ''}
 					placeholder="who you'd like to meet"
-					{...register('bio_2', { maxLength: 1000 })}
+					{...register('bio_2', { maxLength: 5000 })}
 					autoComplete="off"
 				/>
 				{errors.bio_2 && <span>max length 1000 chars</span>}
@@ -167,7 +156,11 @@ const EditProfilePortal = ({
 			body,
 		})
 			.then(result => {
-				console.log(result);
+				if (result.ok) {
+					router.reload();
+				} else {
+					alert('profile update failed! try again later...');
+				}
 			})
 			.catch(error => {
 				alert('error during request, check console!');
