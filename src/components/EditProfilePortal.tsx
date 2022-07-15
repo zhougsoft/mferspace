@@ -142,6 +142,11 @@ const EditProfilePortal = ({
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const [editModeIsActive, setEditModeIsActive] = useState<boolean>(false);
 
+	const resetUI = () => {
+		setEditModeIsActive(false);
+		setIsSaving(false);
+	};
+
 	// Sends post req to edit profile data passed by form
 	const onSave = (fields: ProfileFields) => {
 		setIsSaving(true);
@@ -156,17 +161,20 @@ const EditProfilePortal = ({
 			body,
 		})
 			.then(result => {
+				// on success, reload the page to display updated data
 				if (result.ok) {
 					router.reload();
 				} else {
-					alert('profile update failed! try again later...');
+					// check if unauthorized
+					if (result.status === 403) {
+						alert('unauthorized! must verify mfer');
+						resetUI();
+					}
 				}
 			})
 			.catch(error => {
-				alert('error during request, check console!');
 				console.error(error);
-				setEditModeIsActive(false);
-				setIsSaving(false);
+				resetUI();
 			});
 	};
 
