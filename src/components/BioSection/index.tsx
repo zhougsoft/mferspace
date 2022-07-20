@@ -1,6 +1,7 @@
 import React from 'react';
-
 import * as S from './styled';
+
+const DEFAULT_BIO = '...';
 
 interface BioSectionProps {
 	name: string;
@@ -10,18 +11,18 @@ interface BioSectionProps {
 
 const BioSection: React.FC<BioSectionProps> = ({
 	name = 'this mfer',
-	bioOne = '...',
-	bioTwo = '...',
+	bioOne,
+	bioTwo,
 }) => {
 	return (
 		<S.Section>
 			<S.Article>
 				<h5>About {name}</h5>
-				<p>{bioOne.length === 0 ? '...' : bioOne}</p>
+				<p>{bioOne ? bioOne : DEFAULT_BIO}</p>
 			</S.Article>
 			<S.Article>
 				<h5>Who {name} would like to meet</h5>
-				<p>{bioTwo.length === 0 ? '...' : bioTwo}</p>
+				<p>{bioTwo ? bioTwo : DEFAULT_BIO}</p>
 			</S.Article>
 		</S.Section>
 	);

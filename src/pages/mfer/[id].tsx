@@ -23,6 +23,9 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 		if (mferId !== undefined) {
 			// TODO: type as a mfer
 			getMfer(mferId).then(async (result: any) => {
+
+				console.log(result)
+
 				setMfer(result);
 			});
 		}
@@ -66,7 +69,6 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 
 export const getServerSideProps = async ({ query: { id } }: any) => {
 	try {
-		// TODO: this is duped in './edit/[id].tsx'
 		// Validate mfer id (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(id);
 
