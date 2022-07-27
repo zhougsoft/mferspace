@@ -23,9 +23,6 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 		if (mferId !== undefined) {
 			// TODO: type as a mfer
 			getMfer(mferId).then(async (result: any) => {
-
-				console.log(result)
-
 				setMfer(result);
 			});
 		}
@@ -38,7 +35,7 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 				setIsMferOwner(result);
 			});
 		}
-	}, [account]);
+	}, [account, mferId]);
 
 	if (error || isNaN(mferId))
 		return <h1>server error - check backend console</h1>;

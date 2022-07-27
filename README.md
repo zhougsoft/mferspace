@@ -5,7 +5,7 @@
 - get rid of supabase client entirely
 - stick with good old fashioned postgres driver
 - connect via conventional env vars
-- use db plumbing config from reddit clone example
+- use db plumbing config from the mfer reddit repo example
 - should be universal and connect to any PGSQL DB
 
 ### setup .env
