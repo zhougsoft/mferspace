@@ -53,9 +53,10 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
 			<Container style={{ marginTop: '1rem' }}>
-				{isMferOwner && !editModalIsOpen && (
+				{isMferOwner && (
 					<button
 						onClick={onEditProfileClick}
+						disabled={editModalIsOpen}
 						style={{ marginBottom: '0.5rem' }}
 					>
 						edit profile
