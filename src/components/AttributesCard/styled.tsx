@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const TraitTable = styled.table`
+	margin-bottom: 1rem;
+
 	tr {
 		td {
 			font-size: 0.85rem;

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useWeb3, useAuth } from '../hooks';
-import { AlchemyWebSocketProvider } from '@ethersproject/providers';
 
 interface ProfileFields {
 	name: string;
@@ -130,22 +129,22 @@ const EditProfileForm = ({
 };
 
 // TODO: type this (and profile) properly
-const EditProfilePortal = ({
+const EditProfileModal = ({
 	mferId,
 	profile,
+	onClose,
 }: {
 	mferId: number;
 	profile: any;
+	onClose: Function;
 }) => {
 	const router = useRouter();
 	const { getSigner } = useWeb3();
 	const { login } = useAuth();
 
 	const [isSaving, setIsSaving] = useState<boolean>(false);
-	const [editModeIsActive, setEditModeIsActive] = useState<boolean>(false);
 
 	const resetUI = () => {
-		setEditModeIsActive(false);
 		setIsSaving(false);
 	};
 
@@ -187,17 +186,10 @@ const EditProfilePortal = ({
 	};
 
 	if (isSaving) return <div>saving...</div>;
-	if (!editModeIsActive) {
-		return (
-			<div>
-				<button onClick={() => setEditModeIsActive(true)}>EDIT PROFILE</button>
-			</div>
-		);
-	}
 
 	return (
 		<div>
-			<button onClick={() => setEditModeIsActive(false)}>CANCEL</button>
+			<button onClick={() => onClose()}>cancel</button>
 			<br />
 			<br />
 			<br />
@@ -206,4 +198,4 @@ const EditProfilePortal = ({
 	);
 };
 
-export default EditProfilePortal;
+export default EditProfileModal;

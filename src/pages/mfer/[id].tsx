@@ -8,7 +8,7 @@ import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
 import BioSection from '../../components/BioSection';
-import EditProfilePortal from '../../components/EditProfilePortal';
+import EditProfileModal from '../../components/EditProfileModal';
 
 const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	const { provider, account } = useWeb3();
@@ -17,6 +17,7 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 	// TODO: type this as a mfer
 	const [mfer, setMfer] = useState<any>();
 	const [isMferOwner, setIsMferOwner] = useState<boolean>();
+	const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>();
 
 	// Fetch mfer data on page load
 	useEffect(() => {
@@ -37,26 +38,46 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 		}
 	}, [account, mferId]);
 
+	const onEditProfileClick = () => {
+		setEditModalIsOpen(true);
+	};
+
+	const onEditModalClose = () => {
+		setEditModalIsOpen(false);
+	};
+
 	if (error || isNaN(mferId))
 		return <h1>server error - check backend console</h1>;
 	if (!mfer) return <div>fetching mfer...</div>;
 
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
-			<Container>
-				<div style={{ display: 'flex' }}>
-					<div>
+			<Container style={{ marginTop: '1rem' }}>
+				{isMferOwner && !editModalIsOpen && (
+					<button
+						onClick={onEditProfileClick}
+						style={{ marginBottom: '0.5rem' }}
+					>
+						edit profile
+					</button>
+				)}
+				<div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '1rem' }}>
+					<div style={{ marginRight: '4rem' }}>
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
-						<BioSection
-							name={mfer.name}
-							bioOne={profile.bio_1}
-							bioTwo={profile.bio_2}
-						/>
 					</div>
+					<BioSection
+						name={mfer.name}
+						bioOne={profile.bio_1}
+						bioTwo={profile.bio_2}
+					/>
 
-					{isMferOwner && (
-						<EditProfilePortal mferId={mferId} profile={profile} />
+					{editModalIsOpen && (
+						<EditProfileModal
+							mferId={mferId}
+							profile={profile}
+							onClose={onEditModalClose}
+						/>
 					)}
 				</div>
 			</Container>
