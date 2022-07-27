@@ -1,7 +1,7 @@
 import { supabase } from '../db';
 
-// This service hosts the plumbing for profiles data in the DB
-// RUN SERVER SIDE ONLY due to .env considerations
+// DB read/write interface for profiles
+// running server side only due to private .env variables
 
 // TODO: finish this type
 interface Profile {}

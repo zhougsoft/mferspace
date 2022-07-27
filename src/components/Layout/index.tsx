@@ -6,22 +6,17 @@ import Header from './Header';
 
 interface LayoutProps {
 	title: string;
-	loggedInAddress?: string;
-	children: any;
+	children?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-	title,
-	loggedInAddress,
-	children,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ title, children }) => {
 	return (
 		<S.PageWrapper>
 			<Head>
 				<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 				<title>{title}</title>
 			</Head>
-			<Header loggedInAddress={loggedInAddress} />
+			<Header />
 			<main>{children}</main>
 		</S.PageWrapper>
 	);

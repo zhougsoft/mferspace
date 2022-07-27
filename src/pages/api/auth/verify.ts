@@ -45,7 +45,7 @@ export default async function handler(
 		if (address.toLowerCase() === signatureAddress.toLowerCase()) {
 			const token = jwt.sign(
 				{
-					exp: Math.floor(Date.now() / 1000) + AUTH_TIMEOUT,
+					expiresIn: AUTH_TIMEOUT,
 					data: { address },
 				},
 				JWT_SECRET
@@ -54,7 +54,11 @@ export default async function handler(
 			await updateNonce(address);
 
 			const cookies = new Cookies(req, res);
-			cookies.set('token', token, { httpOnly: true });
+			cookies.set('token', token, {
+				maxAge: AUTH_TIMEOUT * 1000,
+				httpOnly: true,
+				sameSite: true,
+			});
 
 			return res.status(200).json({ ok: true });
 		} else {

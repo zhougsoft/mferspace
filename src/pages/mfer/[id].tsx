@@ -1,47 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { parseAuthCookie } from '../../services/auth.service';
-import { getMfer } from '../../services/mfer.service';
 import { getProfile } from '../../services/profile.service';
+import { useWeb3, useMfers } from '../../hooks';
 
 import { Container } from '../../components/Shared';
 import Layout from '../../components/Layout';
 import ProfileCard from '../../components/ProfileCard';
 import AttributesCard from '../../components/AttributesCard';
-import BlurbSection from '../../components/BlurbSection';
+import BioSection from '../../components/BioSection';
+import EditProfilePortal from '../../components/EditProfilePortal';
 
-const ProfilePage: React.FC = ({
-	loggedInAddress,
-	mfer,
-	profile,
-	error,
-}: any) => {
-	if (error) return <h1>server error - check server console</h1>;
-	if (!mfer) return <h1>no mfer... server error! pls report lol</h1>;
+const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
+	const { provider, account } = useWeb3();
+	const { getMfer, checkMferOwnership } = useMfers(provider);
+
+	// TODO: type this as a mfer
+	const [mfer, setMfer] = useState<any>();
+	const [isMferOwner, setIsMferOwner] = useState<boolean>();
+
+	// Fetch mfer data on page load
+	useEffect(() => {
+		if (mferId !== undefined) {
+			// TODO: type as a mfer
+			getMfer(mferId).then(async (result: any) => {
+				setMfer(result);
+			});
+		}
+	}, [mferId]);
+
+	// Check if connected wallet owns mfer
+	useEffect(() => {
+		if (account && mferId !== undefined) {
+			checkMferOwnership(mferId, account).then(result => {
+				setIsMferOwner(result);
+			});
+		}
+	}, [account, mferId]);
+
+	if (error || isNaN(mferId))
+		return <h1>server error - check backend console</h1>;
+	if (!mfer) return <div>fetching mfer...</div>;
 
 	return (
-		<Layout
-			title={`${mfer.name} | mferspace`}
-			loggedInAddress={loggedInAddress}
-		>
+		<Layout title={`${mfer.name} | mferspace`}>
 			<Container>
 				<div style={{ display: 'flex' }}>
 					<div>
 						<ProfileCard mfer={mfer} profile={profile} />
 						<AttributesCard attributes={mfer.attributes} />
-						<BlurbSection name={mfer.name} />
+						<BioSection
+							name={mfer.name}
+							bioOne={profile.bio_1}
+							bioTwo={profile.bio_2}
+						/>
 					</div>
+
+					{isMferOwner && (
+						<EditProfilePortal mferId={mferId} profile={profile} />
+					)}
 				</div>
 			</Container>
 		</Layout>
 	);
 };
 
-export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
+export const getServerSideProps = async ({ query: { id } }: any) => {
 	try {
-		// TODO: this is duped in './edit/[id].tsx'
 		// Validate mfer id (mfer ids can range from 0 to 10020)
 		const mferId = parseInt(id);
+
 		if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
 			return {
 				redirect: {
@@ -51,16 +78,12 @@ export const getServerSideProps = async ({ req, res, query: { id } }: any) => {
 			};
 		}
 
-		// Fetch mfer data from chain, and profile data from DB
-		const [mfer, profile] = await Promise.all([
-			getMfer(mferId),
-			getProfile(mferId),
-		]);
+		// Fetch profile data from DB
+		const profile = await getProfile(mferId);
 
-		const loggedInAddress = parseAuthCookie(req, res);
-		return { props: { loggedInAddress, mfer, profile, error: false } };
+		return { props: { mferId, profile, error: false } };
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 		return { props: { error: true } };
 	}
 };

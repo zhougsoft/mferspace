@@ -10,6 +10,7 @@ enum MAX_LENGTH {
 	PRONOUNS = 50,
 	LOCATION = 100,
 	LINK = 50,
+	BIO = 5000,
 }
 
 export default async function handler(
@@ -17,6 +18,12 @@ export default async function handler(
 	res: NextApiResponse<any>
 ) {
 	try {
+		// Check auth if valid token
+		const activeAddress = parseAuthCookie(req, res);
+		if (!activeAddress) {
+			return res.status(403).json({ msg: 'invalid auth token' });
+		}
+
 		// Validate mfer id
 		if (!req.body.mfer_id) {
 			return res.status(400).json({ msg: 'no mfer id sent' });
@@ -34,9 +41,8 @@ export default async function handler(
 			age = '',
 			pronouns = '',
 			location = '',
-			link_1 = '',
-			link_2 = '',
-			link_3 = '',
+			bio_1 = '',
+			bio_2 = '',
 		} = req.body;
 
 		const nameValid = name?.length <= MAX_LENGTH.NAME;
@@ -44,9 +50,8 @@ export default async function handler(
 		const ageValid = age?.length <= MAX_LENGTH.AGE;
 		const pronounsValid = pronouns?.length <= MAX_LENGTH.PRONOUNS;
 		const locationValid = location?.length <= MAX_LENGTH.LOCATION;
-		const link1Valid = link_1?.length <= MAX_LENGTH.LINK;
-		const link2Valid = link_2?.length <= MAX_LENGTH.LINK;
-		const link3Valid = link_3?.length <= MAX_LENGTH.LINK;
+		const bioOneValid = bio_1?.length <= MAX_LENGTH.BIO;
+		const bioTwoValid = bio_2?.length <= MAX_LENGTH.BIO;
 
 		const inputIsValid =
 			nameValid &&
@@ -54,26 +59,19 @@ export default async function handler(
 			ageValid &&
 			pronounsValid &&
 			locationValid &&
-			link1Valid &&
-			link2Valid &&
-			link3Valid;
+			bioOneValid &&
+			bioTwoValid;
 
 		if (!inputIsValid) {
 			return res.status(400).json({ msg: 'invalid data sent' });
 		}
 
-		// Check auth if valid token
-		const loggedInAddress = parseAuthCookie(req, res);
-		if (!loggedInAddress) {
-			return res.status(403).json({ msg: 'invalid auth token' });
-		}
-
 		// Check if user is the owner of requested mfer
 		const mferOwner = await getMferOwner(mferId);
-		const isOwner = loggedInAddress.toLowerCase() === mferOwner.toLowerCase();
+		const isOwner = activeAddress.toLowerCase() === mferOwner.toLowerCase();
 		if (!isOwner) {
 			return res.status(403).json({
-				msg: `${loggedInAddress} is not the holder of mfer #${mferId}`,
+				msg: `${activeAddress} is not the holder of mfer #${mferId}`,
 			});
 		}
 
@@ -84,10 +82,8 @@ export default async function handler(
 			age,
 			pronouns,
 			location,
-			link_1,
-			link_2,
-			link_3,
-			last_updated: new Date(),
+			bio_1,
+			bio_2,
 		};
 
 		await updateProfile(profileData);
