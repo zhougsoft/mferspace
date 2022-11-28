@@ -1,21 +1,31 @@
 # mferspace
 
-**pre-prod TODO**:
+> a space for mfers
 
-- get rid of supabase client entirely
-- stick with good old fashioned postgres driver
-- connect via conventional env vars
-- use db plumbing config from the mfer reddit repo example
-- should be universal and connect to any PGSQL DB
+## requirements
 
-### setup .env
+- a postgres database connection URL
+- an [infura](https://infura.io) or [alchemy](https://www.alchemy.com) API key
 
-1. make a copy of `.env.local.example` named `.env.local`
-1. add values to `.env.local`
+## to run
 
-### run on local:
+1. install dependencies:
+   ```
+   npm install
+   ```
+1. make a copy of `.env.example` named `.env` and add credentials
+1. run database setup migration:
+   ```
+   npm run migrate:up
+   ```
+1. run local development server:
+   ```
+   npm run dev
+   ```
+1. check out `localhost:3000` in the browser!
 
-1. `npm install`
-1. `npm run build`
-1. `npm run dev`
-1. go to `http://localhost:3000`
+**_power tip:_** revert and clear the database if required:
+
+```
+npm run migrate:down
+```

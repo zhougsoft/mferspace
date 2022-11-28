@@ -1,13 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { useWeb3 } from '../../../hooks';
+// import { useWeb3 } from '../../../hooks';
 import { truncateAddress } from '../../../utils';
 import * as S from './styled';
 import { Container } from '../../Shared';
 
 const Header: React.FC = () => {
-	const { isActive, account, connectWallet } = useWeb3();
+
+	// TODO:
+	let isActive, account
+	// const { isActive, account, connectWallet } = useWeb3();
+
 
 	return (
 		<S.HeaderWrapper>
@@ -29,7 +33,7 @@ const Header: React.FC = () => {
 							</div>
 						) : (
 							<button
-								onClick={() => connectWallet()}
+								onClick={() => alert('TODO: connect wallet')}
 								style={{
 									cursor: 'pointer',
 									fontWeight: 'bold',

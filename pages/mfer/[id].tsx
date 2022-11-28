@@ -1,54 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import { getProfile } from '../../services/profile.service';
-import { useWeb3, useMfers } from '../../hooks';
+// import { getProfile } from '../../services/profiles.ts';
+import { useMfers } from '../../hooks'
 
-import { Container } from '../../components/Shared';
-import Layout from '../../components/Layout';
-import ProfileCard from '../../components/ProfileCard';
-import AttributesCard from '../../components/AttributesCard';
-import BioSection from '../../components/BioSection';
-import EditProfileModal from '../../components/EditProfileModal';
+import { Container } from '../../components/Shared'
+import Layout from '../../components/Layout'
+import ProfileCard from '../../components/ProfileCard'
+import AttributesCard from '../../components/AttributesCard'
+import BioSection from '../../components/BioSection'
+import EditProfileModal from '../../components/EditProfileModal'
 
 const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
-	const { provider, account } = useWeb3();
-	const { getMfer, checkMferOwnership } = useMfers(provider);
+	// TODO: delete when available from web3 hook
+	let provider: any, account: any
+	// const { provider, account } = useWeb3()
+	const { getMfer, checkMferOwnership } = useMfers(provider)
 
 	// TODO: type this as a mfer
-	const [mfer, setMfer] = useState<any>();
-	const [isMferOwner, setIsMferOwner] = useState<boolean>();
-	const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>();
+	const [mfer, setMfer] = useState<any>()
+	const [isMferOwner, setIsMferOwner] = useState<boolean>()
+	const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>()
 
 	// Fetch mfer data on page load
 	useEffect(() => {
 		if (mferId !== undefined) {
 			// TODO: type as a mfer
 			getMfer(mferId).then(async (result: any) => {
-				setMfer(result);
-			});
+				setMfer(result)
+			})
 		}
-	}, [mferId]);
+	}, [mferId])
 
 	// Check if connected wallet owns mfer
 	useEffect(() => {
 		if (account && mferId !== undefined) {
 			checkMferOwnership(mferId, account).then(result => {
-				setIsMferOwner(result);
-			});
+				setIsMferOwner(result)
+			})
 		}
-	}, [account, mferId]);
+	}, [account, mferId])
 
 	const onEditProfileClick = () => {
-		setEditModalIsOpen(true);
-	};
+		setEditModalIsOpen(true)
+	}
 
 	const onEditModalClose = () => {
-		setEditModalIsOpen(false);
-	};
+		setEditModalIsOpen(false)
+	}
 
 	if (error || isNaN(mferId))
-		return <h1>server error - check backend console</h1>;
-	if (!mfer) return <div>fetching mfer...</div>;
+		return <h1>server error - check backend console</h1>
+	if (!mfer) return <div>fetching mfer...</div>
 
 	return (
 		<Layout title={`${mfer.name} | mferspace`}>
@@ -83,13 +85,13 @@ const ProfilePage: React.FC = ({ mferId, profile, error }: any) => {
 				</div>
 			</Container>
 		</Layout>
-	);
-};
+	)
+}
 
 export const getServerSideProps = async ({ query: { id } }: any) => {
 	try {
 		// Validate mfer id (mfer ids can range from 0 to 10020)
-		const mferId = parseInt(id);
+		const mferId = parseInt(id)
 
 		if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
 			return {
@@ -97,17 +99,17 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 					permanent: false,
 					destination: '/mfer/error',
 				},
-			};
+			}
 		}
 
 		// Fetch profile data from DB
-		const profile = await getProfile(mferId);
+		const profile = await getProfile(mferId)
 
-		return { props: { mferId, profile, error: false } };
+		return { props: { mferId, profile, error: false } }
 	} catch (error) {
-		console.log(error);
-		return { props: { error: true } };
+		console.log(error)
+		return { props: { error: true } }
 	}
-};
+}
 
-export default ProfilePage;
+export default ProfilePage

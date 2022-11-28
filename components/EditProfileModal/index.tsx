@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { EditProfileFields } from '../../types';
-import { useWeb3, useAuth } from '../../hooks';
+// import { useWeb3, useAuth } from '../../hooks';
 
 import * as S from './styled';
 import EditProfileForm from './EditProfileForm';
@@ -20,8 +20,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 	onClose,
 }) => {
 	const router = useRouter();
-	const { getSigner } = useWeb3();
-	const { login } = useAuth();
+	// const { getSigner } = useWeb3();
+	// const { login } = useAuth();
 
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -49,7 +49,12 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 					// if unauthorized, prompt for login and re-submit
 					if (result.status === 403) {
 						try {
-							await login(getSigner());
+
+
+							// TODO: address this somehow
+							// await login(getSigner());
+
+
 							const reFetchResult = await fetch(editReqEndpoint, editReqOpts);
 							if (reFetchResult.ok) {
 								router.reload();

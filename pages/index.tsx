@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 
-import { useMfers, useWeb3 } from '../hooks';
-import { truncateAddress } from '../utils';
+import { useMfers } from '../hooks'
+import { truncateAddress } from '../utils'
 
-import Layout from '../components/Layout';
-import { Container, ExtLink } from '../components/Shared';
+import Layout from '../components/Layout'
+import { Container, ExtLink } from '../components/Shared'
 
 const HomePage: React.FC = () => {
-	const { provider, account } = useWeb3();
-	const { getMfersByAddress } = useMfers(provider);
-	const [mferIds, setMferIds] = useState<number[]>([]);
+	// TODO: use when new web3 provider is ready
+	// const { provider, account } = useWeb3();
+	// const { getMfersByAddress } = useMfers(provider);
 
+	const [mferIds, setMferIds] = useState<number[]>([])
+
+	
+	// TODO: remove this when account is available from useWeb3()
+	let account = null
 	// Fetch owned mfers when wallet connects
-	useEffect(() => {
-		if (account) {
-			getMfersByAddress(account).then(tokenIds => {
-				setMferIds(tokenIds);
-			});
-		}
-	}, [account]);
+	// useEffect(() => {
+	// 	if (account) {
+	// 		getMfersByAddress(account).then(tokenIds => {
+	// 			setMferIds(tokenIds);
+	// 		});
+	// 	}
+	// }, [account]);
 
 	return (
 		<Layout title="mferspace | a space for mfers">
@@ -61,11 +66,13 @@ const HomePage: React.FC = () => {
 						)}
 					</>
 				) : (
-					<button onClick={() => alert('TODO: connect wallet')}>connect wallet</button>
+					<button onClick={() => alert('TODO: connect wallet')}>
+						connect wallet
+					</button>
 				)}
 			</Container>
 		</Layout>
-	);
-};
+	)
+}
 
-export default HomePage;
+export default HomePage
