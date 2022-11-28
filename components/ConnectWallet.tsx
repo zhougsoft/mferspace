@@ -43,5 +43,5 @@ export default function ConnectWallet() {
   }
 
   // is busy or wallet not ready
-  return <>...</>
+  return <>{'...'}</>
 }

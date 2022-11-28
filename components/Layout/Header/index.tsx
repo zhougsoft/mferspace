@@ -1,11 +1,9 @@
 import React from 'react'
-import Link from 'next/link'
-
 import * as S from './styled'
 import { Container } from '../../Shared'
 import ConnectWallet from '../../ConnectWallet'
 
-const Header: React.FC = () => {
+export default function Header() {
   return (
     <S.HeaderWrapper>
       <Container>
@@ -15,22 +13,12 @@ const Header: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Link href="/" passHref>
-            <S.HomeLink>mferspace</S.HomeLink>
-          </Link>
+          <S.HomeLink href="/">mferspace</S.HomeLink>
           <div style={{ fontSize: '0.9rem' }}>
-
-
-
-            {/* TODO: bring back in connect wallet after confirmed not causing hydration error */}
-            {/* <ConnectWallet /> */}
-
-
+            <ConnectWallet />
           </div>
         </div>
       </Container>
     </S.HeaderWrapper>
   )
 }
-
-export default Header

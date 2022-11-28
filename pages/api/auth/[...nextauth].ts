@@ -29,7 +29,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           if (!NEXTAUTH_URL) throw new Error('no NEXTAUTH_URL env variable set')
 
           // signature authentication logic
-          const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'))
+          const siwe: any = new SiweMessage(
+            JSON.parse(credentials?.message || '{}')
+          )
           const authUrl = new URL(NEXTAUTH_URL)
 
           const result = await siwe.verify({

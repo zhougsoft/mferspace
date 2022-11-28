@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link'
 
 export const HeaderWrapper = styled.header`
 	background: ${({ theme }) => theme.colors.blue};
@@ -7,7 +8,7 @@ export const HeaderWrapper = styled.header`
 	margin-bottom: 2rem;
 `;
 
-export const HomeLink = styled.a`
+export const HomeLink = styled(Link)`
 	cursor: pointer;
 	color: ${({ theme }) => theme.colors.textAlt} !important;
 	font-size: 1.25rem;

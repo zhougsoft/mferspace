@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-
-import { useWeb3, useMfers } from '../hooks'
 import { truncateAddress } from '../utils'
-
-import Layout from '../components/Layout'
+import { useWeb3, useMfers } from '../hooks'
 import { Container, ExtLink } from '../components/Shared'
+import Layout from '../components/Layout'
 
-const HomePage: React.FC = () => {
-  // TODO: use when new web3 provider is ready
-  const { provider, address } = useWeb3()
+export default function HomePage() {
+  const { provider, address, isConnected } = useWeb3()
   const { getMfersByAddress } = useMfers(provider)
 
   const [mferIds, setMferIds] = useState<number[]>([])
@@ -23,6 +20,34 @@ const HomePage: React.FC = () => {
     }
   }, [address])
 
+  const renderStatus = () => {
+    if (!isConnected) {
+      return <div>no wallet connected...</div>
+    }
+
+    if (isConnected && address) {
+      return (
+        <div>
+          connected: {truncateAddress(address)}
+          {mferIds.length > 0 ? (
+            <>
+              <div>mfer hodler detected!</div>
+              <ol>
+                {mferIds.map(id => (
+                  <li key={'mfer-' + id}>
+                    <Link href={`/mfer/${id}`}>{`mfer #${id}`}</Link>
+                  </li>
+                ))}
+              </ol>
+            </>
+          ) : (
+            <div>no mfers detected in wallet...</div>
+          )}
+        </div>
+      )
+    }
+  }
+
   return (
     <Layout title="mferspace | a space for mfers">
       <Container>
@@ -35,40 +60,8 @@ const HomePage: React.FC = () => {
           </em>
         </small>
         <hr />
-        {address ? (
-          <>
-            <button
-              style={{ marginBottom: '1rem' }}
-              onClick={() => alert('TODO: disconnect wallet')}>
-              disconnect
-            </button>
-            <div>connected: {truncateAddress(address)}</div>
-
-            {mferIds.length > 0 ? (
-              <>
-                <div>mfer hodler detected!</div>
-                <ol>
-                  {mferIds.map(id => (
-                    <li key={'mfer-' + id}>
-                      <Link href={`/mfer/${id}`}>
-                        <a>{`mfer #${id}`}</a>
-                      </Link>
-                    </li>
-                  ))}
-                </ol>
-              </>
-            ) : (
-              <div>no mfers detected in wallet...</div>
-            )}
-          </>
-        ) : (
-          <button onClick={() => alert('TODO: connect wallet')}>
-            connect wallet
-          </button>
-        )}
+        {renderStatus()}
       </Container>
     </Layout>
   )
 }
-
-export default HomePage
