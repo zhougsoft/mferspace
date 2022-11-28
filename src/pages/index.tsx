@@ -8,7 +8,7 @@ import Layout from '../components/Layout';
 import { Container, ExtLink } from '../components/Shared';
 
 const HomePage: React.FC = () => {
-	const { provider, account, connectWallet, disconnectWallet } = useWeb3();
+	const { provider, account } = useWeb3();
 	const { getMfersByAddress } = useMfers(provider);
 	const [mferIds, setMferIds] = useState<number[]>([]);
 
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
 					<>
 						<button
 							style={{ marginBottom: '1rem' }}
-							onClick={() => disconnectWallet()}
+							onClick={() => alert('TODO: disconnect wallet')}
 						>
 							disconnect
 						</button>
@@ -61,7 +61,7 @@ const HomePage: React.FC = () => {
 						)}
 					</>
 				) : (
-					<button onClick={() => connectWallet()}>connect wallet</button>
+					<button onClick={() => alert('TODO: connect wallet')}>connect wallet</button>
 				)}
 			</Container>
 		</Layout>
