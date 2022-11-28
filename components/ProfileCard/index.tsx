@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Mfer } from '../../types';
+import { Mfer } from '../../interfaces';
 import * as S from './styled';
 
 interface ProfileCardProps {

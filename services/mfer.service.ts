@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import abi from '../config/abi/mfers.json';
-import { Mfer } from '../types';
+import { Mfer } from '../interfaces';
 import { MFER_CONTRACT_ADDRESS, IPFS_GATEWAY } from '../config/constants';
 
 // For handling all mfers data fetching logic

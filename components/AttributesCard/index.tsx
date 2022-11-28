@@ -1,4 +1,4 @@
-import { MferAttribute } from '../../types';
+import { MferAttribute } from '../../interfaces';
 import * as S from './styled';
 
 interface AttributesCardProps {

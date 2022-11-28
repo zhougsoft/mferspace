@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { EditProfileFields } from '../../types';
+import { EditProfileFields } from '../../interfaces';
 
 // TODO: type `profile`
 const EditProfileForm = ({

@@ -1,3 +1,4 @@
 import useMfers from './useMfers'
+import useWeb3 from './useWeb3'
 
-export { useMfers }
+export { useMfers, useWeb3 }

@@ -1,52 +1,36 @@
-import React from 'react';
-import Link from 'next/link';
+import React from 'react'
+import Link from 'next/link'
 
-// import { useWeb3 } from '../../../hooks';
-import { truncateAddress } from '../../../utils';
-import * as S from './styled';
-import { Container } from '../../Shared';
+import * as S from './styled'
+import { Container } from '../../Shared'
+import ConnectWallet from '../../ConnectWallet'
 
 const Header: React.FC = () => {
+  return (
+    <S.HeaderWrapper>
+      <Container>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Link href="/" passHref>
+            <S.HomeLink>mferspace</S.HomeLink>
+          </Link>
+          <div style={{ fontSize: '0.9rem' }}>
 
-	// TODO:
-	let isActive, account
-	// const { isActive, account, connectWallet } = useWeb3();
 
 
-	return (
-		<S.HeaderWrapper>
-			<Container>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-					}}
-				>
-					<Link href="/" passHref>
-						<S.HomeLink>mferspace</S.HomeLink>
-					</Link>
-					<div style={{ fontSize: '0.9rem' }}>
-						{isActive && account ? (
-							<div style={{ color: 'white' }}>
-								<small>connected: {truncateAddress(account)}</small>
-							</div>
-						) : (
-							<button
-								onClick={() => alert('TODO: connect wallet')}
-								style={{
-									cursor: 'pointer',
-									fontWeight: 'bold',
-								}}
-							>
-								connect wallet
-							</button>
-						)}
-					</div>
-				</div>
-			</Container>
-		</S.HeaderWrapper>
-	);
-};
+            {/* TODO: bring back in connect wallet after confirmed not causing hydration error */}
+            {/* <ConnectWallet /> */}
 
-export default Header;
+
+          </div>
+        </div>
+      </Container>
+    </S.HeaderWrapper>
+  )
+}
+
+export default Header

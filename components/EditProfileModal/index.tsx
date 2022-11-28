@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { EditProfileFields } from '../../types';
+import { EditProfileFields } from '../../interfaces';
 // import { useWeb3, useAuth } from '../../hooks';
 
 import * as S from './styled';

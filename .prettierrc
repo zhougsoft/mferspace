@@ -3,8 +3,9 @@
     "endOfLine": "lf",
     "semi": false,
     "singleQuote": true,
-    "useTabs": true,
+    "useTabs": false,
     "tabWidth": 2,
     "trailingComma": "es5",
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "bracketSameLine": true
 }

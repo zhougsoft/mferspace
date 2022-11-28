@@ -1,3 +1,8 @@
+
+
+// TODO: update this so it works with the new authentication theme
+
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { parseAuthCookie } from '../../../services/auth.service';
 import { getMferOwner } from '../../../services/mfer.service';
