@@ -1,10 +1,8 @@
-import MferAttribute from './MferAttribute';
+import MferAttribute from './MferAttribute'
 
-interface Mfer {
-	id: number;
-	name: string;
-	img: string;
-	attributes: MferAttribute[];
+export default interface Mfer {
+  id: number
+  name: string
+  img: string
+  attributes: MferAttribute[]
 }
-
-export default Mfer;

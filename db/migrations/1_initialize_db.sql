@@ -18,15 +18,14 @@ INSERT INTO
 SELECT
   x.mfer_id
 FROM
-  generate_series(0, 10020) AS x(mfer_id);
+  generate_series(0, 10000) AS x(mfer_id);
 
 -- Create wallets table & index addresses
 DROP TABLE IF EXISTS wallets;
 
-CREATE TABLE wallets (
-  wallet_id SERIAL PRIMARY KEY,
-  ADDRESS VARCHAR(42) UNIQUE NOT NULL,
-  nonce int4 NOT NULL,
+CREATE TABLE users (
+  user_id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
+  eth_address VARCHAR(42) UNIQUE NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ
 );

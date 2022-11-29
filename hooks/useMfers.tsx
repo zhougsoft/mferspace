@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { ethers, Contract, BigNumber } from 'ethers'
+import { useContractRead } from 'wagmi'
 
 import abi from '../config/abi/mfers.json'
 import {
@@ -18,7 +19,23 @@ export default function useMfers(provider: any) {
 
   // Get all mfer ids owned by a specific address
   const getMfersByAddress = async (address: string): Promise<number[]> => {
+
+
+
+    
+    
+    // TODO: this is breaking
+    // use wagmi instead of raw ethers:
+    // useContractRead()
+    // https://wagmi.sh/react/hooks/useContractRead
+    
+    console.log({address})
     const balResult: BigNumber = await contract.balanceOf(address)
+
+
+
+
+
     const mferBal = balResult.toNumber()
 
     const tokenIds: number[] = []

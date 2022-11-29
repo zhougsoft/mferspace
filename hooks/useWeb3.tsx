@@ -24,8 +24,6 @@ import { infuraProvider } from 'wagmi/providers/infura'
 // --- connectors
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
 
 interface Web3ProviderProps {
   children?: ReactNode
@@ -53,23 +51,10 @@ export function Web3Provider({ children }: Web3ProviderProps) {
     autoConnect: true,
     connectors: [
       new MetaMaskConnector({ chains }),
-      new CoinbaseWalletConnector({
-        chains,
-        options: {
-          appName: 'wagmi',
-        },
-      }),
       new WalletConnectConnector({
         chains,
         options: {
           qrcode: true,
-        },
-      }),
-      new InjectedConnector({
-        chains,
-        options: {
-          name: 'Injected',
-          shimDisconnect: true,
         },
       }),
     ],

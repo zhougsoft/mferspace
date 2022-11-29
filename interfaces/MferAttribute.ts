@@ -1,6 +1,4 @@
-interface MferAttribute {
-	trait_type: string;
-	value: string;
+export default interface MferAttribute {
+  trait_type: string
+  value: string
 }
-
-export default MferAttribute;
