@@ -6,22 +6,19 @@ import { Container, ExtLink } from '../components/Shared'
 import Layout from '../components/Layout'
 
 export default function HomePage() {
-  const { provider, address, isConnected } = useWeb3()
-  const { getMfersByAddress } = useMfers(provider)
-  
+  const { address, isConnected } = useWeb3()
+  const { getMfersByAddress } = useMfers()
+
   const [mferIds, setMferIds] = useState<number[]>([])
-  
-  
-  
-  // TODO: this is breaking due to issues with Eth provider
+
   // Fetch owned mfers when wallet connects
-  // useEffect(() => {
-  //   if (address) {
-  //     getMfersByAddress(address).then(tokenIds => {
-  //       setMferIds(tokenIds)
-  //     })
-  //   }
-  // }, [address])
+  useEffect(() => {
+    if (address) {
+      getMfersByAddress(address).then(tokenIds => {
+        setMferIds(tokenIds)
+      })
+    }
+  }, [address])
 
   const renderStatus = () => {
     if (!isConnected) {
