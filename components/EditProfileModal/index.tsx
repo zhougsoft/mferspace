@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
-import { EditProfileFields } from '../../interfaces'
 // import { useWeb3, useAuth } from '../../hooks';
 
 import * as S from './styled'
@@ -25,8 +24,9 @@ export default function EditProfileModal({
 
   const [isSaving, setIsSaving] = useState<boolean>(false)
 
+  // TODO: type fields as Profile
   // Sends post req to edit profile data passed by form
-  const onSave = (fields: EditProfileFields) => {
+  const onSave = (fields: any) => {
     setIsSaving(true)
 
     const body = JSON.stringify({ mfer_id: mferId, ...fields })

@@ -1,9 +1,13 @@
+
+// TODO:
+// replace hook form with useRefs and Zod
+
+
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { EditProfileFields } from '../../interfaces'
 
 interface EditProfileFormProps {
   profile: any // TODO: type this
-  onSave: SubmitHandler<EditProfileFields>
+  onSave: SubmitHandler<any> // type the data
 }
 
 export default function EditProfileForm({
@@ -14,7 +18,7 @@ export default function EditProfileForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EditProfileFields>()
+  } = useForm<any>()
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
