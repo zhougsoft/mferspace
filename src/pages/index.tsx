@@ -1,39 +1,23 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Container, ExtLink } from '../components/Shared';
 import Layout from '../components/Layout';
+import styled, { keyframes } from 'styled-components';
 
-
-
-
-export const Heading = styled.div`
-	& > h1 {
-		font-size: 3rem;
-		margin-bottom: 0;
-	}
-
-	& > div {
-		display: flex;
-		align-items: center;
-
-		& h3 {
-			margin-right: 0.75rem;
-		}
-	}
+const float = keyframes`
+	0% { transform: translateY(0); }
+	50% { transform: translateY(0.5rem); }
+	100% { transform: translateY(0); }
 `;
 
+const Eyes = styled.div`
+	font-size: 10rem;
+	animation: ${float} 0.5s ease-in-out;
+	animation-iteration-count: infinite;
+`;
 
 const HomePage: React.FC = () => {
 	return (
 		<Layout title="mferspace | a space for mfers">
-					<Container>
-			<Heading>
-				<h1>mferspace</h1>
-				<div>
-					<h3>a place for mfers</h3>
-				</div>
-			</Heading>
-		</Container>
+			<Eyes>👀</Eyes>
 		</Layout>
 	);
 };
