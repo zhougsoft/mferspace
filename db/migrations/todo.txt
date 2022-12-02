@@ -1,6 +1,0 @@
-replace SQL migration scripts with node scripts using postgres driver
-
-- migrate up
-- migrate down
-
-etc etc

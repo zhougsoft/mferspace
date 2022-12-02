@@ -7,8 +7,9 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"migrate:up": "node ./db/migrations/up.js",
-		"migrate:down": "node ./db/migrations/down.js"
+		"db:up": "node ./db/migrations/up.js",
+		"db:down": "node ./db/migrations/down.js",
+		"db:seed": "node ./db/migrations/seed.js"
 	},
 	"dependencies": {
 		"@types/node": "^18.11.9",
