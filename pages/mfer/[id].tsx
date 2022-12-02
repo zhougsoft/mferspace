@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-// import { getProfile } from '../../services/profiles.ts';
+import { read as readProfile } from '../../services/profiles'
 import { useMfers } from '../../hooks'
+import { serializeJSON } from '../../utils'
 
 import { Container } from '../../components/Shared'
 import Layout from '../../components/Layout'
@@ -22,10 +23,22 @@ export default function ProfilePage({
   profile,
   error,
 }: ProfilePageProps) {
+
+
+
+  // TODO: do stuff with profile data!
+  console.log(profile)
+
+
+  
   // TODO: delete when available from web3 hook
   let provider: any, account: any
   // const { provider, account } = useWeb3()
-  const { getMfer, checkMferOwnership } = useMfers(provider)
+  const { getMfer, checkMferOwnership } = useMfers()
+
+
+
+
 
   // TODO: type this as a mfer
   const [mfer, setMfer] = useState<any>()
@@ -43,13 +56,13 @@ export default function ProfilePage({
   }, [mferId])
 
   // Check if connected wallet owns mfer
-  useEffect(() => {
-    if (account && mferId !== undefined) {
-      checkMferOwnership(mferId, account).then(result => {
-        setIsMferOwner(result)
-      })
-    }
-  }, [account, mferId])
+  // useEffect(() => {
+  //   if (account && mferId !== undefined) {
+  //     checkMferOwnership(mferId, account).then(result => {
+  //       setIsMferOwner(result)
+  //     })
+  //   }
+  // }, [account, mferId])
 
   const onEditProfileClick = () => {
     setEditModalIsOpen(true)
@@ -112,12 +125,9 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
       }
     }
 
-    // TODO: remove this profile placeholder and implement data fetch
-    let profile = {}
-    // Fetch profile data from DB
-    // const profile = await getProfile(mferId)
-
-    return { props: { mferId, profile, error: false } }
+    // fetch, serialize  & return profile data
+    const profile = await readProfile(mferId)
+    return { props: { mferId, profile: serializeJSON(profile), error: false } }
   } catch (error) {
     console.log(error)
     return { props: { error: true } }

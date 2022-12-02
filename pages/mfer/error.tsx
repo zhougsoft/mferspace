@@ -13,7 +13,7 @@ const MferErrorPage: React.FC<MferErrorPageProps> = () => {
     <Layout title={'uh oh! | mferspace'}>
       <Container>
         <h1>invalid mfer id</h1>
-        <h3>a mfer id is a number between 0 and 10,020!</h3>
+        <h3>a valid mfer pfp id is a number between 0 and 10,000!</h3>
         <br />
         <small>
           here&apos;s an example URL for going to mfer #6969&apos;s mferspace:
