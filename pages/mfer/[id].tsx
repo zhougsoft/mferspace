@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import type Profile from '../../interfaces/Profile'
+import type { Mfer, Profile } from '../../interfaces'
 import { read as readProfile } from '../../services/profiles'
 import { useWeb3, useMfers } from '../../hooks'
-import { serializeJSON } from '../../utils'
+import { isValidMferId } from '../../utils'
 
 import { Container } from '../../components/Shared'
 import Layout from '../../components/Layout'
@@ -12,9 +12,8 @@ import AttributesCard from '../../components/AttributesCard'
 import BioSection from '../../components/BioSection'
 import EditProfileModal from '../../components/EditProfileModal'
 
-// TODO: tighten up this interface
 interface ProfilePageProps {
-  mferId?: any
+  mferId: number
   profile?: Profile
   error?: any
 }
@@ -24,26 +23,21 @@ export default function ProfilePage({
   profile,
   error,
 }: ProfilePageProps) {
-  // TODO: do stuff with profile data!
-  console.log(profile)
-
-  // TODO: delete when available from web3 hook
-
   const { address } = useWeb3()
   const { getMfer, checkMferOwnership } = useMfers()
-
-  // TODO: type this as a mfer
-  const [mfer, setMfer] = useState<any>()
+  const [mfer, setMfer] = useState<Mfer>()
   const [isMferOwner, setIsMferOwner] = useState<boolean>()
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>()
+
+  // TODO: used for debugging, remove if not required
+  useEffect(() => {
+    console.log({ profile })
+  }, [])
 
   // Fetch mfer data on page load
   useEffect(() => {
     if (mferId !== undefined) {
-      // TODO: type as a mfer
-      getMfer(mferId).then(async (result: any) => {
-        setMfer(result)
-      })
+      getMfer(mferId).then(async result => setMfer(result))
     }
   }, [mferId])
 
@@ -86,8 +80,8 @@ export default function ProfilePage({
           </div>
           <BioSection
             name={mfer.name}
-            bioAbout={profile?.bioAbout}
-            bioMeet={profile?.bioMeet}
+            bioAbout={profile?.bio_about}
+            bioMeet={profile?.bio_meet}
           />
 
           {editModalIsOpen && (
@@ -105,22 +99,19 @@ export default function ProfilePage({
 
 export const getServerSideProps = async ({ query: { id } }: any) => {
   try {
-    // Validate mfer id (mfer ids can range from 0 to 10020)
-    const mferId = parseInt(id)
-
-    if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
+    // redirect home if invalid id route param sent
+    if (!isValidMferId(id)) {
       return {
         redirect: {
           permanent: false,
-          destination: '/mfer/error',
+          destination: '/',
         },
       }
     }
 
-    // fetch, serialize  & return profile data
-    const profile = await readProfile(mferId)
-
-    return { props: { mferId, profile, error: false } }
+    // fetch, serialize & return profile data
+    const profile = await readProfile(id)
+    return { props: { mferId: id, profile, error: false } }
   } catch (error) {
     console.log(error)
     return { props: { error: true } }

@@ -10,7 +10,6 @@ import {
 } from '../config/constants'
 import { Mfer } from '../interfaces'
 
-// TODO: type provider arg as Ethers.js type provider
 export default function useMfers() {
   const { provider } = useWeb3()
   const contract = useContract({

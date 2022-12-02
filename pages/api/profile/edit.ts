@@ -1,7 +1,7 @@
 // TODO: update this so it works with the new authentication flow
 
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getMferOwner } from '../../../services/mfer.service'
+import { getMferOwner } from '../../../services/mfers'
 
 const enum MAX_LENGTH {
   NAME = 50,

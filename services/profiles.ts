@@ -1,36 +1,30 @@
 import sql from '../db'
-import type { Row } from 'postgres'
-import type Profile from '../interfaces/Profile'
-import { serializeJSON } from '../utils'
-
-const parseProfile = (data: Row): any => {
-  const profileData = {
-    mferId: data.mfer_id,
-    name: data.name || undefined,
-    tagline: data.tagline || undefined,
-    gender: data.gender || undefined,
-    age: data.age || undefined,
-    location: data.location || undefined,
-    songUrl: data.song_url || undefined,
-    bioAbout: data.bio_about || undefined,
-    bioMeet: data.bio_meet || undefined,
-    lastUpdated: data.last_updated || undefined,
-  }
-
-  return serializeJSON(profileData)
-}
+import type { Profile } from '../interfaces'
+import { serializeJSON, isValidMferId } from '../utils'
 
 export async function read(mferId: number): Promise<Profile> {
-  const [data] = await sql`
+  if (!isValidMferId(mferId)) {
+    throw Error(`invalid mfer id - received: ${mferId}`)
+  }
+
+  const [data] = await sql<Profile[]>`
     SELECT DISTINCT * FROM profiles WHERE mfer_id=${mferId} ORDER BY mfer_id
   `
-  return parseProfile(data)
+
+  if (!data) {
+    throw Error(`no profile record found in database for mfer id: ${mferId}`)
+  }
+  return serializeJSON(data)
 }
 
 export async function update(
   mferId: number,
   profile: Profile
 ): Promise<Profile> {
+  if (!isValidMferId(mferId)) {
+    throw Error(`invalid mfer id - received: ${mferId}`)
+  }
+
   const [data] = await sql<Profile[]>`
     UPDATE profiles SET
     name=${profile.name || ''}
@@ -38,11 +32,16 @@ export async function update(
     gender=${profile.gender || ''}
     age=${profile.age || ''}
     location=${profile.location || ''}
-    songUrl=${profile.songUrl || ''}
-    bioAbout=${profile.bioAbout || ''}
-    bioMeet=${profile.bioMeet || ''}
+    songUrl=${profile.song_url || ''}
+    bioAbout=${profile.bio_about || ''}
+    bioMeet=${profile.bio_meet || ''}
     WHERE mfer_id=${mferId}
     RETURNING *
   `
-  return parseProfile(data)
+  if (!data) {
+    throw Error(
+      `no record returned after profile update for mfer id: ${mferId}`
+    )
+  }
+  return serializeJSON(data)
 }

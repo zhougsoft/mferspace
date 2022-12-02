@@ -8,7 +8,6 @@ import Layout from '../components/Layout'
 export default function HomePage() {
   const { address, isConnected } = useWeb3()
   const { getMfersByAddress } = useMfers()
-
   const [mferIds, setMferIds] = useState<number[]>([])
 
   // Fetch owned mfers when wallet connects

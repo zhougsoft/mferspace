@@ -9,14 +9,14 @@ interface ProfileInterests {
 }
 
 export default interface Profile {
-  mferId: number
+  mfer_id: number
   name?: string
   tagline?: string
   gender?: string
   age?: string
   location?: string
-  songUrl?: string
-  bioAbout?: string
-  bioMeet?: string
-  lastUpdated?: Date
+  song_url?: string
+  bio_about?: string
+  bio_meet?: string
+  last_updated?: Date
 }
