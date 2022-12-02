@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
+import type Profile from '../../interfaces/Profile'
 import { read as readProfile } from '../../services/profiles'
-import { useMfers } from '../../hooks'
+import { useWeb3, useMfers } from '../../hooks'
 import { serializeJSON } from '../../utils'
 
 import { Container } from '../../components/Shared'
@@ -14,7 +15,7 @@ import EditProfileModal from '../../components/EditProfileModal'
 // TODO: tighten up this interface
 interface ProfilePageProps {
   mferId?: any
-  profile?: any
+  profile?: Profile
   error?: any
 }
 
@@ -23,22 +24,13 @@ export default function ProfilePage({
   profile,
   error,
 }: ProfilePageProps) {
-
-
-
   // TODO: do stuff with profile data!
   console.log(profile)
 
-
-  
   // TODO: delete when available from web3 hook
-  let provider: any, account: any
-  // const { provider, account } = useWeb3()
+
+  const { address } = useWeb3()
   const { getMfer, checkMferOwnership } = useMfers()
-
-
-
-
 
   // TODO: type this as a mfer
   const [mfer, setMfer] = useState<any>()
@@ -56,13 +48,13 @@ export default function ProfilePage({
   }, [mferId])
 
   // Check if connected wallet owns mfer
-  // useEffect(() => {
-  //   if (account && mferId !== undefined) {
-  //     checkMferOwnership(mferId, account).then(result => {
-  //       setIsMferOwner(result)
-  //     })
-  //   }
-  // }, [account, mferId])
+  useEffect(() => {
+    if (address && mferId !== undefined) {
+      checkMferOwnership(mferId, address).then(result => {
+        setIsMferOwner(result)
+      })
+    }
+  }, [address, mferId])
 
   const onEditProfileClick = () => {
     setEditModalIsOpen(true)
@@ -94,8 +86,8 @@ export default function ProfilePage({
           </div>
           <BioSection
             name={mfer.name}
-            bioOne={profile.bio_1}
-            bioTwo={profile.bio_2}
+            bioAbout={profile?.bioAbout}
+            bioMeet={profile?.bioMeet}
           />
 
           {editModalIsOpen && (
@@ -127,7 +119,8 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
 
     // fetch, serialize  & return profile data
     const profile = await readProfile(mferId)
-    return { props: { mferId, profile: serializeJSON(profile), error: false } }
+
+    return { props: { mferId, profile, error: false } }
   } catch (error) {
     console.log(error)
     return { props: { error: true } }

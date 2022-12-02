@@ -5,24 +5,24 @@ const DEFAULT_BIO = '...'
 
 interface BioSectionProps {
   name: string
-  bioOne: string
-  bioTwo: string
+  bioAbout?: string
+  bioMeet?: string
 }
 
 export default function BioSection({
   name = 'this mfer',
-  bioOne,
-  bioTwo,
+  bioAbout = DEFAULT_BIO,
+  bioMeet = DEFAULT_BIO,
 }: BioSectionProps) {
   return (
     <S.Section>
       <S.Article>
         <h5>About {name}</h5>
-        <p>{bioOne ? bioOne : DEFAULT_BIO}</p>
+        <p>{bioAbout}</p>
       </S.Article>
       <S.Article>
         <h5>Who {name} would like to meet</h5>
-        <p>{bioTwo ? bioTwo : DEFAULT_BIO}</p>
+        <p>{bioMeet}</p>
       </S.Article>
     </S.Section>
   )
