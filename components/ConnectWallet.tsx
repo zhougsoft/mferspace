@@ -1,4 +1,5 @@
-import { useWeb3 } from '../hooks'
+import { useWeb3, useAuth } from '../hooks'
+import { truncateAddress } from '../utils'
 
 // handles wallet connection buttons & connection flow
 export default function ConnectWallet() {
@@ -10,16 +11,21 @@ export default function ConnectWallet() {
     connect,
     disconnect,
   } = useWeb3()
+  const { signOut } = useAuth()
 
-  // no wallet connected
+  // if no wallet connected
   if (!isConnected && connect) {
     return (
       <>
+        <span style={{ color: 'white', marginRight: '1rem' }}>
+          <em>🔌 connect wallet:</em>
+        </span>
         {connectors.map(connector => (
           <button
             disabled={!connector.ready}
             key={connector.id}
-            onClick={() => connect({ connector })}>
+            onClick={() => connect({ connector })}
+            style={{ fontWeight: 'bold' }}>
             {connector.name.toLowerCase()}
             {!connector.ready && ' (unsupported)'}
             {connector.id === pendingConnector?.id && ' (connecting)'}
@@ -29,15 +35,21 @@ export default function ConnectWallet() {
     )
   }
 
-  // wallet is connected
+  // if wallet is connected
   if (isConnected && address) {
     return (
       <>
-        <button onClick={() => disconnect()}>disconnect</button>
-        {' ~ '}
-        <span>
-          <em>connected: {address}</em>
+        <span style={{ color: 'white', marginRight: '1rem' }}>
+          <em>⚡ connected: {truncateAddress(address)}</em>
         </span>
+        <button
+          onClick={() => {
+            disconnect()
+            signOut()
+          }}
+          style={{ fontWeight: 'bold' }}>
+          logout
+        </button>
       </>
     )
   }

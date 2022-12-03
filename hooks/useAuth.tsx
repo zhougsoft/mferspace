@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router'
 import { useSession, signIn, signOut, getCsrfToken } from 'next-auth/react'
 import { SiweMessage } from 'siwe'
 import { useWeb3 } from './'
 
 export default function useAuth() {
+  const router = useRouter()
   const { data: session, status } = useSession()
   const { isConnected, address, activeChain, signMessageAsync } = useWeb3()
 
@@ -31,7 +33,7 @@ export default function useAuth() {
       const signature = await signMessageAsync({
         message: message.prepareMessage(),
       })
-      
+
       // authenticate user's signature
       await signIn('credentials', {
         message: JSON.stringify(message),
@@ -48,8 +50,10 @@ export default function useAuth() {
     }
   }
 
+  // sign out and force a postback
   async function handleSignOut() {
     await signOut()
+    router.reload()
   }
 
   return { session, status, signIn: handleSignIn, signOut: handleSignOut }
