@@ -1,13 +1,12 @@
-
 // TODO:
-// replace hook form with useRefs and Zod
-
+// replace react-hook-form with useRefs on inputs and Zod for validation
 
 import { useForm, SubmitHandler } from 'react-hook-form'
+import Profile, { ProfileMaxChars } from '../../interfaces/Profile'
 
 interface EditProfileFormProps {
   profile: any // TODO: type this
-  onSave: SubmitHandler<any> // type the data
+  onSave: SubmitHandler<Profile> // type the data
 }
 
 export default function EditProfileForm({
@@ -28,10 +27,10 @@ export default function EditProfileForm({
         <input
           defaultValue={profile?.name || ''}
           placeholder="name"
-          {...register('name', { maxLength: 50 })}
+          {...register('name', { maxLength: ProfileMaxChars.Name })}
           autoComplete="off"
         />
-        {errors.name && <span>max length 50 chars</span>}
+        {errors.name && <span>max length {ProfileMaxChars.Name} chars</span>}
       </div>
 
       {/* TAGLINE */}
@@ -40,10 +39,26 @@ export default function EditProfileForm({
         <input
           defaultValue={profile?.tagline || ''}
           placeholder="tagline"
-          {...register('tagline', { maxLength: 140 })}
+          {...register('tagline', { maxLength: ProfileMaxChars.Tagline })}
           autoComplete="off"
         />
-        {errors.tagline && <span>max length 140 chars</span>}
+        {errors.tagline && (
+          <span>max length {ProfileMaxChars.Tagline} chars</span>
+        )}
+      </div>
+
+      {/* GENDER */}
+      <div>
+        <label htmlFor="gender">gender</label>
+        <input
+          defaultValue={profile?.gender || ''}
+          placeholder="gender"
+          {...register('gender', { maxLength: ProfileMaxChars.Gender })}
+          autoComplete="off"
+        />
+        {errors.gender && (
+          <span>max length {ProfileMaxChars.Gender} chars</span>
+        )}
       </div>
 
       {/* AGE */}
@@ -52,22 +67,10 @@ export default function EditProfileForm({
         <input
           defaultValue={profile?.age || ''}
           placeholder="age"
-          {...register('age', { maxLength: 25 })}
+          {...register('age', { maxLength: ProfileMaxChars.Age })}
           autoComplete="off"
         />
-        {errors.age && <span>max length 25 chars</span>}
-      </div>
-
-      {/* PRONOUNS */}
-      <div>
-        <label htmlFor="pronouns">pronouns</label>
-        <input
-          defaultValue={profile?.pronouns || ''}
-          placeholder="pronouns"
-          {...register('pronouns', { maxLength: 50 })}
-          autoComplete="off"
-        />
-        {errors.pronouns && <span>max length 50 chars</span>}
+        {errors.age && <span>max length {ProfileMaxChars.Age} chars</span>}
       </div>
 
       {/* LOCATION */}
@@ -76,34 +79,54 @@ export default function EditProfileForm({
         <input
           defaultValue={profile?.location || ''}
           placeholder="location"
-          {...register('location', { maxLength: 100 })}
+          {...register('location', { maxLength: ProfileMaxChars.Location })}
           autoComplete="off"
         />
-        {errors.location && <span>max length 100 chars</span>}
+        {errors.location && (
+          <span>max length {ProfileMaxChars.Location} chars</span>
+        )}
       </div>
 
-      {/* BIO_1 */}
+      {/* SONG URL */}
       <div>
-        <label htmlFor="bio_1">about you</label>
+        <label htmlFor="song_url">song_url</label>
+        <input
+          defaultValue={profile?.song_url || ''}
+          placeholder="song_url"
+          {...register('song_url', { maxLength: ProfileMaxChars.SongUrl })}
+          autoComplete="off"
+        />
+        {errors.song_url && (
+          <span>max length {ProfileMaxChars.SongUrl} chars</span>
+        )}
+      </div>
+
+      {/* ABOUT ME */}
+      <div>
+        <label htmlFor="bio_about">about you</label>
         <textarea
-          defaultValue={profile?.bio_1 || ''}
+          defaultValue={profile?.bio_about || ''}
           placeholder="about you"
-          {...register('bio_1', { maxLength: 5000 })}
+          {...register('bio_about', { maxLength: ProfileMaxChars.BioAbout })}
           autoComplete="off"
         />
-        {errors.bio_1 && <span>max length 1000 chars</span>}
+        {errors.bio_about && (
+          <span>max length {ProfileMaxChars.BioAbout} chars</span>
+        )}
       </div>
 
-      {/* BIO_2 */}
+      {/* MFERS I'D LIKE TO MEET */}
       <div>
-        <label htmlFor="bio_2">who you&apos;d like to meet</label>
+        <label htmlFor="bio_meet">mfers you&apos;d like to meet</label>
         <textarea
-          defaultValue={profile?.bio_2 || ''}
-          placeholder="who you'd like to meet"
-          {...register('bio_2', { maxLength: 5000 })}
+          defaultValue={profile?.bio_meet || ''}
+          placeholder="mfers you'd like to meet"
+          {...register('bio_meet', { maxLength: ProfileMaxChars.BioMeet })}
           autoComplete="off"
         />
-        {errors.bio_2 && <span>max length 1000 chars</span>}
+        {errors.bio_meet && (
+          <span>max length {ProfileMaxChars.BioMeet} chars</span>
+        )}
       </div>
 
       {/* BUTTON GROUP */}

@@ -2,6 +2,7 @@ import sql from '../db'
 import type { Profile } from '../interfaces'
 import { serializeJSON, isValidMferId } from '../utils'
 
+// get single profile database record by mfer id
 export async function read(mferId: number): Promise<Profile> {
   if (!isValidMferId(mferId)) {
     throw Error(`invalid mfer id - received: ${mferId}`)
@@ -17,12 +18,10 @@ export async function read(mferId: number): Promise<Profile> {
   return serializeJSON(data)
 }
 
-export async function update(
-  mferId: number,
-  profile: Profile
-): Promise<Profile> {
-  if (!isValidMferId(mferId)) {
-    throw Error(`invalid mfer id - received: ${mferId}`)
+// update profile database record
+export async function update(profile: Profile): Promise<Profile> {
+  if (!isValidMferId(profile.mfer_id)) {
+    throw Error(`invalid mfer id - received: ${profile.mfer_id}`)
   }
 
   const [data] = await sql<Profile[]>`
@@ -35,12 +34,12 @@ export async function update(
     songUrl=${profile.song_url || ''}
     bioAbout=${profile.bio_about || ''}
     bioMeet=${profile.bio_meet || ''}
-    WHERE mfer_id=${mferId}
+    WHERE mfer_id=${profile.mfer_id}
     RETURNING *
   `
   if (!data) {
     throw Error(
-      `no record returned after profile update for mfer id: ${mferId}`
+      `no record returned after profile update for mfer id: ${profile.mfer_id}`
     )
   }
   return serializeJSON(data)

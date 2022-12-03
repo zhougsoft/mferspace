@@ -1,8 +1,9 @@
-import { useState } from 'react'
+// TODO: re-wire login flow
+
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-// import { useWeb3, useAuth } from '../../hooks';
-
+import { useWeb3, useAuth } from '../../hooks'
 import * as S from './styled'
 import EditProfileForm from './EditProfileForm'
 
@@ -19,21 +20,40 @@ export default function EditProfileModal({
   onClose,
 }: EditProfileModalProps) {
   const router = useRouter()
-  // const { getSigner } = useWeb3();
-  // const { login } = useAuth();
-
+  const { address } = useWeb3()
+  const { session, signIn } = useAuth()
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
-  // TODO: type fields as Profile
-  // Sends post req to edit profile data passed by form
-  const onSave = (fields: any) => {
+  // watch conditions that enable user authentication
+  useEffect(() => {
+    if (
+      address &&
+      session?.address &&
+      address.toLowerCase() === session.address.toLowerCase()
+    ) {
+      setIsAuthenticated(true)
+    } else {
+      if (isAuthenticated) {
+        setIsAuthenticated(false)
+      }
+    }
+  }, [address, session?.address])
+
+  // send request to edit profile data passed by form
+  const onSave = async (fields: any) => {
+    // check auth and prompt login if not authenticated
+    if (!isAuthenticated) {
+      await signIn()
+      if (!isAuthenticated) return
+    }
+
     setIsSaving(true)
 
     const body = JSON.stringify({ mfer_id: mferId, ...fields })
-
     const editReqEndpoint = '/api/profile/edit'
     const editReqOpts = {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,14 +69,14 @@ export default function EditProfileModal({
           // if unauthorized, prompt for login and re-submit
           if (result.status === 403) {
             try {
-              // TODO: address this somehow
-              // await login(getSigner());
-
+              await signIn()
               const reFetchResult = await fetch(editReqEndpoint, editReqOpts)
               if (reFetchResult.ok) {
                 router.reload()
               } else {
-                alert('profile edit unsuccessful...')
+                alert(
+                  'profile edit unsuccessful - try refreshing the page in your browser!'
+                )
                 setIsSaving(false)
               }
             } catch (error) {

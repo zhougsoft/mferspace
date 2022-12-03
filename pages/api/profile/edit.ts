@@ -1,109 +1,90 @@
-// TODO: update this so it works with the new authentication flow
-
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getMferOwner } from '../../../services/mfers'
+import { getSession } from 'next-auth/react'
+import Profile, { ProfileMaxChars } from '../../../interfaces/Profile'
 
-const enum MAX_LENGTH {
-  NAME = 50,
-  TAGLINE = 140,
-  AGE = 25,
-  PRONOUNS = 50,
-  LOCATION = 100,
-  LINK = 50,
-  BIO = 5000,
-}
+import { getMferOwner } from '../../../services/mfers'
+import { update as updateProfile } from '../../../services/profiles'
+import { isValidMferId } from '../../../utils'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any> // TODO: type the response data
+  res: NextApiResponse<{ msg: string; data?: Profile }> // TODO: type the response data
 ) {
   try {
+    // get active address from session, send 403 response if no session found
+    const session = await getSession({ req })
+    if (!session?.address) {
+      return res.status(403).json({ msg: 'authentication required' })
+    }
+    const activeAddress = session.address
 
-
-
-
-
-
-
-    // TODO: delete this placeholder when not required
-    let activeAddress = ''
-
-    // TODO: guard route with authentication
-    // if (notAuthenticated) {
-    //   return res.status(403).json({ msg: 'authentication required' })
-    // }
-
-
-
-
-
-
-    // Validate mfer id
+    // validate mfer id input
     if (!req.body.mfer_id) {
       return res.status(400).json({ msg: 'no mfer id sent' })
     }
     const mferId = parseInt(req.body.mfer_id)
-    if (isNaN(mferId) || mferId < 0 || mferId > 10020) {
+    if (!isValidMferId(mferId)) {
       return res.status(400).json({ msg: 'invalid mfer id' })
     }
 
-    // Validate incoming data
-    // TODO: replace with scalable validation pattern
+    // validate incoming request data
     const {
       name = '',
       tagline = '',
+      gender = '',
       age = '',
-      pronouns = '',
       location = '',
-      bio_1 = '',
-      bio_2 = '',
+      song_url = '',
+      bio_about = '',
+      bio_meet = '',
     } = req.body
 
-    const nameValid = name?.length <= MAX_LENGTH.NAME
-    const taglineValid = tagline?.length <= MAX_LENGTH.TAGLINE
-    const ageValid = age?.length <= MAX_LENGTH.AGE
-    const pronounsValid = pronouns?.length <= MAX_LENGTH.PRONOUNS
-    const locationValid = location?.length <= MAX_LENGTH.LOCATION
-    const bioOneValid = bio_1?.length <= MAX_LENGTH.BIO
-    const bioTwoValid = bio_2?.length <= MAX_LENGTH.BIO
+    const nameValid = name.length <= ProfileMaxChars.Name
+    const taglineValid = tagline.length <= ProfileMaxChars.Tagline
+    const genderValid = gender.length <= ProfileMaxChars.Gender
+    const ageValid = age.length <= ProfileMaxChars.Age
+    const locationValid = location.length <= ProfileMaxChars.Location
+    const songUrl = song_url.length <= ProfileMaxChars.SongUrl
+    const bioAboutValid = bio_about.length <= ProfileMaxChars.BioAbout
+    const bioMeetValid = bio_meet.length <= ProfileMaxChars.BioMeet
 
     const inputIsValid =
       nameValid &&
       taglineValid &&
+      genderValid &&
       ageValid &&
-      pronounsValid &&
       locationValid &&
-      bioOneValid &&
-      bioTwoValid
+      songUrl &&
+      bioAboutValid &&
+      bioMeetValid
 
     if (!inputIsValid) {
-      return res.status(400).json({ msg: 'invalid data sent' })
+      return res.status(400).json({ msg: 'invalid data in request' })
     }
 
-    // Check if user is the owner of requested mfer
+    // check that session address is the same as the mfer holder address
     const mferOwner = await getMferOwner(mferId)
     const isOwner = activeAddress.toLowerCase() === mferOwner.toLowerCase()
     if (!isOwner) {
       return res.status(403).json({
-        msg: `${activeAddress} is not the holder of mfer #${mferId}`,
+        msg: `${activeAddress} is not the owner of mfer #${mferId}`,
       })
     }
 
-    const profileData = {
+    // write profile updates to the database
+    const updateResult = await updateProfile({
       mfer_id: mferId,
       name,
       tagline,
+      gender,
       age,
-      pronouns,
       location,
-      bio_1,
-      bio_2,
-    }
+      song_url,
+      bio_about,
+      bio_meet,
+    })
 
-    // TODO: write the updates to the DB
-    // await updateProfile(profileData)
-
-    return res.status(200).json({ msg: 'success' })
+    return res.status(200).json({ msg: 'success', data: updateResult })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ msg: 'server error' })

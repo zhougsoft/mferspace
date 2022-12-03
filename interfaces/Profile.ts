@@ -8,6 +8,17 @@ interface ProfileInterests {
   heroes?: string
 }
 
+export const enum ProfileMaxChars {
+  Name = 50,
+  Tagline = 140,
+  Gender = 50,
+  Age = 50,
+  Location = 50,
+  SongUrl = 100,
+  BioAbout = 5000,
+  BioMeet = 5000,
+}
+
 export default interface Profile {
   mfer_id: number
   name?: string
