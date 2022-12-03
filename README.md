@@ -5,7 +5,7 @@
 ## requirements
 
 - a postgres database connection URL
-- an [infura](https://infura.io) or [alchemy](https://www.alchemy.com) API key
+- an [alchemy](https://www.alchemy.com) or [infura](https://infura.io) API key
 
 ## to run
 
@@ -16,7 +16,7 @@
 1. make a copy of `.env.example` named `.env` and add credentials
 1. run database setup migration:
    ```
-   npm run migrate:up
+   npm run db:up
    ```
 1. run local development server:
    ```
@@ -27,5 +27,5 @@
 **_power tip:_** revert and clear the database if required:
 
 ```
-npm run migrate:down
+npm run db:down
 ```
