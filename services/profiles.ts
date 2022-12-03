@@ -26,14 +26,14 @@ export async function update(profile: Profile): Promise<Profile> {
 
   const [data] = await sql<Profile[]>`
     UPDATE profiles SET
-    name=${profile.name || ''}
-    tagline=${profile.tagline || ''}
-    gender=${profile.gender || ''}
-    age=${profile.age || ''}
-    location=${profile.location || ''}
-    songUrl=${profile.song_url || ''}
-    bioAbout=${profile.bio_about || ''}
-    bioMeet=${profile.bio_meet || ''}
+    name=${profile.name || ''},
+    tagline=${profile.tagline || ''},
+    gender=${profile.gender || ''},
+    age=${profile.age || ''},
+    location=${profile.location || ''},
+    song_url=${profile.song_url || ''},
+    bio_about=${profile.bio_about || ''},
+    bio_meet=${profile.bio_meet || ''}
     WHERE mfer_id=${profile.mfer_id}
     RETURNING *
   `

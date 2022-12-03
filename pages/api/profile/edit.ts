@@ -68,6 +68,8 @@ export default async function handler(
     const isOwner =
       utils.getAddress(activeAddress) === utils.getAddress(mferOwner)
 
+
+    // validate authentication
     if (!isOwner) {
       return res.status(403).json({
         msg: `${activeAddress} is not the owner of mfer #${mferId}`,

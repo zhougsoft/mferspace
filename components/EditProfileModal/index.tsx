@@ -18,32 +18,12 @@ export default function EditProfileModal({
   onClose,
 }: EditProfileModalProps) {
   const router = useRouter()
-  const { address } = useWeb3()
-  const { session, signIn } = useAuth()
+  const { signIn } = useAuth()
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
-  // watch conditions that enable user authentication
-  useEffect(() => {
-    if (
-      address &&
-      session?.address &&
-      utils.getAddress(address) === utils.getAddress(session.address)
-    ) {
-      setIsAuthenticated(true)
-    } else {
-      if (isAuthenticated) {
-        setIsAuthenticated(false)
-      }
-    }
-  }, [address, session?.address])
-
+  // TODO: can this profile editing plumbing live in a useProfiles() hook?
   // send request to edit profile data passed by form
   const onSave = async (fields: any) => {
-    if (!isAuthenticated) {
-      await signIn()
-    }
-
     setIsSaving(true)
 
     const body = JSON.stringify({ mfer_id: mferId, ...fields })
@@ -72,9 +52,7 @@ export default function EditProfileModal({
               if (reFetchResult.ok) {
                 router.reload()
               } else {
-                alert(
-                  'profile edit unsuccessful - try refreshing the page in your browser!'
-                )
+                alert('profile edit unsuccessful')
                 setIsSaving(false)
                 onClose()
               }
