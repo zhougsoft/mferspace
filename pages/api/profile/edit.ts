@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import Profile, { ProfileMaxChars } from '../../../interfaces/Profile'
+import { utils } from 'ethers'
 
+import Profile, { ProfileMaxChars } from '../../../interfaces/Profile'
 import { getMferOwner } from '../../../services/mfers'
 import { update as updateProfile } from '../../../services/profiles'
 import { isValidMferId } from '../../../utils'
@@ -64,7 +65,9 @@ export default async function handler(
 
     // check that session address is the same as the mfer holder address
     const mferOwner = await getMferOwner(mferId)
-    const isOwner = activeAddress.toLowerCase() === mferOwner.toLowerCase()
+    const isOwner =
+      utils.getAddress(activeAddress) === utils.getAddress(mferOwner)
+
     if (!isOwner) {
       return res.status(403).json({
         msg: `${activeAddress} is not the owner of mfer #${mferId}`,

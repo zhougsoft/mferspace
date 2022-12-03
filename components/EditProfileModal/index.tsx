@@ -1,7 +1,6 @@
-// TODO: re-wire login flow
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { utils } from 'ethers'
 
 import { useWeb3, useAuth } from '../../hooks'
 import * as S from './styled'
@@ -13,7 +12,6 @@ interface EditProfileModalProps {
   onClose: Function
 }
 
-// TODO: type this (and profile) properly
 export default function EditProfileModal({
   mferId,
   profile,
@@ -30,7 +28,7 @@ export default function EditProfileModal({
     if (
       address &&
       session?.address &&
-      address.toLowerCase() === session.address.toLowerCase()
+      utils.getAddress(address) === utils.getAddress(session.address)
     ) {
       setIsAuthenticated(true)
     } else {
@@ -42,10 +40,8 @@ export default function EditProfileModal({
 
   // send request to edit profile data passed by form
   const onSave = async (fields: any) => {
-    // check auth and prompt login if not authenticated
     if (!isAuthenticated) {
       await signIn()
-      if (!isAuthenticated) return
     }
 
     setIsSaving(true)
@@ -64,6 +60,8 @@ export default function EditProfileModal({
       .then(async result => {
         // on success, reload the page to display updated data
         if (result.ok) {
+          setIsSaving(false)
+          onClose()
           router.reload()
         } else {
           // if unauthorized, prompt for login and re-submit
@@ -78,15 +76,19 @@ export default function EditProfileModal({
                   'profile edit unsuccessful - try refreshing the page in your browser!'
                 )
                 setIsSaving(false)
+                onClose()
               }
             } catch (error) {
               console.error(error)
+              onClose()
+              setIsSaving(false)
             }
           }
         }
       })
       .catch(error => {
         console.error(error)
+        onClose()
         setIsSaving(false)
       })
   }
