@@ -29,5 +29,5 @@ export default interface Profile {
   song_url?: string
   bio_about?: string
   bio_meet?: string
-  last_updated?: Date
+  updated_at?: Date
 }
