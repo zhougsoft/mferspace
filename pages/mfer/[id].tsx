@@ -14,7 +14,7 @@ import EditProfileModal from '../../components/EditProfileModal'
 
 interface ProfilePageProps {
   mferId: number
-  profile?: Profile
+  profile: Profile
   error?: any
 }
 
@@ -109,7 +109,7 @@ export const getServerSideProps = async ({ query: { id } }: any) => {
       }
     }
 
-    // fetch, serialize & return profile data
+    // fetch & return profile data
     const profile = await readProfile(id)
     return { props: { mferId: id, profile, error: false } }
   } catch (error) {

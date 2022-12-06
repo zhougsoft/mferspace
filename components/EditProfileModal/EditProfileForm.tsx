@@ -21,9 +21,11 @@ export default function EditProfileForm({
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
+      <br />
+      <br />
       {/* NAME */}
       <div>
-        <label htmlFor="name">name</label>
+        <label htmlFor="name">name </label>
         <input
           defaultValue={profile?.name || ''}
           placeholder="name"
@@ -32,10 +34,11 @@ export default function EditProfileForm({
         />
         {errors.name && <span>max length {ProfileMaxChars.Name} chars</span>}
       </div>
+      <br />
 
       {/* TAGLINE */}
       <div>
-        <label htmlFor="tagline">tagline</label>
+        <label htmlFor="tagline">tagline </label>
         <input
           defaultValue={profile?.tagline || ''}
           placeholder="tagline"
@@ -49,7 +52,7 @@ export default function EditProfileForm({
 
       {/* GENDER */}
       <div>
-        <label htmlFor="gender">gender</label>
+        <label htmlFor="gender">gender </label>
         <input
           defaultValue={profile?.gender || ''}
           placeholder="gender"
@@ -63,7 +66,7 @@ export default function EditProfileForm({
 
       {/* AGE */}
       <div>
-        <label htmlFor="age">age</label>
+        <label htmlFor="age">age </label>
         <input
           defaultValue={profile?.age || ''}
           placeholder="age"
@@ -75,7 +78,7 @@ export default function EditProfileForm({
 
       {/* LOCATION */}
       <div>
-        <label htmlFor="location">location</label>
+        <label htmlFor="location">location </label>
         <input
           defaultValue={profile?.location || ''}
           placeholder="location"
@@ -89,7 +92,7 @@ export default function EditProfileForm({
 
       {/* SONG URL */}
       <div>
-        <label htmlFor="song_url">song_url</label>
+        <label htmlFor="song_url">soundcloud song </label>
         <input
           defaultValue={profile?.song_url || ''}
           placeholder="song_url"
@@ -100,10 +103,12 @@ export default function EditProfileForm({
           <span>max length {ProfileMaxChars.SongUrl} chars</span>
         )}
       </div>
+      <br />
 
       {/* ABOUT ME */}
       <div>
         <label htmlFor="bio_about">about you</label>
+        <br />
         <textarea
           defaultValue={profile?.bio_about || ''}
           placeholder="about you"
@@ -114,10 +119,12 @@ export default function EditProfileForm({
           <span>max length {ProfileMaxChars.BioAbout} chars</span>
         )}
       </div>
+      <br />
 
       {/* MFERS I'D LIKE TO MEET */}
       <div>
         <label htmlFor="bio_meet">mfers you&apos;d like to meet</label>
+        <br />
         <textarea
           defaultValue={profile?.bio_meet || ''}
           placeholder="mfers you'd like to meet"
@@ -128,6 +135,7 @@ export default function EditProfileForm({
           <span>max length {ProfileMaxChars.BioMeet} chars</span>
         )}
       </div>
+      <br />
 
       {/* BUTTON GROUP */}
       <div>

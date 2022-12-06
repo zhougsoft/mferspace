@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { utils } from 'ethers'
-
-import { useWeb3, useAuth } from '../../hooks'
-import * as S from './styled'
+import { useAuth } from '../../hooks'
 import EditProfileForm from './EditProfileForm'
+import * as S from './styled'
 
 interface EditProfileModalProps {
   mferId: number
@@ -83,10 +81,15 @@ export default function EditProfileModal({
   return (
     <S.ModalWrapper>
       <button onClick={() => onClose()}>cancel</button>
-      <br />
-      <br />
-      <br />
-      <EditProfileForm profile={profile} onSave={onSave} />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <EditProfileForm profile={profile} onSave={onSave} />
+        <small style={{ paddingLeft: '2rem', lineHeight: '1.25rem' }}>
+          sorry for literally the jankiest form ever lol i'm busy AF with the
+          backend - imp0ster has some code coming to tidy this up, cheers!
+          <br />
+          <br />- zhoug {'<3'}
+        </small>
+      </div>
     </S.ModalWrapper>
   )
 }

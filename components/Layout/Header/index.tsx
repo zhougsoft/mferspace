@@ -1,7 +1,7 @@
 import React from 'react'
-import * as S from './styled'
 import { Container } from '../../Shared'
 import ConnectWallet from '../../ConnectWallet'
+import * as S from './styled'
 
 export default function Header() {
   return (
