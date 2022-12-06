@@ -27,10 +27,18 @@ export default function HomePage() {
     if (isConnected && address) {
       return (
         <div>
-          connected: {truncateAddress(address)}
           {mferIds.length > 0 ? (
             <>
-              <div>mfer hodler detected!</div>
+              <h3>
+                {mferIds.length === 1 ? 'mfer' : 'mfers'} found in wallet:{' '}
+                <em>{truncateAddress(address)}</em>
+              </h3>
+              <p>
+                <em>
+                  click {mferIds.length === 1 ? 'the' : 'an'} mfer to view/edit
+                  their mferspace profile!
+                </em>
+              </p>
               <ol>
                 {mferIds.map(id => (
                   <li key={'mfer-' + id}>

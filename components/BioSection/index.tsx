@@ -17,11 +17,11 @@ export default function BioSection({
   return (
     <S.Section>
       <S.Article>
-        <h5>About {name}</h5>
+        <h4>About {name}</h4>
         <p>{bioAbout}</p>
       </S.Article>
       <S.Article>
-        <h5>Who {name} would like to meet</h5>
+        <h4>Who {name} would like to meet</h4>
         <p>{bioMeet}</p>
       </S.Article>
     </S.Section>

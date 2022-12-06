@@ -13,4 +13,5 @@ export const HomeLink = styled(Link)`
 	color: ${({ theme }) => theme.colors.textAlt} !important;
 	font-size: 1.25rem;
 	font-weight: bold;
+	padding-right: 1rem;
 `;

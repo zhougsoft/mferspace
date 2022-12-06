@@ -1,11 +1,10 @@
 import Image from 'next/image'
-
-import { Mfer } from '../../interfaces'
+import { Mfer, Profile } from '../../interfaces'
 import * as S from './styled'
 
 interface ProfileCardProps {
   mfer: Mfer
-  profile: any // TODO: type
+  profile: Profile
 }
 
 export default function ProfileCard({ mfer, profile }: ProfileCardProps) {
@@ -14,18 +13,21 @@ export default function ProfileCard({ mfer, profile }: ProfileCardProps) {
       <S.ProfilePicDisplay>
         <h2>{mfer.name}</h2>
         <div className="img-wrapper">
-          <Image src={mfer.img} alt={mfer.name} width={200} height={200} />
+          <Image src={mfer.img} alt={mfer.name} width={300} height={300} />
         </div>
       </S.ProfilePicDisplay>
       <S.ProfileInfo>
         <div>
-          <strong>{profile?.name || 'some mfer'}</strong>
+          <strong>{profile.name || 'some mfer'}</strong>
         </div>
-        <div>{`"${profile?.tagline || ':-)'}"`}</div>
-        <ul>
-          <li>{profile?.age}</li>
-          <li>{profile?.pronouns}</li>
-          <li>{profile?.location}</li>
+        <div>
+          <em>{`"${profile.tagline || ':-)'}"`}</em>
+        </div>
+        <br />
+        <ul style={{ fontSize: '0.9rem', lineHeight: '1.15rem' }}>
+          <li style={{ marginBottom: '0.5rem' }}>{profile.age}</li>
+          <li style={{ marginBottom: '0.5rem' }}>{profile.gender}</li>
+          <li>{profile.location}</li>
         </ul>
       </S.ProfileInfo>
     </S.Section>

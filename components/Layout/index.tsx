@@ -1,8 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-
-import * as S from './styled'
 import Header from './Header'
+import * as S from './styled'
 
 interface LayoutProps {
   title: string

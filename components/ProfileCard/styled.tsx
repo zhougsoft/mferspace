@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const Section = styled.section`
   display: flex;
+  max-width: 30rem;
 `
 
 export const ProfilePicDisplay = styled.div`

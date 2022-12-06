@@ -11,9 +11,9 @@ export default function AttributesCard({
   return (
     <S.TraitTable>
       <tbody>
-        {attributes.map((attr, i) => (
+        {attributes.map(attr => (
           // TODO: write a util that creates a short uuid for component keys
-          <tr key={`attr-${i}-${Math.random() * 100}`}>
+          <tr key={`attr-${Math.random() * Math.random() * 100}`}>
             <td>
               <strong>{attr.trait_type}</strong>
             </td>

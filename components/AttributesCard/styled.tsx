@@ -5,7 +5,7 @@ export const TraitTable = styled.table`
 
   tr {
     td {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       padding: 0.25rem 0.5rem;
 
       &:first-child {
