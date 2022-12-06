@@ -93,22 +93,26 @@ export default function ProfilePage({
                 marginBottom: '1rem',
                 padding: '0.5rem 1rem',
               }}>
-              <strong>mferspace URL</strong>
+              <strong>
+                mferspace URL <small>- dev mode</small>
+              </strong>
               <br />
               <pre style={{ margin: '0.25rem 0 0 0 ' }}>
-                https://mferspace.com/mfer/{mferId}
+                https://dev.mferspace.com/mfer/{mferId}
               </pre>
             </div>
 
             {/* --- soundcloud embed --- */}
-            {profile?.song_url !== undefined && (
-              <SoundCloudEmbed
-                url={profile.song_url}
-                width="25rem"
-                height={150}
-              />
+            {profile?.song_url && (
+              <>
+                <SoundCloudEmbed
+                  url={profile.song_url}
+                  width="25rem"
+                  height={150}
+                />
+                <br />
+              </>
             )}
-            <br />
 
             {/* --- attributes --- */}
             <AttributesCard attributes={mfer.attributes} />
