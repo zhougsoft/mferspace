@@ -63,7 +63,7 @@ export default function HomePage() {
         <small>
           <em>
             mferspace is a work in progress by{' '}
-            <ExtLink href="https://twitter.com/zhoug0x">zhoug</ExtLink>
+            <Link href="/mfer/3191">zhoug</Link>
           </em>
         </small>
         <hr />

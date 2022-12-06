@@ -117,12 +117,28 @@ export default function ProfilePage({
             {/* --- attributes --- */}
             <AttributesCard attributes={mfer.attributes} />
           </div>
+
+          <div>
+
           {/* --- bio --- */}
           <BioSection
             name={mfer.name}
             bioAbout={profile?.bio_about}
             bioMeet={profile?.bio_meet}
-          />
+            />
+
+
+{/* sure why not lol */}
+{mferId == 3191 && (
+          <>
+            <hr />
+            <TwitterTimeline username="zhoug0x" height={600} />
+          </>
+        )}
+        {/* ------------ */}
+
+
+            </div>
 
           {editModalIsOpen && (
             <EditProfileModal
@@ -132,14 +148,7 @@ export default function ProfilePage({
             />
           )}
         </div>
-        {/* sure why not lol */}
-        {mferId == 3191 && (
-          <>
-            <hr />
-            <TwitterTimeline username="zhoug0x" height={600} />
-          </>
-        )}
-        {/* ------------ */}
+        
       </Container>
     </Layout>
   )
