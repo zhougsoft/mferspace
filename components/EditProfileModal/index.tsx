@@ -84,7 +84,7 @@ export default function EditProfileModal({
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <EditProfileForm profile={profile} onSave={onSave} />
         <small style={{ paddingLeft: '2rem', lineHeight: '1.25rem' }}>
-          sorry for literally the jankiest form ever lol i'm busy AF with the
+          sorry for literally the jankiest form ever lol im busy AF with the
           backend - imp0ster has some code coming to tidy this up, cheers!
           <br />
           <br />- zhoug {'<3'}
