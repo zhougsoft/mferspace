@@ -31,7 +31,7 @@ export async function update(profile: Profile): Promise<Profile> {
     gender=${profile.gender || ''},
     age=${profile.age || ''},
     location=${profile.location || ''},
-    song_url=${profile.song_url || ''},
+    media_url=${profile.media_url || ''},
     bio_about=${profile.bio_about || ''},
     bio_meet=${profile.bio_meet || ''}
     WHERE mfer_id=${profile.mfer_id}

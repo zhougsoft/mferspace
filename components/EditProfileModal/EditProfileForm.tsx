@@ -92,15 +92,15 @@ export default function EditProfileForm({
 
       {/* SONG URL */}
       <div>
-        <label htmlFor="song_url">soundcloud song </label>
+        <label htmlFor="media_url">soundcloud song </label>
         <input
-          defaultValue={profile?.song_url || ''}
-          placeholder="song_url"
-          {...register('song_url', { maxLength: ProfileMaxChars.SongUrl })}
+          defaultValue={profile?.media_url || ''}
+          placeholder="media_url"
+          {...register('media_url', { maxLength: ProfileMaxChars.MediaUrl })}
           autoComplete="off"
         />
-        {errors.song_url && (
-          <span>max length {ProfileMaxChars.SongUrl} chars</span>
+        {errors.media_url && (
+          <span>max length {ProfileMaxChars.MediaUrl} chars</span>
         )}
       </div>
       <br />

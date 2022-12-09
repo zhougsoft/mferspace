@@ -103,10 +103,10 @@ export default function ProfilePage({
             </div>
 
             {/* --- soundcloud embed --- */}
-            {profile?.song_url && (
+            {profile?.media_url && (
               <>
                 <SoundCloudEmbed
-                  url={profile.song_url}
+                  url={profile.media_url}
                   width="25rem"
                   height={150}
                 />
