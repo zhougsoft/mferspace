@@ -1,4 +1,4 @@
-const { withSql } = require('./util/with-sql')
+const { withSql } = require('./utils')
 
 withSql(async sql => {
   console.log('migrating db up...')
