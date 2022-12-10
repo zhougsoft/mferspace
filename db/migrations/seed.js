@@ -1,12 +1,25 @@
-const { withSql } = require('./utils/with-sql')
+const { withSql, readProfilesCsv } = require('./utils')
 
 withSql(async sql => {
-  console.log('seeding db with test data...')
+  console.log('seeding db with data...')
 
-  await sql`
-    UPDATE profiles SET name='♥ zhoug ♥', tagline='we are online <3', gender='he/mfer', age='420 yrs old', location='bing bong, canada', song_url='https://soundcloud.com/panicatthedisco/i-write-sins-not-tragedies', bio_about='zhoug, oh zhoug - a dev for you. hard days & nights without pause or rue. mferspace, a nice abode? for mfers, by mfers, built with love and code <3', bio_meet='♡ buidly mfers ♡ chill mfers ♡ fun mfers ♡ dope mfers ♡ all the mfers ♡'
-    WHERE mfer_id=3191;
-  `
+  const profiles = await readProfilesCsv().catch(console.error)
+
+  for (const p of profiles) {
+    await sql`
+      UPDATE profiles
+      SET name=${p.name},
+      tagline=${p.tagline},
+      gender=${p.gender},
+      age=${p.age},
+      location=${p.location},
+      media_url=${p.media_url},
+      twitter=${p.twitter},
+      bio_about=${p.bio_about},
+      bio_meet=${p.bio_meet}
+      WHERE mfer_id=${p.mfer_id}
+    `
+  }
 
   console.log('complete!')
 })

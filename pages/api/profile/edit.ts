@@ -35,7 +35,8 @@ export default async function handler(
       gender = '',
       age = '',
       location = '',
-      song_url = '',
+      media_url = '',
+      twitter = '',
       bio_about = '',
       bio_meet = '',
     } = req.body
@@ -45,7 +46,8 @@ export default async function handler(
     const genderValid = gender.length <= ProfileMaxChars.Gender
     const ageValid = age.length <= ProfileMaxChars.Age
     const locationValid = location.length <= ProfileMaxChars.Location
-    const songUrl = song_url.length <= ProfileMaxChars.SongUrl
+    const mediaUrlValid = media_url.length <= ProfileMaxChars.MediaUrl
+    const twitterValid = twitter.length <= ProfileMaxChars.Twitter
     const bioAboutValid = bio_about.length <= ProfileMaxChars.BioAbout
     const bioMeetValid = bio_meet.length <= ProfileMaxChars.BioMeet
 
@@ -55,7 +57,8 @@ export default async function handler(
       genderValid &&
       ageValid &&
       locationValid &&
-      songUrl &&
+      mediaUrlValid &&
+      twitterValid &&
       bioAboutValid &&
       bioMeetValid
 
@@ -67,7 +70,6 @@ export default async function handler(
     const mferOwner = await getMferOwner(mferId)
     const isOwner =
       utils.getAddress(activeAddress) === utils.getAddress(mferOwner)
-
 
     // validate authentication
     if (!isOwner) {
@@ -84,7 +86,8 @@ export default async function handler(
       gender,
       age,
       location,
-      song_url,
+      media_url,
+      twitter,
       bio_about,
       bio_meet,
     })

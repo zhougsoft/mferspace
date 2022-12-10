@@ -1,4 +1,4 @@
-const { withSql } = require('./utils/with-sql')
+const { withSql } = require('./utils')
 
 withSql(async sql => {
   console.log('migrating db up...')
@@ -12,7 +12,8 @@ withSql(async sql => {
 			gender TEXT,
 			age TEXT,
 			location TEXT,
-			song_url TEXT,
+			media_url TEXT,
+			twitter TEXT,
 			bio_about TEXT,
 			bio_meet TEXT,
 			updated_at TIMESTAMPTZ

@@ -71,19 +71,25 @@ export default function ProfilePage({
         {/* --- edit profile button --- --- */}
         {isMferOwner && (
           <button
-            onClick={onEditProfileClick}
+
+            // TODO: remove maintence alert when ready
+            // onClick={onEditProfileClick}
+            onClick={() => alert('\n\n♥ 𝘂𝗻𝗱𝗲𝗿 𝗺𝗮𝗶𝗻𝘁𝗲𝗻𝗮𝗻𝗰𝗲 ♥\nfollow @𝘇𝗵𝗼𝘂𝗴𝟬𝘅 on twitter for updates!\n')}
+
             disabled={editModalIsOpen}
             style={{ marginBottom: '0.5rem' }}>
             <IconEmoji emoji="✎" alt="pencil edit icon" />
             <em>edit profile</em>
           </button>
         )}
+        {/* --- PROFILE CONTENT WRAPPER--- */}
         <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '1rem' }}>
+          {/* --- LEFT COLUMN--- */}
           <div style={{ marginRight: '3rem' }}>
             {/* --- profile card --- */}
             <ProfileCard mfer={mfer} profile={profile} />
 
-            {/* --- mferspace url display --- */}
+            {/* --- profile url display --- */}
             <div
               style={{
                 display: 'inline-block',
@@ -98,15 +104,15 @@ export default function ProfilePage({
               </strong>
               <br />
               <pre style={{ margin: '0.25rem 0 0 0 ' }}>
-                https://dev.mferspace.com/mfer/{mferId}
+                {`https://dev.mferspace.com/mfer/${mferId}`}
               </pre>
             </div>
 
             {/* --- soundcloud embed --- */}
-            {profile?.song_url && (
+            {profile?.media_url && (
               <>
                 <SoundCloudEmbed
-                  url={profile.song_url}
+                  url={profile.media_url}
                   width="25rem"
                   height={150}
                 />
@@ -118,28 +124,25 @@ export default function ProfilePage({
             <AttributesCard attributes={mfer.attributes} />
           </div>
 
-          <div>
-
-          {/* --- bio --- */}
-          <BioSection
-            name={mfer.name}
-            bioAbout={profile?.bio_about}
-            bioMeet={profile?.bio_meet}
+          {/* --- RIGHT COLUMN--- */}
+          <div style={{ width: '26rem' }}>
+            {/* --- bio --- */}
+            <BioSection
+              name={mfer.name}
+              bioAbout={profile?.bio_about}
+              bioMeet={profile?.bio_meet}
             />
 
+            {/* --- twitter timeline embed --- */}
+            {profile?.twitter && (
+              <>
+                <hr />
+                <TwitterTimeline username={profile.twitter} height={600} />
+              </>
+            )}
+          </div>
 
-{/* sure why not lol */}
-{mferId == 3191 && (
-          <>
-            <hr />
-            <TwitterTimeline username="zhoug0x" height={600} />
-          </>
-        )}
-        {/* ------------ */}
-
-
-            </div>
-
+          {/* --- edit modal --- */}
           {editModalIsOpen && (
             <EditProfileModal
               mferId={mferId}
@@ -148,7 +151,6 @@ export default function ProfilePage({
             />
           )}
         </div>
-        
       </Container>
     </Layout>
   )

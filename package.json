@@ -9,7 +9,8 @@
 		"lint": "next lint",
 		"db:up": "node ./db/migrations/up.js",
 		"db:down": "node ./db/migrations/down.js",
-		"db:seed": "node ./db/migrations/seed.js"
+		"db:seed": "node ./db/migrations/seed.js",
+		"db:reset": "npm run db:down && npm run db:up && npm run db:seed"
 	},
 	"dependencies": {
 		"@types/node": "^18.11.9",
@@ -17,6 +18,7 @@
 		"@types/react-dom": "^18.0.9",
 		"@types/styled-components": "^5.1.26",
 		"babel-plugin-styled-components": "^2.0.7",
+		"csv-parser": "^3.0.0",
 		"dotenv": "^16.0.3",
 		"eslint": "8.28.0",
 		"eslint-config-next": "13.0.5",
