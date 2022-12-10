@@ -1,23 +1,31 @@
-# 🙂 mferspace
+# mferspace
 
-_built with Next.js & Postgres via Supabase_
+> a space for mfers
 
-*for the mfers* 🤝
+## requirements
 
-- not taking community pull requests at this time! thx 😉
-- `main` branch == vercel CI/CD -> mferspace.com
+- a postgres database connection URL
+- an [alchemy](https://www.alchemy.com) or [infura](https://infura.io) API key
 
+## to run
 
-### setup .env
+1. install dependencies:
+   ```
+   npm install
+   ```
+1. make a copy of `.env.example` named `.env` and add credentials
+1. run database setup migration:
+   ```
+   npm run db:up
+   ```
+1. run local development server:
+   ```
+   npm run dev
+   ```
+1. check out `localhost:3000` in the browser!
 
-1. make a copy of `.env.local.example` named `.env.local`
-1. edit `.env.local` and add yr Ethereum node URL!
+**_power tip:_** revert and clear the database if required:
 
-Example: `ETHEREUM_NODE_URL=https://mainnet.infura.io/v3/YOUR_INFURA_ID`
-
-### run on local:
-
-1. `npm i`
-1. `npm run build`
-1. `npm run dev`
-1. `🙂`
+```
+npm run db:down
+```
