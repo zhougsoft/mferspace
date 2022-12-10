@@ -9,7 +9,8 @@
 		"lint": "next lint",
 		"db:up": "node ./db/migrations/up.js",
 		"db:down": "node ./db/migrations/down.js",
-		"db:seed": "node ./db/migrations/seed.js"
+		"db:seed": "node ./db/migrations/seed.js",
+		"db:reset": "npm run db:down && npm run db:up && npm run db:seed"
 	},
 	"dependencies": {
 		"@types/node": "^18.11.9",
