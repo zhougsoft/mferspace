@@ -9,12 +9,20 @@ export async function read(mferId: number): Promise<Profile> {
   }
 
   const [data] = await sql<Profile[]>`
-    SELECT DISTINCT * FROM profiles WHERE mfer_id=${mferId} ORDER BY mfer_id
+    SELECT DISTINCT * FROM profiles WHERE mfer_id=${mferId};
   `
 
   if (!data) {
     throw Error(`no profile record found in database for mfer id: ${mferId}`)
   }
+  return serializeJSON(data)
+}
+
+// get all profiles that have been updated before
+export async function readAll(): Promise<Profile[]> {
+  const data = await sql<Profile[]>`
+    SELECT DISTINCT * FROM profiles WHERE updated_at IS NOT NULL ORDER BY updated_at;
+  `
   return serializeJSON(data)
 }
 
