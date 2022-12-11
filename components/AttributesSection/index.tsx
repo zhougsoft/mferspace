@@ -1,13 +1,13 @@
 import { MferAttribute } from '../../interfaces/Mfer'
 import * as S from './styled'
 
-interface AttributesCardProps {
+interface AttributesSectionProps {
   attributes: MferAttribute[]
 }
 
-export default function AttributesCard({
+export default function AttributesSection({
   attributes = [],
-}: AttributesCardProps) {
+}: AttributesSectionProps) {
   return (
     <S.TraitTable>
       <tbody>

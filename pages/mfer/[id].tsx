@@ -8,9 +8,9 @@ import theme from '../../styles/theme'
 
 import { Container, IconEmoji } from '../../components/Shared'
 import Layout from '../../components/Layout'
-import ProfileCard from '../../components/ProfileCard'
+import ProfileSection from '../../components/ProfileSection'
 import SoundCloudEmbed from '../../components/SoundCloudEmbed'
-import AttributesCard from '../../components/AttributesCard'
+import AttributesSection from '../../components/AttributesSection'
 import BioSection from '../../components/BioSection'
 import TwitterTimeline from '../../components/TwitterTimeline'
 import EditProfileModal from '../../components/EditProfileModal'
@@ -89,7 +89,7 @@ export default function ProfilePage({
           {/* --- LEFT COLUMN--- */}
           <div style={{ marginRight: '3rem' }}>
             {/* --- profile card --- */}
-            <ProfileCard mfer={mfer} profile={profile} />
+            <ProfileSection mfer={mfer} profile={profile} />
 
             {/* --- profile url display --- */}
             <div
@@ -123,7 +123,7 @@ export default function ProfilePage({
             )}
 
             {/* --- attributes --- */}
-            <AttributesCard attributes={mfer.attributes} />
+            <AttributesSection attributes={mfer.attributes} />
           </div>
 
           {/* --- RIGHT COLUMN--- */}

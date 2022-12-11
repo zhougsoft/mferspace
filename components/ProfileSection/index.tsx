@@ -2,12 +2,12 @@ import Image from 'next/image'
 import { Mfer, Profile } from '../../interfaces'
 import * as S from './styled'
 
-interface ProfileCardProps {
+interface ProfileSectionProps {
   mfer: Mfer
   profile: Profile
 }
 
-export default function ProfileCard({ mfer, profile }: ProfileCardProps) {
+export default function ProfileSection({ mfer, profile }: ProfileSectionProps) {
   return (
     <S.Section>
       <S.ProfilePicDisplay>
