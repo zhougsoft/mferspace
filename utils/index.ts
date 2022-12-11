@@ -12,5 +12,5 @@ export const serializeJSON = (data: any): any => {
 // returns true if value is a valid mfer id (is a number and is in range)
 export const isValidMferId = (idInput: any) => {
   const inputNum = parseInt(idInput)
-  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10000
+  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10020
 }
