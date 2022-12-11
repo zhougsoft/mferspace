@@ -1,29 +1,27 @@
 import { ethers, BigNumber } from 'ethers'
 import { useContract } from 'wagmi'
+import { MFERS_CONTRACT, mfers } from 'mfers'
 
-import { useWeb3 } from '../hooks'
-import abi from '../config/abi/mfers.json'
-import {
-  MFER_CONTRACT_ADDRESS,
-  MFER_DATA_CID,
-  IPFS_GATEWAY,
-} from '../config/constants'
-import { Mfer } from '../interfaces'
+import type { Mfer } from '../../interfaces'
+import { IPFS_GATEWAY } from '../../config/constants'
+import abi from '../../config/abi/mfers.json'
+import cids from './img-cids.json'
+import { useWeb3 } from '../../hooks'
 
 export default function useMfers() {
   const { provider } = useWeb3()
   const contract = useContract({
-    address: MFER_CONTRACT_ADDRESS,
+    address: MFERS_CONTRACT,
     abi,
     signerOrProvider: provider,
   })
 
   // Get all mfer ids owned by a specific address
-  const getMfersByAddress = async (address: string): Promise<number[]> => {
+  const getMfersOwned = async (address: string): Promise<number[]> => {
     return new Promise(async (resolve, reject) => {
       try {
         if (!contract?.provider)
-          throw new Error('provider was undefined in getMfersByAddress()')
+          throw new Error('provider was undefined in getMfersOwned()')
 
         const balResult: BigNumber = await contract.balanceOf(address)
         const mferBal = balResult.toNumber()
@@ -44,31 +42,10 @@ export default function useMfers() {
     })
   }
 
+  // TODO: update Mfer type
   // Get single mfer metadata by id
-  const getMfer = async (id: number): Promise<Mfer> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // Fetch mfer data
-        const ipfsURI = `${IPFS_GATEWAY}/${MFER_DATA_CID}/${id}`
-        const mferData = await fetch(ipfsURI).then(res => res.json())
-
-        // Build image link
-        const imgCID = mferData.image.slice(7)
-        const img = `${IPFS_GATEWAY}/${imgCID}`
-
-        // format & resolve Mfer
-        const mfer: Mfer = {
-          id,
-          name: mferData.name,
-          img,
-          attributes: mferData.attributes,
-        }
-        resolve(mfer)
-      } catch (error) {
-        console.error(error)
-        reject(error)
-      }
-    })
+  const getMfer = (id: number): any => {
+    return { ...mfers[id], img: `${IPFS_GATEWAY}/${cids[id]}` }
   }
 
   // Check if an address is the holder of an mfer by id
@@ -92,5 +69,5 @@ export default function useMfers() {
     // return ethers.utils.getAddress(owner) === ethers.utils.getAddress(address)
   }
 
-  return { getMfersByAddress, getMfer, checkMferOwnership }
+  return { getMfersOwned, getMfer, checkMferOwnership }
 }

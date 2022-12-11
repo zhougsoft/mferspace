@@ -174,7 +174,7 @@ export async function getServerSideProps({ query: { id } }: any) {
     const profile = await readProfile(id)
     return { props: { mferId: id, profile, error: false } }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return { props: { error: true } }
   }
 }

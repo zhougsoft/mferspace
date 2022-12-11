@@ -1,3 +1,8 @@
+
+// TODO: update this for new data
+
+
+
 export interface MferAttribute {
   trait_type: string
   value: string

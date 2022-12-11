@@ -23,6 +23,7 @@
 		"eslint": "8.28.0",
 		"eslint-config-next": "13.0.5",
 		"ethers": "^5.5.1",
+		"mfers": "1.2.1",
 		"next": "^13.0.5",
 		"next-auth": "^4.17.0",
 		"postgres": "^3.3.2",

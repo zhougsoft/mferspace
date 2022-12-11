@@ -7,7 +7,7 @@ import Layout from '../components/Layout'
 
 export default function DashboardPage() {
   const { address, isConnected } = useWeb3()
-  const { getMfersByAddress } = useMfers()
+  const { getMfersOwned } = useMfers()
   const [mferIds, setMferIds] = useState<number[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -15,7 +15,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (address) {
       setIsLoading(true)
-      getMfersByAddress(address)
+      getMfersOwned(address)
         .then(tokenIds => {
           setMferIds(tokenIds)
         })
