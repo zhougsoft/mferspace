@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
+import { MFERS_CONTRACT } from 'mfers'
 import abi from '../config/abi/mfers.json'
-import { Mfer } from '../interfaces'
-import { MFER_CONTRACT_ADDRESS, IPFS_GATEWAY } from '../config/constants'
 
 // reads .env for API keys and returns a URL for available nodes
 function getNodeUrl() {
@@ -18,32 +17,7 @@ function getNodeUrl() {
 // Connect to mfers contract via RPC
 function getMfersContract() {
   const provider = new ethers.providers.JsonRpcProvider(getNodeUrl())
-  return new ethers.Contract(MFER_CONTRACT_ADDRESS, abi, provider)
-}
-
-// Get data for a single mfer by id
-export async function getMfer(id: number): Promise<Mfer> {
-  // Fetch mfer tokenURI
-  const contract = getMfersContract()
-  const tokenURI: string = await contract.tokenURI(id)
-
-  // Build IPFS gateway URL from IPFS content identifier hash
-  const uriSplit = tokenURI.split('/')
-  const ipfsContentId = uriSplit[2]
-  const tokenId = uriSplit[3]
-  const tokenIpfsGateway = `${IPFS_GATEWAY}/${ipfsContentId}/${tokenId}`
-
-  // Fetch mfer image data from IPFS & build a gateway link for the image
-  const mferResult = await fetch(tokenIpfsGateway).then(res => res.json())
-  const imgIpfsHash = mferResult.image.split('/')[2]
-  const img = `${IPFS_GATEWAY}/${imgIpfsHash}`
-
-  return {
-    id,
-    name: mferResult.name,
-    img,
-    attributes: mferResult.attributes,
-  }
+  return new ethers.Contract(MFERS_CONTRACT, abi, provider)
 }
 
 // Get the address holding a specific mfer id

@@ -17,7 +17,7 @@ export default function ConnectWallet() {
   if (!isConnected && connect) {
     return (
       <>
-        <span style={{ color: 'white', marginRight: '1rem' }}>
+        <span style={{ color: 'white', marginRight: '0.25rem' }}>
           <em>🔌 connect wallet:</em>
         </span>
         {connectors.map(connector => (
@@ -25,7 +25,11 @@ export default function ConnectWallet() {
             disabled={!connector.ready}
             key={connector.id}
             onClick={() => connect({ connector })}
-            style={{ fontWeight: 'bold' }}>
+            style={{
+              fontWeight: 'bold',
+              padding: '0.25rem',
+              margin: '0 0.25rem',
+            }}>
             {connector.name.toLowerCase()}
             {!connector.ready && ' (unsupported)'}
             {connector.id === pendingConnector?.id && ' (connecting)'}
@@ -39,7 +43,7 @@ export default function ConnectWallet() {
   if (isConnected && address) {
     return (
       <>
-        <span style={{ color: 'white', marginRight: '1rem' }}>
+        <span style={{ color: 'white', marginRight: '0.25rem' }}>
           <em>⚡ connected: {truncateAddress(address)}</em>
         </span>
         <button
@@ -47,7 +51,11 @@ export default function ConnectWallet() {
             disconnect()
             signOut()
           }}
-          style={{ fontWeight: 'bold' }}>
+          style={{
+            fontWeight: 'bold',
+            padding: '0.25rem',
+            margin: '0 0.25rem',
+          }}>
           logout
         </button>
       </>

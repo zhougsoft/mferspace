@@ -4,7 +4,7 @@ import * as S from './styled'
 const DEFAULT_BIO = '...'
 
 interface BioSectionProps {
-  name: string
+  name?: string
   bioAbout?: string
   bioMeet?: string
 }

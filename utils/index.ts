@@ -12,5 +12,10 @@ export const serializeJSON = (data: any): any => {
 // returns true if value is a valid mfer id (is a number and is in range)
 export const isValidMferId = (idInput: any) => {
   const inputNum = parseInt(idInput)
-  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10000
+  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10020
+}
+
+// generate a pseudo-random value to be used for react component keys
+export const makeRandomKey = () => {
+  return `${Math.floor(Math.random() * 1000000)}-${Date.now()}`
 }
