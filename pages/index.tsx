@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import styled from 'styled-components'
 import type { Profile, Mfer } from '../interfaces'
 import { readAll as getProfiles } from '../services/profiles'
 import { useMfers } from '../hooks'
@@ -6,19 +7,33 @@ import { makeRandomKey } from '../utils'
 import { Container } from '../components/Shared'
 import Layout from '../components/Layout'
 
+const ProfileCardWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #888;
+  color: black;
+  padding: 0 0 0 1rem;
+  margin-bottom: 1rem;
+
+  &:hover {
+    transform: scale(102%);
+  }
+`
+
 function ColorStrip({ colors }: { colors: string[] }) {
   return (
-    <div style={{ display: 'flex' }}>
+    <span role="img" style={{ display: 'flex' }}>
       {colors.map((color: string) => (
-        <div
+        <span
           key={makeRandomKey()}
           style={{
-            width: '50px',
-            height: '50px',
+            width: '15px',
+            height: '75px',
             backgroundColor: color,
-          }}></div>
+          }}></span>
       ))}
-    </div>
+    </span>
   )
 }
 
@@ -27,16 +42,18 @@ function ProfileCard({ profile }: { profile: Profile }) {
   const mfer: Mfer = getMfer(profile.mfer_id)
 
   return (
-    <>
-      <div style={{ display: 'flex' }}>
-        <h3 style={{ marginRight: '4rem' }}>{profile.name}</h3>
-        <ColorStrip colors={mfer.colors} />
-      </div>
-      <small>
-        <pre>{JSON.stringify({ profile, mfer }, null, 2)}</pre>
-      </small>
-      <hr />
-    </>
+    <Link href={`/mfer/${profile.mfer_id}`}>
+      <ProfileCardWrapper>
+        <div>
+          <h3 style={{ margin: '0 4rem 0 0' }}>{profile.name}</h3>
+          <small>{`mfer #${profile.mfer_id}`}</small>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <ColorStrip colors={mfer.colors} />
+          <ColorStrip colors={mfer.colors} />
+        </div>
+      </ProfileCardWrapper>
+    </Link>
   )
 }
 
