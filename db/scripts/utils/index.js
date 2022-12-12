@@ -10,7 +10,6 @@ const withSql = async callback => {
     if (DATABASE_URL === undefined) {
       throw Error('DATABASE_URL undefined in .env')
     }
-
     const sql = postgres(DATABASE_URL)
     await callback(sql)
     process.exit()
