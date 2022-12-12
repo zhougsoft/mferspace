@@ -14,3 +14,8 @@ export const isValidMferId = (idInput: any) => {
   const inputNum = parseInt(idInput)
   return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10020
 }
+
+// generate a pseudo-random value to be used for react component keys
+export const makeRandomKey = () => {
+  return `${Math.floor(Math.random() * 1000000)}-${Date.now()}`
+}

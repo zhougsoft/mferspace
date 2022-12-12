@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { truncateAddress } from '../utils'
+import { truncateAddress, makeRandomKey } from '../utils'
 import { useWeb3, useMfers } from '../hooks'
 import { Container } from '../components/Shared'
 import Layout from '../components/Layout'
@@ -16,10 +16,10 @@ export default function DashboardPage() {
     if (address) {
       setIsLoading(true)
       getMfersOwned(address)
-        .then(tokenIds => {
+        .then((tokenIds: any) => {
           setMferIds(tokenIds)
         })
-        .catch(error => {
+        .catch((error: Error) => {
           console.error(error)
           alert('error fetching mfers')
         })
@@ -55,7 +55,7 @@ export default function DashboardPage() {
               </p>
               <ol>
                 {mferIds.map(id => (
-                  <li key={'mfer-' + id}>
+                  <li key={makeRandomKey()}>
                     <Link href={`/mfer/${id}`}>{`mfer #${id}`}</Link>
                   </li>
                 ))}

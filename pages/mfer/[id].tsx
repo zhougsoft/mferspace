@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
-import type { Mfer, Profile } from '../../interfaces'
+import type { Profile, Mfer } from '../../interfaces'
 import { read as readProfile } from '../../services/profiles'
 import { useWeb3, useMfers } from '../../hooks'
 import { isValidMferId } from '../../utils'
@@ -10,7 +10,7 @@ import { Container, IconEmoji } from '../../components/Shared'
 import Layout from '../../components/Layout'
 import ProfileSection from '../../components/ProfileSection'
 import SoundCloudEmbed from '../../components/SoundCloudEmbed'
-import AttributesSection from '../../components/AttributesSection'
+import TraitsSection from '../../components/TraitsSection'
 import BioSection from '../../components/BioSection'
 import TwitterTimeline from '../../components/TwitterTimeline'
 import EditProfileModal from '../../components/EditProfileModal'
@@ -21,6 +21,28 @@ interface ProfilePageProps {
   error?: any
 }
 
+// fetch & return profile by profile id from database
+export async function getServerSideProps({ query: { id } }: any) {
+  try {
+    // redirect home if invalid id route param sent
+    if (!isValidMferId(id)) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/',
+        },
+      }
+    }
+
+    const profile = await readProfile(id)
+    const props: ProfilePageProps = { mferId: id, profile, error: false }
+    return { props }
+  } catch (error) {
+    console.error(error)
+    return { props: { error: true } }
+  }
+}
+
 export default function ProfilePage({
   mferId,
   profile,
@@ -28,21 +50,16 @@ export default function ProfilePage({
 }: ProfilePageProps) {
   const { address } = useWeb3()
   const { getMfer, checkMferOwnership } = useMfers()
-  const [mfer, setMfer] = useState<Mfer>()
+
   const [isMferOwner, setIsMferOwner] = useState<boolean>()
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>()
 
-  // Fetch mfer data on page load
-  useEffect(() => {
-    if (mferId !== undefined) {
-      getMfer(mferId).then(async result => setMfer(result))
-    }
-  }, [mferId])
+  const mfer: Mfer = useMemo(() => getMfer(mferId), [mferId])
 
   // Check if connected wallet owns mfer
   useEffect(() => {
     if (address && mferId !== undefined) {
-      checkMferOwnership(mferId, address).then(result => {
+      checkMferOwnership(mferId, address).then((result: any) => {
         setIsMferOwner(result)
       })
     }
@@ -60,13 +77,13 @@ export default function ProfilePage({
     return (
       <h1>
         <IconEmoji emoji="💀" alt="skull icon" />
-        server error - check backend console
+        server error
       </h1>
     )
   if (!mfer) return <div>fetching mfer...</div>
 
   return (
-    <Layout title={`${mfer.name} | mferspace`}>
+    <Layout title={`${profile.name} | mferspace`}>
       <Container style={{ marginTop: '1rem' }}>
         {/* --- edit profile button --- --- */}
         {isMferOwner && (
@@ -122,15 +139,15 @@ export default function ProfilePage({
               </>
             )}
 
-            {/* --- attributes --- */}
-            <AttributesSection attributes={mfer.attributes} />
+            {/* --- traits --- */}
+            <TraitsSection traits={mfer.traits} />
           </div>
 
           {/* --- RIGHT COLUMN--- */}
           <div style={{ width: '26rem' }}>
             {/* --- bio --- */}
             <BioSection
-              name={mfer.name}
+              name={profile?.name}
               bioAbout={profile?.bio_about}
               bioMeet={profile?.bio_meet}
             />
@@ -156,25 +173,4 @@ export default function ProfilePage({
       </Container>
     </Layout>
   )
-}
-
-// fetch & return profile by profile id from database
-export async function getServerSideProps({ query: { id } }: any) {
-  try {
-    // redirect home if invalid id route param sent
-    if (!isValidMferId(id)) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      }
-    }
-
-    const profile = await readProfile(id)
-    return { props: { mferId: id, profile, error: false } }
-  } catch (error) {
-    console.error(error)
-    return { props: { error: true } }
-  }
 }
