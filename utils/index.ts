@@ -1,3 +1,5 @@
+import { ALLOWLIST } from '../config/constants'
+
 export const truncateAddress = (address: string): string => {
   const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
   const match = address.match(truncateRegex)
@@ -12,7 +14,14 @@ export const serializeJSON = (data: any): any => {
 // returns true if value is a valid mfer id (is a number and is in range)
 export const isValidMferId = (idInput: any) => {
   const inputNum = parseInt(idInput)
-  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10020
+
+  // if mfer ids in the allowlist, activate allowlist permissions
+  let hasAccess = true
+  if (ALLOWLIST.length > 0) {
+    hasAccess = ALLOWLIST.includes(inputNum)
+  }
+
+  return !isNaN(inputNum) && inputNum >= 0 && inputNum <= 10020 && hasAccess
 }
 
 // generate a pseudo-random value to be used for react component keys
