@@ -1,4 +1,5 @@
-import ReactPlayer from 'react-player/soundcloud'
+import dynamic from 'next/dynamic'
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 export default function SoundCloudEmbed({
   url,
