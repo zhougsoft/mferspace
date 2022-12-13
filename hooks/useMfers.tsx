@@ -2,11 +2,10 @@ import { ethers, BigNumber } from 'ethers'
 import { useContract } from 'wagmi'
 import { MFERS_CONTRACT, mfers } from 'mfers'
 
-import type { Mfer } from '../../interfaces'
-import { IPFS_GATEWAY } from '../../config/constants'
-import abi from '../../config/abi/mfers.json'
-import cids from './img-cids.json'
-import { useWeb3 } from '../../hooks'
+import { MFER_IMG_URL } from '../config/constants'
+import type { Mfer } from '../interfaces'
+import abi from '../config/abi/mfers.json'
+import { useWeb3 } from './'
 
 export default function useMfers() {
   const { provider } = useWeb3()
@@ -42,10 +41,9 @@ export default function useMfers() {
     })
   }
 
-  // TODO: update Mfer type
   // Get single mfer metadata by id
-  const getMfer = (id: number): any => {
-    return { ...mfers[id], img: `${IPFS_GATEWAY}/${cids[id]}` }
+  const getMfer = (id: number): Mfer => {
+    return { id, ...mfers[id], img: `${MFER_IMG_URL}${id}.png` }
   }
 
   // Check if an address is the holder of an mfer by id
