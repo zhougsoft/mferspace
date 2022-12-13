@@ -114,7 +114,7 @@ export default function EditProfileForm({
           {...register('media_url', {
             maxLength: ProfileMaxChars.MediaUrl,
             validate: (value: string | undefined) => {
-              if (isValidSoundCloudLink(value || '')) {
+              if (!value || isValidSoundCloudLink(value)) {
                 return true
               }
               return 'invalid soundcloud link'

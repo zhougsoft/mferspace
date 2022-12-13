@@ -33,7 +33,7 @@ export const isValidSoundCloudLink = (url: string): boolean => {
 }
 
 // strips query strings and formats soundcloud link
-export const cleanSoundcloudLink = (url: string) => {
+export const cleanSoundCloudLink = (url: string) => {
   const params = getUrlRouteParams(url)
   return `https://soundcloud.com/${params[0]}/${params[1]}`
 }

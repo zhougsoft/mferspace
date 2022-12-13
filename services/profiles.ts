@@ -1,6 +1,6 @@
 import sql from '../db'
 import type { Profile } from '../interfaces'
-import { serializeJSON, isValidMferId, cleanSoundcloudLink } from '../utils'
+import { serializeJSON, isValidMferId, cleanSoundCloudLink } from '../utils'
 
 // get single profile database record by mfer id
 export async function read(mferId: number): Promise<Profile> {

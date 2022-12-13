@@ -6,7 +6,7 @@ import Profile, { ProfileMaxChars } from '../../../interfaces/Profile'
 import { getMferOwner } from '../../../services/mfers'
 import { update as updateProfile } from '../../../services/profiles'
 import {
-  cleanSoundcloudLink,
+  cleanSoundCloudLink,
   isValidMferId,
   isValidSoundCloudLink,
 } from '../../../utils'
@@ -95,7 +95,7 @@ export default async function handler(
       gender,
       age,
       location,
-      media_url: cleanSoundcloudLink(media_url),
+      media_url: media_url ? cleanSoundCloudLink(media_url) : '',
       twitter,
       bio_about,
       bio_meet,
