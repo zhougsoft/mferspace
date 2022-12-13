@@ -50,7 +50,6 @@ function ProfileCard({ profile }: { profile: Profile }) {
         </div>
         <div style={{ display: 'flex' }}>
           <ColorStrip colors={mfer.colors} />
-          <ColorStrip colors={mfer.colors} />
         </div>
       </ProfileCardWrapper>
     </Link>

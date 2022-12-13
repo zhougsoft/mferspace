@@ -1,6 +1,6 @@
 import sql from '../db'
 import type { Profile } from '../interfaces'
-import { serializeJSON, isValidMferId, cleanSoundCloudLink } from '../utils'
+import { serializeJSON, isValidMferId } from '../utils'
 
 // get single profile database record by mfer id
 export async function read(mferId: number): Promise<Profile> {
@@ -21,7 +21,7 @@ export async function read(mferId: number): Promise<Profile> {
 // get all profiles that have been updated before
 export async function readAll(): Promise<Profile[]> {
   const data = await sql<Profile[]>`
-    SELECT DISTINCT * FROM profiles WHERE updated_at IS NOT NULL ORDER BY updated_at;
+    SELECT DISTINCT * FROM profiles WHERE updated_at IS NOT NULL ORDER BY updated_at DESC;
   `
   return serializeJSON(data)
 }
@@ -43,7 +43,7 @@ export async function update(profile: Profile): Promise<Profile> {
     bio_about=${profile.bio_about || null},
     bio_meet=${profile.bio_meet || null}
     WHERE mfer_id=${profile.mfer_id}
-    RETURNING *
+    RETURNING *;
   `
   if (!data) {
     throw Error(
