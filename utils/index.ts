@@ -28,13 +28,8 @@ export const isValidMferId = (idInput: any) => {
 }
 
 // returns true if value is a valid Soundcloud link
-export const isValidSoundcloudLink = (url: string): boolean => {
-  const isCorrectDomain = url.match(/^https:\/\/soundcloud\.com\//) || false
-  if (!isCorrectDomain) return false
-
-  const params = getUrlRouteParams(url)
-  const hasCorrectParams = params.length === 2
-  return hasCorrectParams
+export const isValidSoundCloudLink = (url: string): boolean => {
+  return Boolean(url.match(/^https:\/\/soundcloud\.com\//) || false)
 }
 
 // strips query strings and formats soundcloud link

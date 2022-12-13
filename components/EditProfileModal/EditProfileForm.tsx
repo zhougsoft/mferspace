@@ -3,14 +3,7 @@
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Profile, { ProfileMaxChars } from '../../interfaces/Profile'
-import { isValidSoundcloudLink } from '../../utils'
-
-const validateMediaField = (url: string) => {
-  if (!isValidSoundcloudLink(url)) {
-    return 'invalid Soundcloud link'
-  }
-  return true
-}
+import { isValidSoundCloudLink } from '../../utils'
 
 interface EditProfileFormProps {
   profile: Profile
@@ -121,13 +114,10 @@ export default function EditProfileForm({
           {...register('media_url', {
             maxLength: ProfileMaxChars.MediaUrl,
             validate: (value: string | undefined) => {
-              if (
-                !value?.startsWith('https://soundcloud.com') ||
-                !value?.startsWith('soundcloud.com')
-              ) {
-                return 'invalid soundcloud link'
+              if (isValidSoundCloudLink(value || '')) {
+                return true
               }
-              return true
+              return 'invalid soundcloud link'
             },
           })}
           autoComplete="off"

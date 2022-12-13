@@ -8,7 +8,7 @@ import { update as updateProfile } from '../../../services/profiles'
 import {
   cleanSoundcloudLink,
   isValidMferId,
-  isValidSoundcloudLink,
+  isValidSoundCloudLink,
 } from '../../../utils'
 
 export default async function handler(
@@ -54,7 +54,7 @@ export default async function handler(
     let mediaUrlValid = true
     if (media_url) {
       const mediaLength = media_url.length <= ProfileMaxChars.MediaUrl
-      const validSoundcloud = isValidSoundcloudLink(media_url)
+      const validSoundcloud = isValidSoundCloudLink(media_url)
       mediaUrlValid = mediaLength && validSoundcloud
     }
 
