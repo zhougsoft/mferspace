@@ -28,4 +28,7 @@
 
 ```
 npm run db:down
+
+# or reset with seed
+npm run db:reset
 ```
