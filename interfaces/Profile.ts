@@ -14,10 +14,10 @@ export const enum ProfileMaxChars {
   Gender = 50,
   Age = 50,
   Location = 50,
-  MediaUrl = 100,
+  MediaUrl = 200,
   Twitter = 15,
-  BioAbout = 5000,
-  BioMeet = 5000,
+  BioAbout = 2000,
+  BioMeet = 2000,
 }
 
 export default interface Profile {

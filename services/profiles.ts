@@ -1,6 +1,6 @@
 import sql from '../db'
 import type { Profile } from '../interfaces'
-import { serializeJSON, isValidMferId } from '../utils'
+import { serializeJSON, isValidMferId, cleanSoundcloudLink } from '../utils'
 
 // get single profile database record by mfer id
 export async function read(mferId: number): Promise<Profile> {
@@ -34,14 +34,14 @@ export async function update(profile: Profile): Promise<Profile> {
 
   const [data] = await sql<Profile[]>`
     UPDATE profiles SET
-    name=${profile.name || ''},
-    tagline=${profile.tagline || ''},
-    gender=${profile.gender || ''},
-    age=${profile.age || ''},
-    location=${profile.location || ''},
-    media_url=${profile.media_url || ''},
-    bio_about=${profile.bio_about || ''},
-    bio_meet=${profile.bio_meet || ''}
+    name=${profile.name || null},
+    tagline=${profile.tagline || null},
+    gender=${profile.gender || null},
+    age=${profile.age || null},
+    location=${profile.location || null},
+    media_url=${profile.media_url || null},
+    bio_about=${profile.bio_about || null},
+    bio_meet=${profile.bio_meet || null}
     WHERE mfer_id=${profile.mfer_id}
     RETURNING *
   `

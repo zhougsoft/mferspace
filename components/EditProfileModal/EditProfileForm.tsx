@@ -3,10 +3,18 @@
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Profile, { ProfileMaxChars } from '../../interfaces/Profile'
+import { isValidSoundcloudLink } from '../../utils'
+
+const validateMediaField = (url: string) => {
+  if (!isValidSoundcloudLink(url)) {
+    return 'invalid Soundcloud link'
+  }
+  return true
+}
 
 interface EditProfileFormProps {
-  profile: any // TODO: type this
-  onSave: SubmitHandler<Profile> // type the data
+  profile: Profile
+  onSave: SubmitHandler<Profile>
 }
 
 export default function EditProfileForm({
@@ -17,7 +25,7 @@ export default function EditProfileForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<any>()
+  } = useForm<Profile>()
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
@@ -32,7 +40,11 @@ export default function EditProfileForm({
           {...register('name', { maxLength: ProfileMaxChars.Name })}
           autoComplete="off"
         />
-        {errors.name && <span>max length {ProfileMaxChars.Name} chars</span>}
+        {errors.name && (
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.Name} chars
+          </span>
+        )}
       </div>
       <br />
 
@@ -46,7 +58,9 @@ export default function EditProfileForm({
           autoComplete="off"
         />
         {errors.tagline && (
-          <span>max length {ProfileMaxChars.Tagline} chars</span>
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.Tagline} chars
+          </span>
         )}
       </div>
 
@@ -60,7 +74,9 @@ export default function EditProfileForm({
           autoComplete="off"
         />
         {errors.gender && (
-          <span>max length {ProfileMaxChars.Gender} chars</span>
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.Gender} chars
+          </span>
         )}
       </div>
 
@@ -73,7 +89,11 @@ export default function EditProfileForm({
           {...register('age', { maxLength: ProfileMaxChars.Age })}
           autoComplete="off"
         />
-        {errors.age && <span>max length {ProfileMaxChars.Age} chars</span>}
+        {errors.age && (
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.Age} chars
+          </span>
+        )}
       </div>
 
       {/* LOCATION */}
@@ -86,7 +106,9 @@ export default function EditProfileForm({
           autoComplete="off"
         />
         {errors.location && (
-          <span>max length {ProfileMaxChars.Location} chars</span>
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.Location} chars
+          </span>
         )}
       </div>
 
@@ -96,11 +118,22 @@ export default function EditProfileForm({
         <input
           defaultValue={profile?.media_url || ''}
           placeholder="media_url"
-          {...register('media_url', { maxLength: ProfileMaxChars.MediaUrl })}
+          {...register('media_url', {
+            maxLength: ProfileMaxChars.MediaUrl,
+            validate: (value: string | undefined) => {
+              if (
+                !value?.startsWith('https://soundcloud.com') ||
+                !value?.startsWith('soundcloud.com')
+              ) {
+                return 'invalid soundcloud link'
+              }
+              return true
+            },
+          })}
           autoComplete="off"
         />
         {errors.media_url && (
-          <span>max length {ProfileMaxChars.MediaUrl} chars</span>
+          <span style={{ color: 'red' }}>invalid soundcloud link</span>
         )}
       </div>
       <br />
@@ -116,7 +149,9 @@ export default function EditProfileForm({
           autoComplete="off"
         />
         {errors.bio_about && (
-          <span>max length {ProfileMaxChars.BioAbout} chars</span>
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.BioAbout} chars
+          </span>
         )}
       </div>
       <br />
@@ -132,7 +167,9 @@ export default function EditProfileForm({
           autoComplete="off"
         />
         {errors.bio_meet && (
-          <span>max length {ProfileMaxChars.BioMeet} chars</span>
+          <span style={{ color: 'red' }}>
+            max length {ProfileMaxChars.BioMeet} chars
+          </span>
         )}
       </div>
       <br />
