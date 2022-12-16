@@ -62,9 +62,6 @@ export default function useMfers() {
         reject(error)
       }
     })
-
-    // const owner = await contract.ownerOf(id)
-    // return ethers.utils.getAddress(owner) === ethers.utils.getAddress(address)
   }
 
   return { getMfersOwned, getMfer, checkMferOwnership }

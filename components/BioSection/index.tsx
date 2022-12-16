@@ -10,19 +10,19 @@ interface BioSectionProps {
 }
 
 export default function BioSection({
-  name = 'this mfer',
-  bioAbout = DEFAULT_BIO,
-  bioMeet = DEFAULT_BIO,
+  name,
+  bioAbout,
+  bioMeet,
 }: BioSectionProps) {
   return (
     <S.Section>
       <S.Article>
-        <h4>About {name}</h4>
-        <p>{bioAbout}</p>
+        <h4>About {name || 'this mfer'}</h4>
+        <p>{bioAbout || DEFAULT_BIO}</p>
       </S.Article>
       <S.Article>
         <h4>Who {name} would like to meet</h4>
-        <p>{bioMeet}</p>
+        <p>{bioMeet || DEFAULT_BIO}</p>
       </S.Article>
     </S.Section>
   )

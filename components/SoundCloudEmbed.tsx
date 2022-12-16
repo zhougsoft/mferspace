@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) // dynamic import to prevent NextJS rehydration error after embedded media is fetched & rendered
 
 export default function SoundCloudEmbed({
   url,

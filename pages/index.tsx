@@ -74,9 +74,13 @@ export default function HomePage({ profiles }: { profiles: Profile[] }) {
         <h1 style={{ fontSize: '3rem', marginBottom: '0' }}>mferspace</h1>
         <h3>a space for mfers</h3>
         <hr />
-        {profiles.map(profile => (
-          <ProfileCard key={makeRandomKey()} profile={profile} />
-        ))}
+        {profiles ? (
+          profiles.map(profile => (
+            <ProfileCard key={makeRandomKey()} profile={profile} />
+          ))
+        ) : (
+          <div>no profiles found...</div>
+        )}
       </Container>
     </Layout>
   )
