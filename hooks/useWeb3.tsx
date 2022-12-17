@@ -2,11 +2,10 @@ import type { ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-// --- wagmi utils
+// --- wagmi stuff
 import {
   WagmiConfig,
   createClient,
-  defaultChains,
   configureChains,
   useAccount,
   useConnect,
@@ -15,6 +14,7 @@ import {
   useNetwork,
   useSignMessage,
 } from 'wagmi'
+import { mainnet, goerli } from 'wagmi/chains'
 
 // --- providers
 import { publicProvider } from 'wagmi/providers/public'
@@ -31,6 +31,8 @@ interface Web3ProviderProps {
 
 // wrapper for wagmi config provider
 export function Web3Provider({ children }: Web3ProviderProps) {
+  const defaultChains = [mainnet, goerli]
+
   // setup & detect providers based on credentials in env
   const providers = [publicProvider()]
   const { ALCHEMY_ID, INFURA_ID } = process.env
