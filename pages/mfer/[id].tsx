@@ -105,8 +105,7 @@ export default function ProfilePage({
             {/* --- profile url display --- */}
             <div
               style={{
-                display: 'inline-block',
-                width: '23rem',
+                width: '30rem',
                 fontSize: '0.9rem',
                 border: `2px solid ${theme.colors.blueLight}`,
                 marginBottom: '1rem',
@@ -124,11 +123,7 @@ export default function ProfilePage({
             {/* --- soundcloud embed --- */}
             {profile?.media_url && (
               <>
-                <SoundCloudEmbed
-                  url={profile.media_url}
-                  width="25rem"
-                  height={150}
-                />
+                <SoundCloudEmbed url={profile.media_url} height={125} />
                 <br />
               </>
             )}
