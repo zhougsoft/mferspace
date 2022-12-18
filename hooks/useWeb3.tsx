@@ -2,11 +2,9 @@ import type { ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-// --- wagmi stuff
 import {
   WagmiConfig,
   createClient,
-  configureChains,
   useAccount,
   useConnect,
   useDisconnect,
@@ -14,64 +12,45 @@ import {
   useNetwork,
   useSignMessage,
 } from 'wagmi'
-import { mainnet, goerli } from 'wagmi/chains'
 
-// --- providers
-import { publicProvider } from 'wagmi/providers/public'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { infuraProvider } from 'wagmi/providers/infura'
-
-// --- connectors
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import {
+  ConnectKitProvider,
+  getDefaultClient,
+  ConnectKitButton,
+} from 'connectkit'
 
 interface Web3ProviderProps {
   children?: ReactNode
 }
 
-// wrapper for wagmi config provider
+// wrapper for wagmi + connectkit providers
 export function Web3Provider({ children }: Web3ProviderProps) {
-  const defaultChains = [mainnet, goerli]
-
-  // setup & detect providers based on credentials in env
-  const providers = [publicProvider()]
   const { ALCHEMY_ID, INFURA_ID } = process.env
-  if (ALCHEMY_ID) {
-    providers.push(alchemyProvider({ apiKey: ALCHEMY_ID }))
-  }
-  if (INFURA_ID) {
-    providers.push(infuraProvider({ apiKey: INFURA_ID }))
-  }
 
-  const { chains, provider, webSocketProvider } = configureChains(
-    defaultChains,
-    providers
+  // setup wagmi client with connectkit
+  const client = createClient(
+    getDefaultClient({
+      appName: 'mferspace',
+      alchemyId: ALCHEMY_ID,
+      infuraId: INFURA_ID,
+    })
   )
 
-  // setup wagmi client with connectors and providers
-  const client = createClient({
-    autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({ chains }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          qrcode: true,
-        },
-      }),
-    ],
-    provider,
-    webSocketProvider,
-  })
-
-  return <WagmiConfig client={client}>{children}</WagmiConfig>
+  return (
+    <WagmiConfig client={client}>
+      <ConnectKitProvider>{children}</ConnectKitProvider>
+    </WagmiConfig>
+  )
 }
 
-export default function useWeb3() {
+// TODO:
+interface UseWeb3 {}
+
+// TODO: add typing the return object: UseWeb3
+export default function useWeb3(): any {
   const router = useRouter()
   const [isMounted, setIsMounted] = useState<boolean>(false)
-
-  const { connect, connectors, pendingConnector } = useConnect()
+  const { connect } = useConnect()
   const { disconnect } = useDisconnect()
   const { isConnected, address } = useAccount()
   const provider = useProvider()
@@ -89,7 +68,7 @@ export default function useWeb3() {
     const { ethereum } = window
     if (isMounted && ethereum?.on) {
       ethereum.on('accountsChanged', () => {
-        router.reload()
+        console.log('accountsChanged')
       })
 
       ethereum.on('chainChanged', () => {
@@ -103,12 +82,11 @@ export default function useWeb3() {
         isConnected,
         address,
         activeChain,
-        connectors,
-        pendingConnector,
         provider,
         connect,
         disconnect,
         signMessageAsync,
+        ConnectKitButton,
       }
     : {}
 }

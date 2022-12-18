@@ -11,12 +11,13 @@ export const HeaderWrapper = styled.header`
 export const HomeLink = styled(Link)`
   cursor: pointer;
   color: ${({ theme }) => theme.colors.textAlt} !important;
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: bold;
   padding-right: 1rem;
 `
 
 export const DashboardLink = styled(HomeLink)`
+  display: block;
   font-size: 1rem;
   padding-right: 1rem;
 `

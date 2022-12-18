@@ -18,7 +18,12 @@ export default function Header() {
             alignItems: 'center',
           }}>
           <S.HomeLink href="/">mferspace</S.HomeLink>
-          <div style={{ fontSize: '0.9rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '0.9rem',
+            }}>
             {isConnected && router.pathname !== '/dashboard' && (
               <S.DashboardLink href="/dashboard">
                 go to your dashboard
