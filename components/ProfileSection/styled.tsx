@@ -8,6 +8,10 @@ export const ProfileDisplay = styled.div`
   display: flex;
   margin-bottom: 1rem;
 
+  img {
+    border-radius: 5px;
+  }
+
   ul {
     list-style: none;
     padding: 0;
