@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import theme from '../styles/theme'
 
 import {
   WagmiConfig,
@@ -38,7 +39,14 @@ export function Web3Provider({ children }: Web3ProviderProps) {
 
   return (
     <WagmiConfig client={client}>
-      <ConnectKitProvider>{children}</ConnectKitProvider>
+      <ConnectKitProvider
+        theme="web95"
+        customTheme={{
+          '--ck-font-family': `"${theme.fonts.main}", sans`,
+          '--ck-border-radius': '5px',
+        }}>
+        {children}
+      </ConnectKitProvider>
     </WagmiConfig>
   )
 }
