@@ -123,7 +123,7 @@ export default function ProfilePage({
             {/* --- soundcloud embed --- */}
             {profile?.media_url && (
               <>
-                <SoundCloudEmbed url={profile.media_url} height={125} />
+                <SoundCloudEmbed url={profile.media_url} height={150} />
                 <br />
               </>
             )}
