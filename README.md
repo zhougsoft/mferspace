@@ -2,6 +2,8 @@
 
 > a space for mfers
 
+1 mfer token = 1 mferspace profile page
+
 ## requirements
 
 - a postgres database connection URL
