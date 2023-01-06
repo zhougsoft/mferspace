@@ -38,11 +38,15 @@ export default function EditProfileModal({
       .then(async result => {
         // on success, reload the page to display updated data
         if (result.ok) {
-          setIsSaving(false)
-          onClose()
           router.reload()
         } else {
           // if unauthorized, prompt for login and re-submit
+          if (result.status === 400) {
+            onClose()
+            setIsSaving(false)
+            alert('bad request data')
+          }
+
           if (result.status === 403) {
             try {
               await signIn()
@@ -51,11 +55,10 @@ export default function EditProfileModal({
                 router.reload()
               } else {
                 alert('profile edit unsuccessful')
-                setIsSaving(false)
-                onClose()
               }
             } catch (error) {
               console.error(error)
+            } finally {
               onClose()
               setIsSaving(false)
             }

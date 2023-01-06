@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-	reactStrictMode: true,
-	swcMinify: true,
-	images: {
-		domains: ['ipfs.io'],
-	},
-	compiler: {
-		styledComponents: true,
-	},
-};
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['plain.mfers.dev', 'heads.mfers.dev'],
+  },
+  compiler: {
+    styledComponents: true,
+  },
+}

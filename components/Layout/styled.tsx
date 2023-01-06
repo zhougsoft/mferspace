@@ -1,8 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
+// take up 100% of the viewport width
 export const PageWrapper = styled.div`
-	width: 100%;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-`;
+  display: inline-block;
+  min-width: 100vw;
+`
