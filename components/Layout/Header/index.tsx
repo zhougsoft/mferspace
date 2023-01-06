@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useWeb3 } from '../../../hooks'
-import { Container } from '../../Shared'
+import { Container, ExtLink, GithubIcon } from '../../Shared'
 import ConnectWallet from '../../ConnectWallet'
 import * as S from './styled'
 
@@ -18,6 +18,7 @@ export default function Header() {
             alignItems: 'center',
           }}>
           <S.HomeLink href="/">mferspace</S.HomeLink>
+
           <div
             style={{
               display: 'flex',
@@ -30,6 +31,13 @@ export default function Header() {
               </S.DashboardLink>
             )}
             <ConnectWallet />
+
+            <ExtLink href="https://github.com/zhoug0x/mferspace">
+              <GithubIcon
+                color="white"
+                style={{ width: '2rem', marginLeft: '1rem' }}
+              />
+            </ExtLink>
           </div>
         </div>
       </Container>

@@ -4,9 +4,12 @@
 
 1 mfer token = 1 mferspace profile page
 
+** *please excuse the messy styling currently! still a ways to go in that department <3*
+
 ## requirements
 
 - a postgres database connection URL
+  - you can quickly spin up a DB [here](https://railway.app/) or [here](https://www.elephantsql.com/) - for free!
 - an [alchemy](https://www.alchemy.com) or [infura](https://infura.io) API key
 
 ## to run
