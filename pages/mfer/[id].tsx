@@ -71,11 +71,13 @@ export default function ProfilePage({
         {/* --- edit profile button --- --- */}
         {isMferOwner && (
           <button
-
             // TODO: remove maintence alert when ready
             // onClick={onEditProfileClick}
-            onClick={() => alert('\n\n♥ 𝘂𝗻𝗱𝗲𝗿 𝗺𝗮𝗶𝗻𝘁𝗲𝗻𝗮𝗻𝗰𝗲 ♥\nfollow @𝘇𝗵𝗼𝘂𝗴𝟬𝘅 on twitter for updates!\n')}
-
+            onClick={() =>
+              alert(
+                '\n\n♥ 𝘂𝗻𝗱𝗲𝗿 𝗺𝗮𝗶𝗻𝘁𝗲𝗻𝗮𝗻𝗰𝗲 ♥\nfollow @𝘇𝗵𝗼𝘂𝗴𝟬𝘅 on twitter for updates!\n'
+              )
+            }
             disabled={editModalIsOpen}
             style={{ marginBottom: '0.5rem' }}>
             <IconEmoji emoji="✎" alt="pencil edit icon" />
@@ -99,12 +101,10 @@ export default function ProfilePage({
                 marginBottom: '1rem',
                 padding: '0.5rem 1rem',
               }}>
-              <strong>
-                mferspace URL <small>- dev mode</small>
-              </strong>
+              <strong>mferspace URL</strong>
               <br />
               <pre style={{ margin: '0.25rem 0 0 0 ' }}>
-                {`https://dev.mferspace.com/mfer/${mferId}`}
+                {`https://mferspace.com/mfer/${mferId}`}
               </pre>
             </div>
 
