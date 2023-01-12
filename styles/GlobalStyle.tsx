@@ -7,6 +7,13 @@ export default createGlobalStyle`
 		src: url('/fonts/Benton-Sans-Regular.otf');
 	}
 
+	html, body {
+		width: 100%;
+		min-height: 100vh;
+		margin: 0;
+		padding: 0;
+	}
+
 	body {
 		font-size: 16px;
 		font-family: ${({ theme }) => theme.fonts.main};

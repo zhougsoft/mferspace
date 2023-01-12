@@ -1,11 +1,6 @@
-export interface MferAttribute {
-  trait_type: string
-  value: string
-}
+import type { MferData } from 'mfers'
 
-export default interface Mfer {
-  id: number
-  name: string
+export default interface Mfer extends MferData {
+  id: MferData['i']
   img: string
-  attributes: MferAttribute[]
 }

@@ -20,11 +20,11 @@ withSql(async sql => {
 	  )
 	`
 
-  // insert 10k empty mfer profiles
+  // insert a mfer profile for each of the existing 10020 mfer ids
   await sql`
 		INSERT INTO profiles(mfer_id)
 		SELECT x.mfer_id
-		FROM generate_series(0, 10000) AS x(mfer_id);
+		FROM generate_series(0, 10020) AS x(mfer_id);
 	`
 
   // create function to insert the current timestamp into 'updated_at'
