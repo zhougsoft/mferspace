@@ -17,6 +17,8 @@
 1. install dependencies:
    ```bash
    npm install
+   # or
+   yarn
    ```
 1. make a copy of `.env.example` named `.env`
 1. assign your postgres database connection string to the `DATABASE_URL` environment variable
